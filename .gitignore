@@ -137,3 +137,5 @@ dist
 # Vite logs files
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+
+best_mAP50.pt
