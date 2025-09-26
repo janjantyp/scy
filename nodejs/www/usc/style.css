@@ -1,167 +1,296 @@
-/* style.css */
-
-/* General Styles */
-body {
-  font-family: 'Kanit', sans-serif;
+* {
   margin: 0;
   padding: 0;
-  background-color: #f0f2f5;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
   color: #333;
+  background-color: #f0f0f0;
 }
 
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0px;
-}
-
-/* Hero Section */
+/* Header Section */
 .hero-section {
-  background-color: #ffffff;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-  border: 5px solid white;
-  border-radius: 20px;
-  margin: 20px auto;
-  max-width: 1200px;
+  width: 100%;
+  height: 100vh;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('photo-1480714378408-67cf0d13bc1b.jpeg');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  /* จัดเรียงองค์ประกอบในแนวตั้ง */
+  align-items: center;
+  /* จัดองค์ประกอบให้อยู่กึ่งกลางแนวนอน */
+  justify-content: flex-start;
+  /* จัดองค์ประกอบให้อยู่ด้านบน */
   position: relative;
-  overflow: hidden;
-  height: 400px;
+  padding: 20px 5%;
+  color: #fff;
 }
 
-.hero-image-container {
+.top-nav-container {
   width: 100%;
-  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  /* เพิ่มระยะห่างระหว่างโลโก้และ navbar */
 }
 
-.hero-image {
+.logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 2em;
+  /* ปรับขนาดให้ใหญ่ขึ้น */
+  font-weight: 500;
+  letter-spacing: 2px;
+  color: #fff;
+  text-align: center;
+}
+
+.navbar {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 0;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 70px;
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 5px;
+  padding: 10px 20px;
+}
+
+.nav-links li a {
+  text-decoration: none;
+  color: #fff;
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: 1px;
+  transition: color 0.3s;
+}
+
+.nav-links li a:hover {
+  color: #ddd;
 }
 
 .hero-content {
-  position: absolute;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: rgba(255, 255, 255, 0.8);
-  padding: 20px;
-  border-radius: 8px;
   text-align: center;
-  width: calc(100% - 40px);
-  max-width: 800px;
+  margin-top: auto;
+  /* ดันส่วนนี้ลงไปอยู่ด้านล่างสุดของพื้นที่ที่เหลืออยู่ */
+  padding-bottom: 100px;
 }
 
-.hero-title {
-  font-size: 2.5rem;
+.hero-content h1 {
+  font-size: 4em;
   font-weight: 700;
   margin-bottom: 10px;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
 }
 
-.hero-subtitle {
-  font-size: 1rem;
-  color: #666;
+.hero-content p {
+  font-size: 1.2em;
+  font-weight: 400;
+  margin-bottom: 20px;
 }
 
-/* Articles Section (2 บล็อกด้านล่าง) */
-.articles-container {
+.contact-btn {
+  display: inline-block;
+  padding: 10px 30px;
+  background-color: transparent;
+  color: #fff;
+  text-decoration: none;
+  border: 1px solid #fff;
+  border-radius: 50px;
+  font-weight: 500;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.contact-btn:hover {
+  background-color: #fff;
+  color: #333;
+}
+
+/* --- About Section --- */
+.about-section {
   display: flex;
-  gap: 20px;
-  align-items: stretch;
-  /* บังคับให้ items มีความสูงเท่ากัน */
+  justify-content: center;
+  align-items: flex-start;
+  gap: 40px;
+  padding: 80px 5%;
+  background-color: #fff;
 }
 
-/* Article Cards */
-.article-card {
-  background-color: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  transition: transform 0.3s ease;
-  border: 5px solid white;
-  border-radius: 20px;
+.about-content {
   flex: 1;
-  /* ทำให้ทั้งสองบล็อกมีขนาดเท่ากัน */
-  display: flex;
-  /* กำหนดให้เป็น flex container */
-  flex-direction: column;
-  /* จัดเรียงเนื้อหาในแนวตั้ง */
+  max-width: 600px;
 }
 
-.article-card:hover {
-  transform: translateY(-5px);
+.section-title {
+  font-size: 2.5em;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 20px;
 }
 
-.article-image-container {
+.about-text {
+  line-height: 1.8;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.room-types-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+.room-types-grid ul {
+  list-style: none;
+}
+
+.room-types-grid li {
+  font-size: 0.9em;
+  color: #333;
+  line-height: 1.5;
+}
+
+.room-count {
+  font-weight: bold;
+  color: #222;
+  margin-right: 5px;
+}
+
+.about-image-container {
+  flex: 1;
+  max-width: 500px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.about-image {
   width: 100%;
-  height: 200px;
-  /* กำหนดความสูงของรูปภาพให้คงที่ */
-  overflow: hidden;
-  flex-shrink: 0;
-  /* ป้องกันไม่ให้รูปภาพหดตัว */
-}
-
-.article-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: auto;
   display: block;
 }
 
-.article-info {
-  padding: 15px;
-  flex-grow: 1;
-  /* ทำให้ส่วนข้อมูลขยายเต็มพื้นที่ที่เหลือ */
+/* --- Services Section --- */
+.services-section {
   display: flex;
-  /* กำหนดให้เป็น flex container */
-  flex-direction: column;
-  /* จัดเรียงเนื้อหาในแนวตั้ง */
-  justify-content: space-between;
-  /* จัดเนื้อหาให้ห่างกัน */
+  justify-content: center;
+  gap: 50px;
+  padding: 40px 5%;
+  background-color: #f0f0f0;
 }
 
-.article-title {
-  font-size: 1.5rem;
-  font-weight: 700;
+.service-item {
+  text-align: center;
+}
+
+.service-item img {
+  width: 50px;
+  height: 50px;
   margin-bottom: 10px;
 }
 
-.article-description {
-  font-size: 1rem;
-  color: #666;
+.service-item p {
+  font-size: 0.9em;
+  color: #555;
+  line-height: 1.4;
 }
 
-/* Responsive Design */
+/* --- Our Room Section --- */
+.our-room-section {
+  text-align: center;
+  padding: 80px 5%;
+  background-color: #fff;
+}
+
+.our-room-section .section-title {
+  margin-bottom: 50px;
+}
+
+.room-card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.room-image-container {
+  flex: 1;
+  max-width: 450px;
+}
+
+.room-image {
+  width: 100%;
+  border-radius: 5px;
+}
+
+.room-details {
+  flex: 1;
+  text-align: left;
+}
+
+.room-details h3 {
+  font-size: 2em;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.room-details p {
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.room-details .description {
+  line-height: 1.6;
+}
+
+.view-btn {
+  padding: 10px 30px;
+  background-color: #333;
+  color: #fff;
+  text-decoration: none;
+  border: none;
+  border-radius: 50px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.view-btn:hover {
+  background-color: #555;
+}
+
+/* Responsive design */
 @media (max-width: 768px) {
-  .articles-container {
+
+  .about-section,
+  .room-card {
     flex-direction: column;
+    align-items: center;
   }
-}
 
-/* โค้ดสำหรับลิงก์ */
-a {
-  text-decoration: none;
-  /* ลบเส้นใต้ลิงก์ */
-  color: inherit;
-  /* ทำให้สีข้อความเป็นสีเดิม */
-  display: block;
-  /* ทำให้ลิงก์ครอบคลุมพื้นที่ทั้งบล็อก */
-}
+  .about-content,
+  .about-image-container,
+  .room-details,
+  .room-image-container {
+    max-width: 100%;
+  }
 
-/* เพิ่มโค้ดนี้ในไฟล์ style.css ของคุณ */
-a.article-link {
-  display: flex;
-  /* กำหนดให้ลิงก์เป็น flex container */
-  flex: 1;
-  /* ทำให้ลิงก์แต่ละอันกินพื้นที่เท่าๆ กัน */
-  flex-direction: column;
-}
-
-/* เพิ่มโค้ดนี้เพื่อไม่ให้ a.hero-link มีปัญหาในการจัดเรียง */
-a.hero-link {
-  display: block;
-  /* ทำให้ลิงก์ครอบคลุมพื้นที่ทั้งหมด */
-  text-decoration: none;
-  color: inherit;
+  .services-section {
+    flex-wrap: wrap;
+    gap: 20px;
+  }
 }
