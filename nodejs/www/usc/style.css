@@ -1,167 +1,99 @@
-/* style.css */
-
-/* General Styles */
-body {
-  font-family: 'Kanit', sans-serif;
+* {
   margin: 0;
   padding: 0;
-  background-color: #f0f2f5;
-  color: #333;
+  box-sizing: border-box;
 }
 
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0px;
+body {
+  font-family: 'Roboto', sans-serif;
+  color: #fff;
+  background-color: #f0f0f0;
 }
 
-/* Hero Section */
 .hero-section {
-  background-color: #ffffff;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-  border: 5px solid white;
-  border-radius: 20px;
-  margin: 20px auto;
-  max-width: 1200px;
+  width: 100%;
+  height: 100vh;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://i.imgur.com/your-image-url.jpg');
+  /* ใส่ URL รูปภาพของคุณตรงนี้ */
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
   position: relative;
-  overflow: hidden;
-  height: 400px;
+  padding: 20px 5%;
 }
 
-.hero-image-container {
+.navbar {
   width: 100%;
-  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 0;
 }
 
-.hero-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 5px;
+  padding: 10px 20px;
+  margin-left: 20px;
+}
+
+.nav-links li a {
+  text-decoration: none;
+  color: #fff;
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: 1px;
+  transition: color 0.3s;
+}
+
+.nav-links li a:hover {
+  color: #ddd;
 }
 
 .hero-content {
-  position: absolute;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: rgba(255, 255, 255, 0.8);
-  padding: 20px;
-  border-radius: 8px;
   text-align: center;
-  width: calc(100% - 40px);
-  max-width: 800px;
+  padding-bottom: 100px;
 }
 
-.hero-title {
-  font-size: 2.5rem;
+.hero-content h1 {
+  font-size: 4em;
   font-weight: 700;
   margin-bottom: 10px;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
 }
 
-.hero-subtitle {
-  font-size: 1rem;
-  color: #666;
+.hero-content p {
+  font-size: 1.2em;
+  font-weight: 400;
+  margin-bottom: 20px;
 }
 
-/* Articles Section (2 บล็อกด้านล่าง) */
-.articles-container {
-  display: flex;
-  gap: 20px;
-  align-items: stretch;
-  /* บังคับให้ items มีความสูงเท่ากัน */
-}
-
-/* Article Cards */
-.article-card {
-  background-color: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  transition: transform 0.3s ease;
-  border: 5px solid white;
-  border-radius: 20px;
-  flex: 1;
-  /* ทำให้ทั้งสองบล็อกมีขนาดเท่ากัน */
-  display: flex;
-  /* กำหนดให้เป็น flex container */
-  flex-direction: column;
-  /* จัดเรียงเนื้อหาในแนวตั้ง */
-}
-
-.article-card:hover {
-  transform: translateY(-5px);
-}
-
-.article-image-container {
-  width: 100%;
-  height: 200px;
-  /* กำหนดความสูงของรูปภาพให้คงที่ */
-  overflow: hidden;
-  flex-shrink: 0;
-  /* ป้องกันไม่ให้รูปภาพหดตัว */
-}
-
-.article-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.article-info {
-  padding: 15px;
-  flex-grow: 1;
-  /* ทำให้ส่วนข้อมูลขยายเต็มพื้นที่ที่เหลือ */
-  display: flex;
-  /* กำหนดให้เป็น flex container */
-  flex-direction: column;
-  /* จัดเรียงเนื้อหาในแนวตั้ง */
-  justify-content: space-between;
-  /* จัดเนื้อหาให้ห่างกัน */
-}
-
-.article-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin-bottom: 10px;
-}
-
-.article-description {
-  font-size: 1rem;
-  color: #666;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .articles-container {
-    flex-direction: column;
-  }
-}
-
-/* โค้ดสำหรับลิงก์ */
-a {
+.contact-btn {
+  display: inline-block;
+  padding: 10px 30px;
+  background-color: transparent;
+  color: #fff;
   text-decoration: none;
-  /* ลบเส้นใต้ลิงก์ */
-  color: inherit;
-  /* ทำให้สีข้อความเป็นสีเดิม */
-  display: block;
-  /* ทำให้ลิงก์ครอบคลุมพื้นที่ทั้งบล็อก */
+  border: 1px solid #fff;
+  border-radius: 50px;
+  font-weight: 500;
+  transition: background-color 0.3s, color 0.3s;
 }
 
-/* เพิ่มโค้ดนี้ในไฟล์ style.css ของคุณ */
-a.article-link {
-  display: flex;
-  /* กำหนดให้ลิงก์เป็น flex container */
-  flex: 1;
-  /* ทำให้ลิงก์แต่ละอันกินพื้นที่เท่าๆ กัน */
-  flex-direction: column;
-}
-
-/* เพิ่มโค้ดนี้เพื่อไม่ให้ a.hero-link มีปัญหาในการจัดเรียง */
-a.hero-link {
-  display: block;
-  /* ทำให้ลิงก์ครอบคลุมพื้นที่ทั้งหมด */
-  text-decoration: none;
-  color: inherit;
+.contact-btn:hover {
+  background-color: #fff;
+  color: #333;
 }
