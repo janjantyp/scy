@@ -1,0 +1,1981 @@
+###แมพแรกไม่มีไร
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Urban Street Canyon</title>
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+</head>
+<body>
+  <div id="map" style="width: 100%; height: 500px;"></div>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    var map = L.map('map').setView([18.7961, 98.9793], 13);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    var points = [
+      { lat: 18.7961, lng: 98.9793, name: "หุบเมือง A", type: "Type1" },
+      { lat: 18.7915, lng: 98.9600, name: "หุบเมือง B", type: "Type2" }
+    ];
+
+    points.forEach(function(p) {
+      L.marker([p.lat, p.lng]).addTo(map)
+        .bindPopup(`<strong>${p.name}</strong><br>ประเภท: ${p.type}`);
+    });
+  </script>
+</body>
+</html>
+
+##อันนี้เป็นโค้ด Leaflet.js เพิ่มจุดสวยๆสีน้ำเงินเหมือน OpenAQ
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Urban Street Canyon</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>
+    html, body {height: 100%; margin: 0; padding: 0;}
+    #map {height: 100vh;}
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    // สร้างแผนที่พื้นหลังแบบ OpenStreetMap
+    var map = L.map('map').setView([18.7961, 98.9793], 12);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    // ข้อมูลจุดตัวอย่าง
+    var points = [
+      { name: "เชียงใหม่", lat: 18.7961, lng: 98.9793, value: 100, detail: 'รายละเอียด...' },
+      { name: "บ้านต้น", lat: 18.81,   lng: 98.95,   value: 30,  detail: 'รายละเอียด...' },
+      { name: "สันทราย", lat: 18.85,   lng: 99.05,   value: 60,  detail: 'รายละเอียด...' }
+    ];
+    // วาดวงกลม marker ขนาดต่างกัน
+    points.forEach(function(p) {
+      L.circleMarker([p.lat, p.lng], {
+        radius: Math.sqrt(p.value)*2,
+        color: 'blue',
+        fillOpacity: 0.7,
+      }).addTo(map)
+        .bindPopup(`<b>${p.name}</b><br>ค่าจำแนก: ${p.value}<br>${p.detail}`);
+    });
+  </script>
+</body>
+</html>
+
+
+####อันนี้ดูดีมากใกล้เคียงความจริง
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Urban Street Canyon</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>
+    #map {height: 100vh;}
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    var map = L.map('map').setView([18.7961, 98.9793], 12);
+    // เปลี่ยน tile ลองธีมสวยๆ จาก Carto
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; <a href="https://carto.com/">CARTO</a> | © OpenStreetMap contributors'
+    }).addTo(map);
+
+    var points = [
+      { name: "เชียงใหม่", lat: 18.7961, lng: 98.9793, value: 100, detail: 'รายละเอียด...' },
+      { name: "บ้านต้น", lat: 18.81,   lng: 98.95,   value: 30,  detail: 'รายละเอียด...' },
+      { name: "สันทราย", lat: 18.85,   lng: 99.05,   value: 60,  detail: 'รายละเอียด...' }
+    ];
+    points.forEach(function(p) {
+      L.circleMarker([p.lat, p.lng], {
+        radius: Math.sqrt(p.value)*2,
+        color: 'blue',
+        fillOpacity: 0.7,
+      }).addTo(map)
+        .bindPopup(`<b>${p.name}</b><br>ค่าจำแนก: ${p.value}<br>${p.detail}`);
+    });
+  </script>
+</body>
+</html>
+
+##จุดสีสวยปรับแมพนิดหน่อย
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Urban Street Canyon</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>
+    #map {height: 100vh;}
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    var map = L.map('map').setView([18.7961, 98.9793], 12);
+
+    // ใช้แผนที่ Positron (สีอ่อน อ่านง่าย สะอาดตา)
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; <a href="https://carto.com/">CARTO</a> | © OpenStreetMap contributors'
+    }).addTo(map);
+
+    var points = [
+      { name: "เชียงใหม่", lat: 18.7961, lng: 98.9793, value: 100, detail: 'รายละเอียด...' },
+      { name: "บ้านต้น", lat: 18.81,   lng: 98.95,   value: 30,  detail: 'รายละเอียด...' },
+      { name: "สันทราย", lat: 18.85,   lng: 99.05,   value: 60,  detail: 'รายละเอียด...' }
+    ];
+    points.forEach(function(p) {
+      L.circleMarker([p.lat, p.lng], {
+        radius: Math.sqrt(p.value)*2,
+        color: '#2E86AB',
+        fillColor: '#56CCF2',
+        fillOpacity: 0.8,
+        weight: 2
+      }).addTo(map)
+        .bindPopup(
+          `<b>${p.name}</b><br>ค่าจำแนก: ${p.value}<br>${p.detail}`
+        );
+    });
+  </script>
+</body>
+</html>
+
+##อันนี้จึ้งสุดๆๆๆๆๆ
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Urban Street Canyon</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>
+    #map {height: 100vh;}
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    var map = L.map('map').setView([18.7961, 98.9793], 12);
+
+    // ใช้ Voyager จาก CartoDB (สีเทากลางๆ ดูง่าย)
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; <a href="https://carto.com/">CARTO</a> | © OpenStreetMap contributors'
+    }).addTo(map);
+
+    var points = [
+      { name: "เชียงใหม่", lat: 18.7961, lng: 98.9793, value: 100, detail: 'รายละเอียด...' },
+      { name: "บ้านต้น", lat: 18.81,   lng: 98.95,   value: 30,  detail: 'รายละเอียด...' },
+      { name: "สันทราย", lat: 18.85,   lng: 99.05,   value: 60,  detail: 'รายละเอียด...' }
+    ];
+    points.forEach(function(p) {
+      L.circleMarker([p.lat, p.lng], {
+        radius: Math.sqrt(p.value)*2,
+        color: '#2E86AB',
+        fillColor: '#56CCF2',
+        fillOpacity: 0.8,
+        weight: 2
+      }).addTo(map)
+        .bindPopup(
+          `<b>${p.name}</b><br>ค่าจำแนก: ${p.value}<br>${p.detail}`
+        );
+    });
+  </script>
+</body>
+</html>
+
+##ของAPI
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <title>Thunderforest Transport</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>
+    #map {height: 100vh;}
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    var map = L.map('map').setView([18.7961,98.9793], 12);
+
+    // ใส่ API Key ที่นี่
+    var apikey = 'c3d15e723cff4a12949704ecd2773c00';
+
+    var thunderforest = L.tileLayer(
+      'https://{s}.tile.thunderforest.com/transport/{z}/{x}/{y}{r}.png?apikey=' + apikey, 
+      {
+        attribution: '&copy; <a href="http://www.thunderforest.com/">Thunderforest</a>, &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        maxZoom: 22
+      }
+    );
+    thunderforest.addTo(map);
+  </script>
+</body>
+</html>
+
+##อาจจะจึ้งกว่านี้
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <title>Jawg Sunny Leaflet Map</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>
+    #map {height: 100vh;}
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    // ใส่ access token จริงของคุณแทนข้อความนี้
+    var accessToken = 'EfwRmmNnG9hnPykEYQFkDddhbTcFzqFciAgWpOahX34rF4WbkijZMDRUdda6ZfQQ';
+
+    var map = L.map('map').setView([13.7367, 100.531], 14);
+
+    var Jawg_Sunny = L.tileLayer(
+      'https://tile.jawg.io/jawg-sunny/{z}/{x}/{y}{r}.png?access-token=' + accessToken, 
+      {
+        attribution: '<a href="https://jawg.io" title="Tiles Courtesy of Jawg Maps" target="_blank">&copy; <b>Jawg</b>Maps</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        minZoom: 0,
+        maxZoom: 22
+      }
+    );
+
+    Jawg_Sunny.addTo(map);
+  </script>
+</body>
+</html>
+
+##แมพและเชื่อมจุดเข้าไปแล้ว
+###แมพแรกไม่มีไร
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Urban Street Canyon</title>
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+</head>
+<body>
+  <div id="map" style="width: 100%; height: 500px;"></div>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    var map = L.map('map').setView([18.7961, 98.9793], 13);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    var points = [
+      { lat: 18.7961, lng: 98.9793, name: "หุบเมือง A", type: "Type1" },
+      { lat: 18.7915, lng: 98.9600, name: "หุบเมือง B", type: "Type2" }
+    ];
+
+    points.forEach(function(p) {
+      L.marker([p.lat, p.lng]).addTo(map)
+        .bindPopup(`<strong>${p.name}</strong><br>ประเภท: ${p.type}`);
+    });
+  </script>
+</body>
+</html>
+
+##อันนี้เป็นโค้ด Leaflet.js เพิ่มจุดสวยๆสีน้ำเงินเหมือน OpenAQ
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Urban Street Canyon</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>
+    html, body {height: 100%; margin: 0; padding: 0;}
+    #map {height: 100vh;}
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    // สร้างแผนที่พื้นหลังแบบ OpenStreetMap
+    var map = L.map('map').setView([18.7961, 98.9793], 12);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    // ข้อมูลจุดตัวอย่าง
+    var points = [
+      { name: "เชียงใหม่", lat: 18.7961, lng: 98.9793, value: 100, detail: 'รายละเอียด...' },
+      { name: "บ้านต้น", lat: 18.81,   lng: 98.95,   value: 30,  detail: 'รายละเอียด...' },
+      { name: "สันทราย", lat: 18.85,   lng: 99.05,   value: 60,  detail: 'รายละเอียด...' }
+    ];
+    // วาดวงกลม marker ขนาดต่างกัน
+    points.forEach(function(p) {
+      L.circleMarker([p.lat, p.lng], {
+        radius: Math.sqrt(p.value)*2,
+        color: 'blue',
+        fillOpacity: 0.7,
+      }).addTo(map)
+        .bindPopup(`<b>${p.name}</b><br>ค่าจำแนก: ${p.value}<br>${p.detail}`);
+    });
+  </script>
+</body>
+</html>
+
+
+####อันนี้ดูดีมากใกล้เคียงความจริง
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Urban Street Canyon</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>
+    #map {height: 100vh;}
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    var map = L.map('map').setView([18.7961, 98.9793], 12);
+    // เปลี่ยน tile ลองธีมสวยๆ จาก Carto
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; <a href="https://carto.com/">CARTO</a> | © OpenStreetMap contributors'
+    }).addTo(map);
+
+    var points = [
+      { name: "เชียงใหม่", lat: 18.7961, lng: 98.9793, value: 100, detail: 'รายละเอียด...' },
+      { name: "บ้านต้น", lat: 18.81,   lng: 98.95,   value: 30,  detail: 'รายละเอียด...' },
+      { name: "สันทราย", lat: 18.85,   lng: 99.05,   value: 60,  detail: 'รายละเอียด...' }
+    ];
+    points.forEach(function(p) {
+      L.circleMarker([p.lat, p.lng], {
+        radius: Math.sqrt(p.value)*2,
+        color: 'blue',
+        fillOpacity: 0.7,
+      }).addTo(map)
+        .bindPopup(`<b>${p.name}</b><br>ค่าจำแนก: ${p.value}<br>${p.detail}`);
+    });
+  </script>
+</body>
+</html>
+
+##จุดสีสวยปรับแมพนิดหน่อย
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Urban Street Canyon</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>
+    #map {height: 100vh;}
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    var map = L.map('map').setView([18.7961, 98.9793], 12);
+
+    // ใช้แผนที่ Positron (สีอ่อน อ่านง่าย สะอาดตา)
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; <a href="https://carto.com/">CARTO</a> | © OpenStreetMap contributors'
+    }).addTo(map);
+
+    var points = [
+      { name: "เชียงใหม่", lat: 18.7961, lng: 98.9793, value: 100, detail: 'รายละเอียด...' },
+      { name: "บ้านต้น", lat: 18.81,   lng: 98.95,   value: 30,  detail: 'รายละเอียด...' },
+      { name: "สันทราย", lat: 18.85,   lng: 99.05,   value: 60,  detail: 'รายละเอียด...' }
+    ];
+    points.forEach(function(p) {
+      L.circleMarker([p.lat, p.lng], {
+        radius: Math.sqrt(p.value)*2,
+        color: '#2E86AB',
+        fillColor: '#56CCF2',
+        fillOpacity: 0.8,
+        weight: 2
+      }).addTo(map)
+        .bindPopup(
+          `<b>${p.name}</b><br>ค่าจำแนก: ${p.value}<br>${p.detail}`
+        );
+    });
+  </script>
+</body>
+</html>
+
+##อันนี้จึ้งสุดๆๆๆๆๆ
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Urban Street Canyon</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>
+    #map {height: 100vh;}
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    var map = L.map('map').setView([18.7961, 98.9793], 12);
+
+    // ใช้ Voyager จาก CartoDB (สีเทากลางๆ ดูง่าย)
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; <a href="https://carto.com/">CARTO</a> | © OpenStreetMap contributors'
+    }).addTo(map);
+
+    var points = [
+      { name: "เชียงใหม่", lat: 18.7961, lng: 98.9793, value: 100, detail: 'รายละเอียด...' },
+      { name: "บ้านต้น", lat: 18.81,   lng: 98.95,   value: 30,  detail: 'รายละเอียด...' },
+      { name: "สันทราย", lat: 18.85,   lng: 99.05,   value: 60,  detail: 'รายละเอียด...' }
+    ];
+    points.forEach(function(p) {
+      L.circleMarker([p.lat, p.lng], {
+        radius: Math.sqrt(p.value)*2,
+        color: '#2E86AB',
+        fillColor: '#56CCF2',
+        fillOpacity: 0.8,
+        weight: 2
+      }).addTo(map)
+        .bindPopup(
+          `<b>${p.name}</b><br>ค่าจำแนก: ${p.value}<br>${p.detail}`
+        );
+    });
+  </script>
+</body>
+</html>
+
+##ของAPI
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <title>Thunderforest Transport</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>
+    #map {height: 100vh;}
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    var map = L.map('map').setView([18.7961,98.9793], 12);
+
+    // ใส่ API Key ที่นี่
+    var apikey = 'c3d15e723cff4a12949704ecd2773c00';
+
+    var thunderforest = L.tileLayer(
+      'https://{s}.tile.thunderforest.com/transport/{z}/{x}/{y}{r}.png?apikey=' + apikey, 
+      {
+        attribution: '&copy; <a href="http://www.thunderforest.com/">Thunderforest</a>, &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        maxZoom: 22
+      }
+    );
+    thunderforest.addTo(map);
+  </script>
+</body>
+</html>
+
+##อาจจะจึ้งกว่านี้
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <title>Jawg Sunny Leaflet Map</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>
+    #map {height: 100vh;}
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    // ใส่ access token จริงของคุณแทนข้อความนี้
+    var accessToken = 'EfwRmmNnG9hnPykEYQFkDddhbTcFzqFciAgWpOahX34rF4WbkijZMDRUdda6ZfQQ';
+
+    var map = L.map('map').setView([13.7367, 100.531], 14);
+
+    var Jawg_Sunny = L.tileLayer(
+      'https://tile.jawg.io/jawg-sunny/{z}/{x}/{y}{r}.png?access-token=' + accessToken, 
+      {
+        attribution: '<a href="https://jawg.io" title="Tiles Courtesy of Jawg Maps" target="_blank">&copy; <b>Jawg</b>Maps</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        minZoom: 0,
+        maxZoom: 22
+      }
+    );
+
+    Jawg_Sunny.addTo(map);
+  </script>
+</body>
+</html>
+
+
+
+
+
+##โค้ดทั้งหมดที่ดีทีสุด##
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <title>GeoJSON Map </title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>
+    #map {height: 100vh;}
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    var accessToken = "EfwRmmNnG9hnPykEYQFkDddhbTcFzqFciAgWpOahX34rF4WbkijZMDRUdda6ZfQQ"; // ใส่ Jawg access token ของคุณ!!
+
+    // ตั้ง map
+    var map = L.map('map').setView([18.789371, 98.985258], 15);
+    L.tileLayer(
+      'https://tile.jawg.io/jawg-sunny/{z}/{x}/{y}{r}.png?access-token=' + accessToken,
+      {
+        attribution: '<a href="https://jawg.io" title="Tiles Courtesy of Jawg Maps" target="_blank">&copy; <b>Jawg</b>Maps</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        minZoom: 0,
+        maxZoom: 22
+      }
+    ).addTo(map);
+
+// ตัวช่วย mapping label → สี
+function getColor(label) {
+  switch (label) {
+    case 'non_canyon': return "#98FB98";      // สีแดง
+    case '0_hw_1': return "#87CEEB";  // สีเขียว
+    case '1_hw_2': return "#F0FFFF";     // สีเหลือง
+    case '2_hw_4': return "#FF33FF";
+    case 'hw_4': return "#0000CC";  
+    case 'on_viaduct': return "#CC0000";  
+    case 'under_viaduct': return "#CCFF33";  
+    default: return "#3498db";            // สีฟ้า สำหรับคลาสอื่นๆ
+  }
+}
+
+    // ดึง geojson มาแสดง
+    fetch('class_and_pollution.geojson')
+      .then(response => response.json())
+      .then(geojsonData => {
+        L.geoJSON(geojsonData, {
+          pointToLayer: function(feature, latlng) {
+                let color = getColor(feature.properties.label);
+            return L.circleMarker(latlng, {
+              radius: 2,
+              fillColor: color,
+              color: "#FFFFFF",
+              weight: 0,
+              opacity: 1,
+              fillOpacity: 0.85
+            });
+          },
+          onEachFeature: function(feature, layer) {
+            // สร้าง popup display ฟิลด์หลักๆ (แก้ไขง่ายมาก)
+            let prop = feature.properties;
+            let popup = 
+              `<b>latitude:</b> ${prop.latitude || ''}<br>
+               <b>longitude:</b> ${prop.longitude || ''}<br>
+               <b>label:</b> ${prop.label || ''}<br>
+               <b>conf:</b> ${prop.conf || ''}<br>
+               <b>week1pm25_1:</b> ${prop.week1pm25_1|| ''}<br>
+               <b>week1pm101:</b> ${prop.week1pm101|| ''}`;
+            layer.bindPopup(popup);
+          }
+        }).addTo(map);
+      });
+  </script>
+</body>
+</html>
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>หน้าหลัก</title>
+</head>
+<body>
+  <h1>หน้าหลัก</h1>
+  <a href="SCY.html">จำแนกประเภทของหุบเมือง</a>
+  <br>
+  <a href="AQI.html">ANOVA</a>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <title>จำแนกหุบเมือง</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+  <style>
+    body {
+      font-family: 'Kanit', sans-serif;
+    }
+    h1 {
+      margin: 20px 0 16px 0;
+      font-size: 2rem;
+      font-weight: 700;
+      text-align: center;
+    }
+    #map {
+      height: 80vh;
+      margin-bottom: 24px;
+    }
+    .container-map {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+  </style>
+  <!-- Google Fonts: Kanit for Thai -->
+  <link href="https://fonts.googleapis.com/css?family=Kanit:400,700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Bootstrap Navbar -->
+  <ul class="nav nav-tabs justify-content-center">
+    <li class="nav-item">
+      <a class="nav-link" href="index.html">หน้าหลัก</a>
+    </li>
+    <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">เมนูเพิ่มเติม</a>
+      <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="AQI.html">ANOVA</a></li>
+      </ul>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link active" aria-current="page" href="#">จำแนกหุบเมือง</a>
+    </li>
+  </ul>
+  
+  <div class="container-map">
+    <h1>จำแนกประเภทของหุบเมือง</h1>
+   <div id="map"></div>
+  </div>
+
+  <!-- Bootstrap JS (for dropdown to work) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    var accessToken = "EfwRmmNnG9hnPykEYQFkDddhbTcFzqFciAgWpOahX34rF4WbkijZMDRUdda6ZfQQ"; // ใส่ Jawg access token ของคุณ!!
+
+    // ตั้ง map
+    var map = L.map('map').setView([18.789371, 98.985258], 15);
+    L.tileLayer(
+      'https://tile.jawg.io/jawg-sunny/{z}/{x}/{y}{r}.png?access-token=' + accessToken,
+      {
+        attribution: '<a href="https://jawg.io" title="Tiles Courtesy of Jawg Maps" target="_blank">&copy; <b>Jawg</b>Maps</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        minZoom: 0,
+        maxZoom: 22
+      }
+    ).addTo(map);
+
+    // ตัวช่วย mapping label → สี
+    function getColor(label) {
+      switch (label) {
+        case 'non_canyon': return "#98FB98";
+        case '0_hw_1': return "#87CEEB";
+        case '1_hw_2': return "#F0FFFF";
+        case '2_hw_4': return "#FF33FF";
+        case 'hw_4': return "#0000CC";
+        case 'on_viaduct': return "#CC0000";
+        case 'under_viaduct': return "#CCFF33";
+        default: return "#3498db";
+      }
+    }
+
+    // ดึง geojson มาแสดง
+    fetch('class_and_pollution.geojson')
+      .then(response => response.json())
+      .then(geojsonData => {
+        L.geoJSON(geojsonData, {
+          pointToLayer: function(feature, latlng) {
+            let color = getColor(feature.properties.label);
+            return L.circleMarker(latlng, {
+              radius: 2,
+              fillColor: color,
+              color: "#FFFFFF",
+              weight: 0,
+              opacity: 1,
+              fillOpacity: 0.85
+            });
+          },
+          onEachFeature: function(feature, layer) {
+            let prop = feature.properties;
+            let popup =
+              `<b>latitude:</b> ${prop.latitude || ''}<br>
+               <b>longitude:</b> ${prop.longitude || ''}<br>
+               <b>label:</b> ${prop.label || ''}<br>
+               <b>conf:</b> ${prop.conf || ''}<br>
+               <b>week1pm25_1:</b> ${prop.week1pm25_1 || ''}<br>
+               <b>week1pm101:</b> ${prop.week1pm101 || ''}`;
+            layer.bindPopup(popup);
+          }
+        }).addTo(map);
+      });
+  </script>
+</body>
+</html>
+
+
+#ปก
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>หน้าปก</title>
+    <style>
+        body {
+            background: linear-gradient(120deg, #a1c4fd, #c2e9fb); /* สีพื้นหลัง */
+           display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh; /* เต็มจอ */
+            margin: 0;
+        }
+        h1 {
+            font-family: 'Kanit', sans-serif;
+            font-size: 40px;
+            color: #34495e;
+           margin-bottom: 40px;
+        }
+        .button-group {
+            display: flex;
+            gap: 30px;
+        }
+        .mybtn {
+            padding: 18px 40px;
+            font-size: 22px;
+            border-radius: 10px;
+            border: none;
+            background-color: #45aaf2;
+            color: #fff;
+            cursor: pointer;
+            box-shadow: 2px 2px 8px #86d6f8;
+            transition: background 0.2s;
+        }
+        .mybtn:hover {
+            background-color: #2d98da;
+        }
+    </style>
+    <!-- ฟอนต์ไทยน่ารัก ๆ -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Kanit:400,700&display=swap">
+</head>
+<body>
+    <h1>ระบบแสดงการจำแนกประเภทของหุบเมือง</h1>
+    <div class="button-group">
+        <button class="mybtn" onclick="location.href='SCY.html'">ประเภทหุบเมือง</button>
+        <button class="mybtn" onclick="location.href='AQI.html'">การวิเคราะห์ ANOVA</button>
+    </div>
+</body>
+</html>
+
+
+
+
+
+ล่าสุดดดดดด
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <title>จำแนกหุบเมือง</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      font-family: 'Kanit', sans-serif;
+    }
+    body {
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+    }
+    /* ให้ Navbar ลอยบนแมพ ไม่กินเนื้อที่ map */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      z-index: 1000;
+    }
+    #map {
+      position: absolute;
+      top: 58px; /* ให้แผนที่เต็มจอ ถัดจาก navbar (ความสูง navbar ปกติ ~58px) */
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100vw;
+      height: calc(100vh - 58px);
+      z-index: 1;
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css?family=Kanit:400,700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Navbar Bootstrap -->
+  <ul class="nav nav-tabs justify-content-center">
+    <li class="nav-item">
+      <a class="nav-link" href="index.html">หน้าหลัก</a>
+    </li>
+    <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">เมนูเพิ่มเติม</a>
+      <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="AQI.html">ANOVA</a></li>
+      </ul>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link active" aria-current="page" href="#">จำแนกหุบเมือง</a>
+    </li>
+  </ul>
+  <div id="map"></div>
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    var accessToken = "EfwRmmNnG9hnPykEYQFkDddhbTcFzqFciAgWpOahX34rF4WbkijZMDRUdda6ZfQQ"; // ใส่ Jawg access token ของคุณ!!
+    var map = L.map('map').setView([18.795704, 98.986190], 13);
+    L.tileLayer(
+      'https://tile.jawg.io/jawg-sunny/{z}/{x}/{y}{r}.png?access-token=' + accessToken,
+      {
+        attribution: '<a href="https://jawg.io" title="Tiles Courtesy of Jawg Maps" target="_blank">&copy; <b>Jawg</b>Maps</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        minZoom: 0,
+        maxZoom: 22
+      }
+    ).addTo(map);
+
+    function getColor(label) {
+      switch (label) {
+        case 'non_canyon': return "#98FB98";
+        case '0_hw_1': return "#87CEEB";
+        case '1_hw_2': return "#F0FFFF";
+        case '2_hw_4': return "#FF33FF";
+        case 'hw_4': return "#0000CC";
+        case 'on_viaduct': return "#CC0000";
+        case 'under_viaduct': return "#CCFF33";
+        default: return "#3498db";
+      }
+    }
+    fetch('class_and_pollution.geojson')
+      .then(response => response.json())
+      .then(geojsonData => {
+        L.geoJSON(geojsonData, {
+          pointToLayer: function(feature, latlng) {
+            let color = getColor(feature.properties.label);
+            return L.circleMarker(latlng, {
+              radius: 2,
+              fillColor: color,
+              color: "#FFFFFF",
+              weight: 0,
+              opacity: 1,
+              fillOpacity: 0.85
+            });
+          },
+          onEachFeature: function(feature, layer) {
+            let prop = feature.properties;
+            let popup =
+              `<b>latitude:</b> ${prop.latitude || ''}<br>
+               <b>longitude:</b> ${prop.longitude || ''}<br>
+               <b>label:</b> ${prop.label || ''}<br>
+               <b>conf:</b> ${prop.conf || ''}<br>
+               <b>week1pm25_1:</b> ${prop.week1pm25_1 || ''}<br>
+               <b>week1pm101:</b> ${prop.week1pm101 || ''}`;
+            layer.bindPopup(popup);
+          }
+        }).addTo(map);
+      });
+  </script>
+</body>
+</html>
+
+
+
+"EfwRmmNnG9hnPykEYQFkDddhbTcFzqFciAgWpOahX34rF4WbkijZMDRUdda6ZfQQ"
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <title>จำแนกหุบเมือง</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      font-family: 'Kanit', sans-serif;
+    }
+    body {
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+    }
+    /* ให้ Navbar ลอยบนแมพ ไม่กินเนื้อที่ map */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      z-index: 1000;
+    }
+    #map {
+      position: absolute;
+      top: 58px; /* ให้แผนที่เต็มจอ ถัดจาก navbar (ความสูง navbar ปกติ ~58px) */
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100vw;
+      height: calc(100vh - 58px);
+      z-index: 1;
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css?family=Kanit:400,700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Navbar Bootstrap -->
+  <ul class="nav nav-tabs justify-content-center">
+    <li class="nav-item">
+      <a class="nav-link" href="index.html">หน้าหลัก</a>
+    </li>
+    <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">เมนูเพิ่มเติม</a>
+      <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="AQI.html">ANOVA</a></li>
+      </ul>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link active" aria-current="page" href="#">จำแนกหุบเมือง</a>
+    </li>
+  </ul>
+  <div id="map"></div>
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    var accessToken = "EfwRmmNnG9hnPykEYQFkDddhbTcFzqFciAgWpOahXxxxxxxxxx"; // ใส่ Jawg access token ของคุณ!!
+    var map = L.map('map').setView([18.795704, 98.986190], 13);
+    L.tileLayer(
+      'https://tile.jawg.io/jawg-sunny/{z}/{x}/{y}{r}.png?access-token=' + accessToken,
+      {
+        attribution: '<a href="https://jawg.io" title="Tiles Courtesy of Jawg Maps" target="_blank">&copy; <b>Jawg</b>Maps</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        minZoom: 0,
+        maxZoom: 22
+      }
+    ).addTo(map);
+
+    function getColor(label) {
+      switch (label) {
+        case 'non_canyon': return "#98FB98";
+        case '0_hw_1': return "#87CEEB";
+        case '1_hw_2': return "#F0FFFF";
+        case '2_hw_4': return "#FF33FF";
+        case 'hw_4': return "#0000CC";
+        case 'on_viaduct': return "#CC0000";
+        case 'under_viaduct': return "#CCFF33";
+        default: return "#3498db";
+      }
+    }
+    fetch('class_and_pollution.geojson')
+      .then(response => response.json())
+      .then(geojsonData => {
+        L.geoJSON(geojsonData, {
+          pointToLayer: function(feature, latlng) {
+            let color = getColor(feature.properties.label);
+            return L.circleMarker(latlng, {
+              radius: 2,
+              fillColor: color,
+              color: "#FFFFFF",
+              weight: 0,
+              opacity: 1,
+              fillOpacity: 0.85
+            });
+          },
+          onEachFeature: function(feature, layer) {
+            let prop = feature.properties;
+            let popup =
+              `<b>latitude:</b> ${prop.latitude || ''}<br>
+               <b>longitude:</b> ${prop.longitude || ''}<br>
+               <b>label:</b> ${prop.label || ''}<br>
+               <b>conf:</b> ${prop.conf || ''}<br>
+               <b>week1pm25_1:</b> ${prop.week1pm25_1 || ''}<br>
+               <b>week1pm101:</b> ${prop.week1pm101 || ''}`;
+            layer.bindPopup(popup);
+          }
+        }).addTo(map);
+      });
+  </script>
+</body>
+</html>
+
+
+
+
+#########ล่าสุด=ดีที่สุดดดดดดดดดดด######
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <title>จำแนกหุบเมือง</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css?family=Kanit:400,700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Navbar Bootstrap -->
+  <ul class="nav nav-tabs justify-content-center">
+    <li class="nav-item">
+      <a class="nav-link" href="index.html">หน้าหลัก</a>
+    </li>
+    <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">เมนูเพิ่มเติม</a>
+      <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="AQI.html">ANOVA</a></li>
+      </ul>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link active" aria-current="page" href="#">จำแนกหุบเมือง</a>
+    </li>
+  </ul>
+  <div id="map"></div>
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    var accessToken = "EfwRmmNnG9hnPykEYQFkDddhbTcFzqFciAgWpOahX34rF4WbkijZMDRUdda6ZfQQ"; // ใส่ Jawg access token ของคุณ!!
+    var map = L.map('map').setView([18.795704, 98.986190], 13);
+    L.tileLayer(
+      'https://tile.jawg.io/jawg-sunny/{z}/{x}/{y}{r}.png?access-token=' + accessToken,
+      {
+        attribution: '<a href="https://jawg.io" title="Tiles Courtesy of Jawg Maps" target="_blank">&copy; <b>Jawg</b>Maps</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        minZoom: 0,
+        maxZoom: 22
+      }
+    ).addTo(map);
+
+    function getColor(label) {
+      switch (label) {
+        case 'non_canyon': return "#98FB98";
+        case '0_hw_1': return "#87CEEB";
+        case '1_hw_2': return "#F0FFFF";
+        case '2_hw_4': return "#FF33FF";
+        case 'hw_4': return "#0000CC";
+        case 'on_viaduct': return "#CC0000";
+        case 'under_viaduct': return "#CCFF33";
+        default: return "#3498db";
+      }
+    }
+    fetch('class_and_pollution.geojson')
+      .then(response => response.json())
+      .then(geojsonData => {
+        L.geoJSON(geojsonData, {
+          pointToLayer: function(feature, latlng) {
+            let color = getColor(feature.properties.label);
+            return L.circleMarker(latlng, {
+              radius: 2,
+              fillColor: color,
+              color: "#FFFFFF",
+              weight: 0,
+              opacity: 1,
+              fillOpacity: 0.85
+            });
+          },
+          onEachFeature: function(feature, layer) {
+          let p = feature.properties;
+          let popupContent = `
+            <div style="min-width:220px;max-width:310px;">
+              <div style="background:#1976d2;color:#fff;padding:9px 16px;border-radius:8px 8px 0 0;font-size:1.1em;">
+                <b>จุด Latitude: ${p.latitude || '-'}</b>
+              </div>
+              <div style="background:#fff;padding:13px 16px;border-radius:0 0 8px 8px;box-shadow:0 2px 7px #e5e7ef;">
+                <div><b>Latitude:</b> ${p.latitude || '-'}</div>
+                <div><b>Longitude:</b> ${p.longitude || '-'}</div>
+                <div><b>Label:</b> ${p.label || '-'}</div>
+                <div><b>Conf:</b> ${p.conf || '-'}</div>
+                <hr>
+                <div><b>PM2.5 w1:</b> ${p.week1pm25_1 || '-'}</div>
+                <div><b>PM10 w1:</b> ${p.week1pm101 || '-'}</div>
+                <button style="margin-top:10px;width:100%;background:#22b28a;color:#fff;border:none;border-radius:6px;padding:7px 0;cursor:pointer;">Show Details</button>
+              </div>
+            </div>
+          `;
+          layer.bindPopup(popupContent, { maxWidth: 340 });
+        }
+        }).addTo(map);
+      });
+  </script>
+</body>
+</html>
+
+
+
+
+####ส่าสุดดดดด
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <title>ประเภทหุบเมือง</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css?family=Kanit:400,700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Navbar Bootstrap -->
+  <ul class="nav nav-tabs justify-content-center">
+    <li class="nav-item">
+      <a class="nav-link" href="index.html">หน้าหลัก</a>
+    </li>
+    <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">เมนูเพิ่มเติม</a>
+      <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="AQI.html">ANOVA</a></li>
+      </ul>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link active" aria-current="page" href="#">ประเภทหุบเมือง</a>
+    </li>
+  </ul>
+  <div id="map"></div>
+
+  <div id="side-panel" style="position: fixed; top: 58px; right: 0; width: 330px; max-width: 95vw; height: calc(100vh - 58px); background: #fff; box-shadow: -2px 0 12px #d8d8d8; z-index: 2000; padding: 28px 20px 16px 20px; overflow-y: auto; display: none;">
+            <button onclick="closePanel()" style="position:absolute;top:10px;right:10px;background:#1976d2; color:#fff;border:none;width:32px;height:32px;border-radius:20px;font-weight:bold;font-size:1.4em;line-height:0.8;">&times;</button>
+            <div id="panel-content"></div>
+        </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+        function showPanel(html) {
+      document.getElementById('panel-content').innerHTML = html;
+      document.getElementById('side-panel').style.display = 'block';
+    }
+    function closePanel() {
+      document.getElementById('side-panel').style.display = 'none';
+    }
+    // สร้าง mapping label → สี ใช้ร่วมกับในจุด
+    function getColor(label) {
+        switch (label) {
+        case 'non_canyon':     return "#98FB98";
+        case '0_hw_1':         return "#87CEFA";
+        case '1_hw_2':         return "#B0C4DE";
+        case '2_hw_4':         return "#FF33FF";
+        case 'hw_4':           return "#0000CC";
+        case 'on_viaduct':     return "#CC0000";
+        case 'under_viaduct':  return "#CCFF33";
+        default:               return "#3498db";
+        }
+        }
+    var accessToken = "EfwRmmNnG9hnPykEYQFkDddhbTcFzqFciAgWpOahX34rF4WbkijZMDRUdda6ZfQQ"; // ใส่ Jawg access token ของคุณ!!
+    var map = L.map('map').setView([18.795704, 98.986190], 13);
+    L.tileLayer(
+      'https://tile.jawg.io/jawg-sunny/{z}/{x}/{y}{r}.png?access-token=' + accessToken,
+      {
+        attribution: '<a href="https://jawg.io" title="Tiles Courtesy of Jawg Maps" target="_blank">&copy; <b>Jawg</b>Maps</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        minZoom: 0,
+        maxZoom: 22
+      }
+    ).addTo(map);
+    var legend = L.control({ position: 'bottomleft' }); // หรือเปลี่ยนเป็น 'bottomright'
+
+legend.onAdd = function (map) {
+  let div = L.DomUtil.create('div', 'info legend');
+  let labels = [
+    { label: 'non_canyon',    text: 'Non Canyon' },
+    { label: '0_hw_1',        text: '0 < HW < 1' },
+    { label: '1_hw_2',        text: '1 < HW < 2' },
+    { label: '2_hw_4',        text: '2 < HW < 4' },
+    { label: 'hw_4',          text: 'HW > 4' },
+    { label: 'on_viaduct',    text: 'On Viaduct' },
+    { label: 'under_viaduct', text: 'Under Viaduct' }
+  ];
+
+  div.innerHTML += '<b>Legend</b><br>';
+  labels.forEach(l => {
+    div.innerHTML +=
+      `<i style="display:inline-block;width:18px;height:18px;background:${getColor(l.label)};margin-right:7px;border-radius:5px;border:1px solid #ccc;"></i> ${l.text}<br>`;
+  });
+  return div;
+};
+legend.addTo(map);
+    function getColor(label) {
+      switch (label) {
+        case 'non_canyon': return "#98FB98";
+        case '0_hw_1': return "#87CEFA";
+        case '1_hw_2': return "#B0C4DE";
+        case '2_hw_4': return "#FF33FF";
+        case 'hw_4': return "#0000CC";
+        case 'on_viaduct': return "#CC0000";
+        case 'under_viaduct': return "#CCFF33";
+        default: return "#3498db";
+      }
+    }
+    fetch('class_and_pollution_new.geojson')
+      .then(response => response.json())
+      .then(geojsonData => {
+        L.geoJSON(geojsonData, {
+          pointToLayer: function(feature, latlng) {
+            let color = getColor(feature.properties.label);
+            return L.circleMarker(latlng, {
+              radius: 2,
+              fillColor: color,
+              color: "#FFFFFF",
+              weight: 0,
+              opacity: 1,
+              fillOpacity: 0.85
+            });
+          },
+          onEachFeature: function(feature, layer) {
+          let p = feature.properties;
+          let popupContent = `
+            <div style="min-width:220px;max-width:310px;">
+              <div style="background:#1976d2;color:#fff;padding:9px 16px;border-radius:8px 8px 0 0;font-size:1.1em;">
+                <b>รายละเอียด</b>
+              </div>
+              <div style="background:#fff;padding:13px 16px;border-radius:0 0 8px 8px;box-shadow:0 2px 7px #e5e7ef;">
+                <div><b>Latitude :</b> ${p.latitude || '-'}</div>
+                <div><b>Longitude :</b> ${p.longitude || '-'}</div>
+                <div><b>Label :</b> ${p.label || '-'}</div>
+                <div><b>Conf :</b> ${p.conf || '-'}</div>
+                <hr>
+                <div><b>PM2.5-Week1 µg/m³ :</b> ${p.PM25_Week1 || '-'}</div>
+                <div><b>PM10-Week1 µg/m³ :</b> ${p.PM10_Week1 || '-'}</div>
+                <button style="margin-top:10px;width:100%;background:#22b28a;color:#fff;border:none;border-radius:6px;padding:7px 0;cursor:pointer;">Show More</button>
+              </div>
+            </div>
+          `;
+          layer.on('click', function(e) {
+            showPanel(popupContent);
+          });
+        }
+        }).addTo(map);
+      });
+  </script>
+</body>
+</html>
+
+
+
+ดีที่สุดดดดดดดดดดด######
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <title>จำแนกหุบเมือง</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css?family=Kanit:400,700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Navbar Bootstrap -->
+  <ul class="nav nav-tabs justify-content-center">
+    <li class="nav-item">
+      <a class="nav-link" href="index.html">หน้าหลัก</a>
+    </li>
+    <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">เมนูเพิ่มเติม</a>
+      <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="AQI.html">ANOVA</a></li>
+      </ul>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link active" aria-current="page" href="#">ประเภทหุบเมือง</a>
+    </li>
+  </ul>
+  <div id="map"></div>
+
+  <div id="side-panel" style="position: fixed; top: 58px; right: 0; width: 330px; max-width: 95vw; height: calc(100vh - 58px); background: #fff; box-shadow: -2px 0 12px #d8d8d8; z-index: 2000; padding: 28px 20px 16px 20px; overflow-y: auto; display: none;">
+            <button onclick="closePanel()" style="position:absolute;top:10px;right:10px;background:#1976d2; color:#fff;border:none;width:32px;height:32px;border-radius:20px;font-weight:bold;font-size:1.4em;line-height:0.8;">&times;</button>
+            <div id="panel-content"></div>
+        </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+        function showPanel(html) {
+      document.getElementById('panel-content').innerHTML = html;
+      document.getElementById('side-panel').style.display = 'block';
+    }
+    function closePanel() {
+      document.getElementById('side-panel').style.display = 'none';
+    }
+    // สร้าง mapping label → สี ใช้ร่วมกับในจุด
+    function getColor(label) {
+        switch (label) {
+        case 'non_canyon':     return "#98FB98";
+        case '0_hw_1':         return "#87CEFA";
+        case '1_hw_2':         return "#B0C4DE";
+        case '2_hw_4':         return "#FF33FF";
+        case 'hw_4':           return "#0000CC";
+        case 'on_viaduct':     return "#CC0000";
+        case 'under_viaduct':  return "#CCFF33";
+        default:               return "#3498db";
+        }
+        }
+    var accessToken = "EfwRmmNnG9hnPykEYQFkDddhbTcFzqFciAgWpOahX34rF4WbkijZMDRUdda6ZfQQ"; // ใส่ Jawg access token ของคุณ!!
+    var map = L.map('map').setView([18.795704, 98.986190], 13);
+    L.tileLayer(
+      'https://tile.jawg.io/jawg-sunny/{z}/{x}/{y}{r}.png?access-token=' + accessToken,
+      {
+        attribution: '<a href="https://jawg.io" title="Tiles Courtesy of Jawg Maps" target="_blank">&copy; <b>Jawg</b>Maps</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        minZoom: 0,
+        maxZoom: 22
+      }
+    ).addTo(map);
+    var legend = L.control({ position: 'bottomleft' }); // หรือเปลี่ยนเป็น 'bottomright'
+
+legend.onAdd = function (map) {
+  let div = L.DomUtil.create('div', 'info legend');
+  let labels = [
+    { label: 'non_canyon',    text: 'Non Canyon' },
+    { label: '0_hw_1',        text: '0 < HW < 1' },
+    { label: '1_hw_2',        text: '1 < HW < 2' },
+    { label: '2_hw_4',        text: '2 < HW < 4' },
+    { label: 'hw_4',          text: 'HW > 4' },
+    { label: 'on_viaduct',    text: 'On Viaduct' },
+    { label: 'under_viaduct', text: 'Under Viaduct' }
+  ];
+
+  div.innerHTML += '<b>Legend</b><br>';
+  labels.forEach(l => {
+    div.innerHTML +=
+      `<i style="display:inline-block;width:18px;height:18px;background:${getColor(l.label)};margin-right:7px;border-radius:5px;border:1px solid #ccc;"></i> ${l.text}<br>`;
+  });
+  return div;
+};
+legend.addTo(map);
+    function getColor(label) {
+      switch (label) {
+        case 'non_canyon': return "#98FB98";
+        case '0_hw_1': return "#87CEFA";
+        case '1_hw_2': return "#B0C4DE";
+        case '2_hw_4': return "#FF33FF";
+        case 'hw_4': return "#0000CC";
+        case 'on_viaduct': return "#CC0000";
+        case 'under_viaduct': return "#CCFF33";
+        default: return "#3498db";
+      }
+    }
+    fetch('class_and_pollution_new.geojson')
+      .then(response => response.json())
+      .then(geojsonData => {
+        L.geoJSON(geojsonData, {
+          pointToLayer: function(feature, latlng) {
+            let color = getColor(feature.properties.label);
+            return L.circleMarker(latlng, {
+              radius: 2,
+              fillColor: color,
+              color: "#FFFFFF",
+              weight: 0,
+              opacity: 1,
+              fillOpacity: 0.85
+            });
+          },
+          onEachFeature: function(feature, layer) {
+          let p = feature.properties;
+        
+          // สร้าง HTML panel แบบเดิม เพิ่มปุ่ม Show Chart
+          let panelContent = `
+            <div style="min-width:220px;max-width:330px;">
+              <div style="background:#1976d2;color:#fff;padding:9px 16px;border-radius:8px 8px 0 0;font-size:1.1em;">
+                <b>รายละเอียด</b>
+              </div>
+              <div style="background:#fff;padding:13px 16px;border-radius:0 0 8px 8px;box-shadow:0 2px 7px #e5e7ef;">
+                <div><b>Latitude:</b> ${p.latitude || '-'}</div>
+                <div><b>Longitude:</b> ${p.longitude || '-'}</div>
+                <div><b>Label:</b> ${p.label || '-'}</div>
+                <div><b>Conf:</b> ${p.conf || '-'}</div>
+                <hr>
+                <button id="showChartBtn" style="margin-top:12px;width:100%;background:#22b28a;color:#fff;border:none;border-radius:6px;padding:9px 0;cursor:pointer;">Show Chart</button>
+                <div id="chart-area" style="margin-top:15px"></div>
+              </div>
+            </div>
+          `;
+        
+          layer.on('click', function(e) {
+            showPanel(panelContent);
+        
+            setTimeout(function() {
+              let chartBtn = document.getElementById('showChartBtn');
+              let chartArea = document.getElementById('chart-area');
+              let chartInstance = null;
+              let shown = false;
+              if(chartBtn) {
+                chartBtn.onclick = function() {
+                  if(!shown) {
+                    // เตรียมข้อมูล
+                    let weeks = [];
+                    let pm25 = [];
+                    let pm10 = [];
+                    for(let w=1; w<=22; w++) {
+                      weeks.push('W'+w);
+                      pm25.push(Number(p['PM25_Week'+w]) || null);
+                      pm10.push(Number(p['PM10_Week'+w]) || null);
+                    }
+                    chartArea.innerHTML = `<canvas id="chartPm"></canvas>`;
+                    let ctx = document.getElementById('chartPm').getContext('2d');
+                    chartInstance = new Chart(ctx, {
+                      type: 'line',
+                      data: {
+                        labels: weeks,
+                        datasets: [
+                          {
+                            label: "PM2.5",
+                            data: pm25,
+                            borderColor: '#1976d2',
+                            backgroundColor: 'rgba(25,118,210,0.1)',
+                            fill: false,
+                            tension: 0.2,
+                            pointRadius: 3,
+                          },
+                          {
+                            label: "PM10",
+                            data: pm10,
+                            borderColor: '#f39c12',
+                            backgroundColor: 'rgba(243,156,18,0.1)',
+                            fill: false,
+                            tension: 0.2,
+                            pointRadius: 3,
+                          }
+                        ]
+                      },
+                      options: {
+                        plugins: {
+                          legend: { display: true }
+                        },
+                        scales: {
+                          y: { title: { display: true, text: 'ค่าฝุ่น (µg/m³)' } },
+                          x: { title: { display: true, text: 'สัปดาห์' } }
+                        }
+                      }
+                    });
+                    chartBtn.textContent = "Hide Chart";
+                    shown = true;
+                  } else {
+                    // ซ่อน chart (& destroy instance)
+                    chartArea.innerHTML = "";
+                    chartBtn.textContent = "Show Chart";
+                    shown = false;
+                  }
+                };
+              }
+            }, 100);
+          });
+        
+        }
+        }).addTo(map);
+      });
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>การวิเคราะห์ANOVA</title>
+</head>
+<body>
+  <h1>การวิเคราะห์ANOVA</h1>
+  <a href="index.html">กลับหน้าปก</a>
+  <br>
+  <a href="SCY.html">จำแนกประเภทหุบเมือง</a>
+</body>
+</html>
+
+
+##tukey
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tukey HSD Results</title>
+
+  <!-- Bootstrap + DataTables -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+
+  <style>
+    body {
+      margin: 20px;
+      background: #f9f9f9;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .significant {
+      background-color: #ffdddd;
+      font-weight: bold;
+    }
+    .not-significant {
+      background-color: #ddffdd;
+    }
+  </style>
+</head>
+<body>
+  <h1>Tukey HSD Pairwise Comparison</h1>
+
+  <div class="table-responsive">
+    <table id="tukeyTable" class="table table-striped table-bordered">
+      <thead class="thead-dark">
+        <tr>
+          <th>Group 1</th>
+          <th>Group 2</th>
+          <th>Mean Diff</th>
+          <th>p-adj</th>
+          <th>Lower</th>
+          <th>Upper</th>
+          <th>Reject</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- ตัวอย่างผล Tukey -->
+        <tr class="significant">
+          <td>A</td>
+          <td>B</td>
+          <td>-3.25</td>
+          <td>0.001</td>
+          <td>-4.50</td>
+          <td>-2.00</td>
+          <td>True</td>
+        </tr>
+        <tr class="not-significant">
+          <td>A</td>
+          <td>C</td>
+          <td>-0.80</td>
+          <td>0.650</td>
+          <td>-2.05</td>
+          <td>0.45</td>
+          <td>False</td>
+        </tr>
+        <tr class="significant">
+          <td>B</td>
+          <td>C</td>
+          <td>2.45</td>
+          <td>0.030</td>
+          <td>0.90</td>
+          <td>4.00</td>
+          <td>True</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    $(document).ready(function () {
+      $('#tukeyTable').DataTable({
+        paging: true,
+        searching: true,
+        ordering: true,
+        pageLength: 5
+      });
+    });
+  </script>
+</body>
+</html>
+
+
+
+
+##ANOVA ทีละสัปดาห์
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>AQI Statistical Dashboard</title>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js"></script>
+<style>
+    body { padding: 2rem; }
+    .sidebar { max-width:180px; min-width:160px; background: #f4f4f4; height:100%; padding:1rem;}
+    #plotlyBox { min-width: 300px; min-height: 400px;}
+    .main-content {margin-left: 200px;}
+    .active { font-weight: bold; background: #e0e0e0;}
+    ul {padding-left: 0;}
+    li {list-style: none; margin-bottom: 0.5rem;}
+</style>
+</head>
+<body>
+<div style="display:flex; flex-direction:row;">
+    <nav class="sidebar">
+        <h5>เลือกมลพิษ</h5>
+        <div id="pollutantSelect"></div>
+        <hr>
+        <h5>เลือกสัปดาห์</h5>
+        <ul id="weekMenu"></ul>
+    </nav>
+    <div class="main-content" style="flex:1;">
+        <h2 id="week-title">ผลสถิติ</h2>
+        <div>
+            <h5>ANOVA Table</h5>
+            <div id="anova-table"></div>
+        </div>
+        <div>
+            <h5>Tukey HSD</h5>
+            <div id="tukey-table"></div>
+        </div>
+        <div>
+            <h5>Box Plot</h5>
+            <div id="plotlyBox"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+const POLLUTANTS = [
+    {code: "PM2.5", anova: "data/ANOVA_PM2.5.json", tukey: "data/tukey_results_pm25.json", raw: "data/pm25_byweek.csv"},
+    {code: "PM10", anova: "data/ANOVA_PM10.json", tukey: "data/tukey_results_pm10.json", raw: "data/pm10_byweek.csv"}
+];
+
+let allWeeks = [];
+let currentPollutant = POLLUTANTS[0].code;
+let currentWeek = "";
+let anovaJson = [];
+let tukeyJson = [];
+let rawData = [];
+
+function renderPollutantSelector() {
+    const div = document.getElementById('pollutantSelect');
+    div.innerHTML = '';
+    POLLUTANTS.forEach(pol => {
+        const label = document.createElement('label');
+        label.style.marginRight = '1em';
+        const radio = document.createElement('input');
+        radio.type = 'radio';
+        radio.name = 'pollutant';
+        radio.value = pol.code;
+        radio.checked = (pol.code === currentPollutant);
+        radio.onclick = () => { currentPollutant = pol.code; loadAllData(); };
+        label.appendChild(radio);
+        label.appendChild(document.createTextNode(' ' + pol.code));
+        div.appendChild(label);
+    });
+}
+
+function renderWeekMenu() {
+    const menu = document.getElementById('weekMenu');
+    menu.innerHTML = '';
+    allWeeks.forEach(wk => {
+        const li = document.createElement('li');
+        const btn = document.createElement('button');
+        btn.textContent = `Week ${wk}`;
+        btn.className = 'btn btn-link btn-block text-left';
+        btn.id = `btn-week-${currentPollutant}-${wk}`;
+        btn.onclick = () => selectWeek(wk);
+        li.appendChild(btn);
+        menu.appendChild(li);
+    });
+}
+
+function selectWeek(week) {
+    currentWeek = week;
+    allWeeks.forEach(wk => {
+        const btn = document.getElementById(`btn-week-${currentPollutant}-${wk}`);
+        if(btn) btn.classList.toggle('active', wk==week);
+    });
+    document.getElementById('week-title').textContent = `ผลสถิติ ${currentPollutant} สัปดาห์ที่ ${week}`;
+
+    // ANOVA table
+    const anovaData = anovaJson.filter(d => d.week.replace("week","") === String(week));
+    document.getElementById('anova-table').innerHTML = makeTable(anovaData);
+
+    // Tukey table
+    const tukeyData = tukeyJson.filter(d => d.week.replace("week","") === String(week))
+                               .map(d => ({Group1: d.group1, Group2: d.group2, "p-adj": d["p-adj"]}));
+    document.getElementById('tukey-table').innerHTML = makeTable(tukeyData);
+
+    // Box plot
+    const weekData = rawData.filter(row => String(row.Week) === String(week));
+    drawBoxPlot(weekData, week, currentPollutant);
+}
+
+function makeTable(arr) {
+    if(!arr || arr.length==0) return 'No data';
+    const cols = Object.keys(arr[0]);
+    let html = '<table class="table table-bordered table-sm"><thead><tr>';
+    cols.forEach(c => html += `<th>${c}</th>`);
+    html += '</tr></thead><tbody>';
+    arr.forEach(row => {
+        html += '<tr>';
+        cols.forEach(c => html += `<td>${row[c]}</td>`);
+        html += '</tr>';
+    });
+    html += '</tbody></table>';
+    return html;
+}
+
+function drawBoxPlot(weekData, week, pol) {
+    if(!weekData || weekData.length===0){
+        document.getElementById('plotlyBox').innerHTML = "No data";
+        return;
+    }
+    const groups = [...new Set(weekData.map(r=>r.Label))];
+    const plotData = groups.map(g => ({
+        y: weekData.filter(r=>r.Label==g).map(r=>r.Value),
+        name: g,
+        type: 'box'
+    }));
+    const layout = {
+        boxmode: 'group',
+        title: `Box Plot - ${pol} - Week ${week}`,
+        yaxis: {title: "ค่ามลพิษทางอากาศ"}
+    };
+    Plotly.newPlot('plotlyBox', plotData, layout, {responsive:true});
+}
+
+function loadAllData() {
+    const pol = POLLUTANTS.find(p => p.code===currentPollutant);
+    Promise.all([
+        fetch(pol.anova).then(r=>r.json()),
+        fetch(pol.tukey).then(r=>r.json()),
+        fetch(pol.raw).then(r=>r.text().catch(()=>'')) 
+    ]).then(([anova, tukey, rawCsv])=>{
+        anovaJson = anova;
+        tukeyJson = tukey;
+
+        // ดึงสัปดาห์จาก JSON Array
+        allWeeks = [...new Set(anovaJson.map(d=>d.week.replace("week","")))];
+        allWeeks.sort((a,b)=>Number(a)-Number(b));
+
+        if(rawCsv){
+            Papa.parse(rawCsv, {header:true, dynamicTyping:true, complete:(res)=>{
+                rawData = res.data;
+                renderWeekMenu();
+                selectWeek(allWeeks[0]);
+            }});
+        } else {
+            rawData = [];
+            renderWeekMenu();
+            selectWeek(allWeeks[0]);
+        }
+    }).catch(err=>{
+        console.error("Error loading data:", err);
+    });
+}
+
+renderPollutantSelector();
+loadAllData();
+</script>
+</body>
+</html>
+
+
+##ดีสัส tukey
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tukey HSD Results Viewer</title>
+
+  <!-- Bootstrap + DataTables -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+  <style>
+    body {
+      margin: 20px;
+      background: #f9f9f9;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    table.dataTable tbody tr {
+      background-color: #ffffff; /* ทุกแถวสีขาว */
+    }
+    table.dataTable thead {
+      background-color: #4c4949; /* หัวตารางสีดำ */
+      color: #ffffff;
+    }
+  </style>
+</head>
+<body>
+  <h1>Tukey HSD Pairwise Comparison</h1>
+
+  <div class="mb-3">
+    <label for="pollutantFilter" class="form-label">เลือกมลพิษ:</label>
+    <select id="pollutantFilter" class="form-control w-25">
+      <option value="pm25">PM2.5</option>
+      <option value="pm10">PM10</option>
+    </select>
+  </div>
+
+  <div class="table-responsive">
+    <table id="tukeyTable" class="table table-striped table-bordered">
+      <thead>
+        <tr>
+          <th>Week</th>
+          <th>Pollutant</th>
+          <th>Group 1</th>
+          <th>Group 2</th>
+          <th>Mean Diff</th>
+          <th>p-value</th>
+          <th>Lower</th>
+          <th>Upper</th>
+          <th>Reject</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <script>
+    let tukey_pm25 = [];
+    let tukey_pm10 = [];
+
+    async function loadData() {
+      try {
+        const res_pm25 = await fetch('tukey_results_pm25.json');
+        tukey_pm25 = await res_pm25.json();
+
+        const res_pm10 = await fetch('tukey_results_pm10.json');
+        tukey_pm10 = await res_pm10.json();
+
+        renderTable(tukey_pm25);
+      } catch (error) {
+        console.error("Error loading JSON:", error);
+        alert("ไม่สามารถโหลดไฟล์ JSON ได้ ตรวจสอบว่าไฟล์อยู่ในโฟลเดอร์เดียวกับ HTML และเปิดผ่าน local server");
+      }
+    }
+
+    function renderTable(data) {
+      if ($.fn.DataTable.isDataTable('#tukeyTable')) {
+        $('#tukeyTable').DataTable().clear().rows.add(data).draw();
+      } else {
+        $('#tukeyTable').DataTable({
+          data: data,
+          pageLength: 20,
+          columns: [
+            { data: 'week' },
+            { data: 'pollutant' },
+            { data: 'group1' },
+            { data: 'group2' },
+            { data: 'meandiff', render: d => Number(d).toFixed(4) },
+            { 
+              data: 'p_value',
+              render: d => Number(d).toFixed(4)
+            },
+            { data: 'lower', render: d => Number(d).toFixed(4) },
+            { data: 'upper', render: d => Number(d).toFixed(4) },
+            { data: 'reject', render: d => d ? "TRUE" : "FALSE" }
+          ]
+        });
+      }
+    }
+
+    $('#pollutantFilter').on('change', function() {
+      const selected = this.value;
+      renderTable(selected === 'pm25' ? tukey_pm25 : tukey_pm10);
+    });
+
+    loadData();
+  </script>
+</body>
+</html>
+

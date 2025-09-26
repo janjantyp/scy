@@ -1,0 +1,30 @@
+GET http://localhost:3000/api/points
+
+###
+GET http://localhost:3000/api/points/1
+
+### post image
+POST http://localhost:3000/api/points
+Content-Type: multipart/form-data
+
+{
+  "name": "New Point",
+  "description": "This is a new point",
+  "image": "@/path/to/your/image.jpg"
+}
+
+###
+GET http://localhost:5100/
+
+https://maps.googleapis.com/maps/api/streetview?size=640x640&location=13.72053521,100.5320432&heading=62.362380967165336&pitch=0&key=AIzaSyAIry0CIsrbZz25K13Hx7k0RADrQKgsml4
+
+### post image url
+### Predict from Street View
+POST http://localhost:5100/predict_url
+Content-Type: application/json
+
+{
+  "url": "https://maps.googleapis.com/maps/api/streetview?size=640x640&location=13.72053521,100.5320432&heading=62.362380967165336&pitch=0&key=AIzaSyAIry0CIsrbZz25K13Hx7k0RADrQKgsml4"
+}
+
+

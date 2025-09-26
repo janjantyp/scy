@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Tukey P-Value Matrix</title>
+
+    <link rel="stylesheet" href="navbarconf.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;700&display=swap">
+
+    <style>
+        body {
+            margin: 0;
+            padding-top: 5rem;
+            font-family: 'Kanit', sans-serif;
+        }
+
+        .main-content {
+            padding: 20px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        #controls {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        #chart-container {
+            width: 100%;
+            height: 600px;
+            margin: auto;
+        }
+
+        /* โค้ด navbar.css ของคุณ */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 2rem;
+            background-color: #FFFFFF;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            max-width: 1200px;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 6000;
+            font-family: 'Kanit', sans-serif;
+        }
+
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333333;
+        }
+
+        .navbar-links {
+            list-style: none;
+            display: flex;
+            margin: 0 auto;
+            padding: 0;
+        }
+
+        .navbar-links li {
+            margin: 0 1rem;
+        }
+
+        .navbar-links a {
+            text-decoration: none;
+            color: #555555;
+            font-size: 1rem;
+            transition: color 0.3s ease;
+        }
+
+        .navbar-links a:hover {
+            color: #007BFF;
+        }
+
+        .navbar-contact {
+            margin-left: auto;
+        }
+
+        .contact-button {
+            background-color: #007BFF;
+            color: #FFFFFF;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .contact-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="main-content">
+        <div id="chart-container"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+    <script>
+        const chart = echarts.init(document.getElementById('chart-container'));
+
+        const DATA_FILE = 'pm10_byweek_clean.json';
+
+        // Map the original names to the new names you want to display.
+        const nameMap = {
+            'non_canyon': 'Non canyon',
+            'on_viaduct': 'On viaduct',
+            'under_viaduct': 'Under viaduct',
+            '0_hw_1': '0<H/W<1',
+            '2_hw_4': '2<H/W<4',
+            '1_hw_2': '1<H/W<2',
+            'hw_4': 'H/W>4'
+        };
+
+        // Define the exact order of the legend items.
+        const desiredOrder = [
+            'Non canyon',
+            'On viaduct',
+            'Under viaduct',
+            '0<H/W<1',
+            '2<H/W<4',
+            '1<H/W<2',
+            'H/W>4'
+        ];
+
+        async function loadDataAndRenderChart() {
+            try {
+                const response = await fetch(DATA_FILE);
+                const jsonData = await response.json();
+
+                // Count the number of urban canyons for each label
+                const counts = {};
+                jsonData.forEach(item => {
+                    const label = item.label;
+                    counts[label] = (counts[label] || 0) + 1;
+                });
+
+                // Prepare chart data and map the names
+                const chartData = Object.keys(counts).map(label => ({
+                    value: counts[label],
+                    name: nameMap[label] || label
+                }));
+
+                // Sort the chart data to match the desired legend order
+                const sortedChartData = desiredOrder.map(name => {
+                    return chartData.find(item => item.name === name);
+                }).filter(item => item !== undefined);
+
+                const option = {
+                    title: {
+                        text: `จำนวนของหุบเมืองแต่ละประเภท`,
+                        left: 'center'
+                    },
+                    tooltip: {
+                        trigger: 'item',
+                        formatter: '{a} <br/>{b}: {c} ({d}%)'
+                    },
+                    legend: {
+                        top: 50,
+                        left: 'center',
+                        orient: 'horizontal',
+                        itemGap: 30, // เพิ่มช่องว่างระหว่างรายการ
+                        itemWidth: 20,
+                        itemHeight: 12,
+                        textStyle: {
+                            fontSize: 12
+                        },
+                        data: desiredOrder
+                    },
+                    series: [{
+                        name: 'จำนวนหุบเมือง',
+                        type: 'pie',
+                        radius: ['40%', '70%'],
+                        avoidLabelOverlap: false,
+                        itemStyle: {
+                            borderRadius: 10,
+                            borderColor: '#fff',
+                            borderWidth: 2
+                        },
+                        label: {
+                            show: false,
+                            position: 'center'
+                        },
+                        emphasis: {
+                            label: {
+                                show: true,
+                                fontSize: 40,
+                                fontWeight: 'bold'
+                            }
+                        },
+                        labelLine: {
+                            show: false
+                        },
+                        data: sortedChartData
+                    }]
+                };
+
+                chart.setOption(option);
+
+            } catch (error) {
+                console.error("Error loading or rendering data:", error);
+                alert("เกิดข้อผิดพลาดในการโหลดข้อมูล");
+            }
+        }
+
+        loadDataAndRenderChart();
+    </script>
+</body>
+
+</html>

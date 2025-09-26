@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Boxplot PM2.5 & PM10</title>
+  <link rel="stylesheet" href="boxplotstyle.css">
+  <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/dataTool.min.js"></script>
+  <style>
+    body {
+      font-family: 'Open Sans', sans-serif;
+    }
+
+    /* ปรับความกว้างและความสูงของกราฟ และจัดให้อยู่ตรงกลาง */
+    #trend {
+      width: 100%;
+      height: 500px;
+      margin: auto;
+      border: 1px solid #ccc;
+      padding: 10px;
+    }
+
+    .controls {
+      margin: 10px 0;
+      text-align: center;
+      /* จัดปุ่มให้อยู่ตรงกลาง */
+    }
+
+    button {
+      font-size: 1rem;
+      /* ปรับขนาดตัวอักษรให้ใหญ่ขึ้น */
+      padding: 7px 25px;
+      /* เพิ่ม padding เพื่อให้ปุ่มดูใหญ่ขึ้น */
+      margin-right: 15px;
+      /* เพิ่มระยะห่างระหว่างปุ่ม */
+      border-radius: 12px;
+      /* ทำให้ขอบมนขึ้น */
+      border: 1px solid #ccc;
+      /* เพิ่มเส้นขอบเล็กน้อย */
+      background-color: #eee;
+      /* เปลี่ยนสีพื้นหลังให้เป็นสีเทาอ่อน */
+      cursor: pointer;
+      /* แสดงสัญลักษณ์มือเมื่อเอาเมาส์ไปชี้ */
+      transition: background-color 0.3s ease;
+      /* เพิ่ม transition */
+    }
+
+    button:hover {
+      background-color: #ddd;
+      /* เปลี่ยนสีเมื่อเอาเมาส์ไปชี้ */
+    }
+
+    #error-box {
+      color: #fff;
+      background: #030202;
+      padding: 30px;
+      margin: 20px 0;
+      font-size: 2rem;
+      font-weight: bold;
+      border-radius: 12px;
+      text-align: center;
+      display: none;
+    }
+
+    /* โค้ด CSS สำหรับ Navbar ที่อยู่ด้านบน */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 2rem;
+      background-color: #FFFFFF;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      position: fixed;
+      width: 100%;
+      top: 0;
+      left: 0;
+      z-index: 6000;
+    }
+
+    .navbar-brand {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #333333;
+    }
+
+    .navbar-links {
+      list-style: none;
+      display: flex;
+      margin: 0;
+      padding: 0;
+    }
+
+    .navbar-links li {
+      margin-right: 2rem;
+    }
+
+    .navbar-links a {
+      text-decoration: none;
+      color: #555555;
+      font-size: 1.1rem;
+      transition: color 0.3s ease;
+    }
+
+    .navbar-links a:hover {
+      color: #68696b;
+    }
+
+    .contact-button {
+      background-color: #007BFF;
+      color: #FFFFFF;
+      padding: 0.75rem 1.5rem;
+      border-radius: 25px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+
+    .contact-button:hover {
+      background-color: #6e7071;
+    }
+
+    /* ปรับเนื้อหาหลักให้เลื่อนลงมาเพื่อไม่ให้ทับ Navbar */
+    body {
+      padding-top: 4.5rem;
+      /* กำหนด padding-top เพื่อเว้นช่องว่างสำหรับ Navbar */
+    }
+
+    .container {
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar">
+    <ul class="navbar-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="3d.html">Urban Street Canyon</a></li>
+      <li><a href="confusion.html">Tukey HSD</a></li>
+      <li><a href="ANOVA.html">Report</a></li>
+    </ul>
+  </nav>
+
+  <div class="container">
+    <h2>ANOVA Boxplot PM2.5 & PM10 by Week and Label</h2>
+    <div class="controls">
+      <button onclick="draw('pm25')">PM2.5</button>
+      <button onclick="draw('pm10')">PM10</button>
+    </div>
+    <div id="error-box"></div>
+    <div id="trend"></div>
+  </div>
+</body>
+<script>
+  const FILES = {
+    pm25: 'pm25_byweek_clean.json',
+    pm10: 'pm10_byweek_clean.json'
+  };
+  let allData = {};
+  let chart = echarts.init(document.getElementById('trend'));
+
+  function showError(message) {
+    document.getElementById('error-box').innerHTML = message;
+    document.getElementById('error-box').style.display = 'block';
+    chart.clear();
+  }
+  function hideError() {
+    document.getElementById('error-box').innerHTML = "";
+    document.getElementById('error-box').style.display = 'none';
+  }
+
+  // --------------- โหลด 2 ไฟล์ ---------------
+  Promise.all([fetch(FILES.pm25), fetch(FILES.pm10)])
+    .then(responses => {
+      responses.forEach((r, i) => {
+        if (!r.ok) {
+          showError("ERROR: ไม่พบไฟล์ " + Object.values(FILES)[i]);
+          throw new Error("ไม่พบไฟล์ " + Object.values(FILES)[i]);
+        }
+      });
+      return Promise.all(responses.map(r => r.json()));
+    })
+    .then(([pm25, pm10]) => {
+      if (!Array.isArray(pm25) || !Array.isArray(pm10)) {
+        showError("ERROR: ไฟล์ข้อมูลต้องเป็น array (format json ผิด)");
+        return;
+      }
+      allData = { pm25, pm10 };
+      hideError();
+      draw('pm25');
+    })
+    .catch(err => {
+      showError("ERROR: " + err.message);
+    });
+
+  // --------- ฟังก์ชัน process() ที่แก้ให้ robust ------------
+  function process(raw) {
+    try {
+      if (!raw || !Array.isArray(raw) || raw.length === 0) throw new Error("ไม่มีข้อมูลใน json");
+
+      // x Axis และกลุ่มทั้งหมด
+      const weeks = [...new Set(raw.map(d => d.pollutant_week))];
+      const labels = [...new Set(raw.map(d => d.label))];
+
+      // สำหรับแต่ละ label ต้องกรอง array ย่อยที่มีข้อมูลจริง
+      let boxSeries = [];
+      let outlierSeries = [];
+      let usedLabels = [];
+
+      labels.forEach(label => {
+        // ทำ group ตาม week โดยกรอง array ว่างทิ้ง
+        let allWeekData = weeks.map(week =>
+          raw.filter(d => d.label === label && d.pollutant_week === week).map(d => d.pollution)
+        );
+        let group = allWeekData.filter(arr => arr.length > 0);
+
+        if (group.length > 0) {
+          let d;
+          try {
+            d = echarts.dataTool.prepareBoxplotData(group);
+          } catch (e) {
+            // ข้อมูล week นี้ plot ไม่ได้
+            return;
+          }
+          // Boxplot ของ label
+          boxSeries.push({
+            name: label,
+            type: 'boxplot',
+            data: d.boxData,
+            itemStyle: { opacity: 0.8 }
+          });
+          // Outlier ของ label
+          usedLabels.push(label);
+        }
+      });
+
+      if (usedLabels.length === 0) throw new Error("ทุกกลุ่มว่าง/ไม่มีข้อมูลค่าย่อยสำหรับ boxplot เลย");
+
+      // ส่งค่ากลับแบบใช้เฉพาะ label ที่ plot ได้จริงเท่านั้น
+      return { weeks, labels: usedLabels, series: boxSeries.concat(outlierSeries) };
+    } catch (e) {
+      showError("ERROR: " + e.message);
+      throw e;
+    }
+  }
+
+  function draw(type) {
+    try {
+      hideError();
+      const raw = allData[type];
+      if (!raw) {
+        showError("ERROR: ไม่พบข้อมูล " + type);
+        return;
+      }
+      const pollutantLabel = type === 'pm25' ? 'PM2.5' : 'PM10';
+      const { weeks, labels, series } = process(raw);
+
+      const option = {
+        title: { text: `Boxplot of ${pollutantLabel} by Week and Label`, left: "center" },
+        legend: {
+          data: labels,
+          left: "center",
+          bottom: 0,
+          orient: "horizontal"
+        },
+
+        tooltip: { trigger: "item", axisPointer: { type: "shadow" } },
+        grid: {
+          left: "4%",
+          right: "2%",
+          bottom: "100", /* เพิ่มพื้นที่ด้านล่างเพื่อรองรับตัวอักษรที่หมุน */
+          top: 60
+        },
+        xAxis: {
+          type: 'category',
+          data: weeks,
+          name: 'Week',
+          axisLabel: {
+            rotate: 45, /* หมุนตัวอักษร 45 องศา */
+            fontSize: 12,
+            interval: 0, /* แสดงทุก label */
+            align: 'right' /* จัดข้อความให้ชิดขวา */
+          }
+        },
+        yAxis: {
+          type: 'value',
+          name: `${pollutantLabel} (pollution)`
+        },
+        series: series
+      };
+      chart.setOption(option, true);
+    } catch (err) {
+      showError("ERROR: " + err.message);
+    }
+  }
+</script>
+</body>
+
+</html>

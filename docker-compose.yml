@@ -1,0 +1,40 @@
+services:
+  postgis:
+    image: postgis/postgis:16-3.4
+    platform: linux/amd64
+    container_name: usc_postgis
+    ports:
+      - "6505:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+    volumes:
+      - ./postgis:/docker-entrypoint-initdb.d
+
+  python:
+    build:
+      context: ./python
+      dockerfile: Dockerfile
+    platform: linux/amd64
+    container_name: usc_python
+    working_dir: /app
+    depends_on:
+      - postgis
+    ports:
+      - "6504:5000"
+    volumes:
+      - ./python:/app
+    command: uvicorn app:app --host 0.0.0.0 --port 5000 --reload
+
+  nodejs:
+    image: node:20
+    platform: linux/amd64
+    container_name: usc_nodejs
+    working_dir: /app
+    depends_on:
+      - postgis
+    ports:
+      - "6503:3000"
+    volumes:
+      - ./nodejs:/app
+    command: /bin/bash -c "npm install && npm i -g nodemon && nodemon"

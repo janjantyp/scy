@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+        <meta charset="utf-8">
+        <title>จำนวนภาพ Google Street View</title>
+        <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+        <style>
+                #chart {
+                        width: 50%;
+                        height: 500px;
+                        margin: auto;
+                }
+        </style>
+</head>
+
+<body>
+        <h2 style="text-align:center;">ข้อมูลช่วงปีของภาพที่ได้จาก Google Street View</h2>
+        <div id="chart"></div>
+
+        <script>
+                // ข้อมูลจาก JSON
+                const data = [
+                        { year: 2011, count: 81 },
+                        { year: 2013, count: 16 },
+                        { year: 2014, count: 667 },
+                        { year: 2015, count: 41 },
+                        { year: 2016, count: 115 },
+                        { year: 2017, count: 130 },
+                        { year: 2018, count: 419 },
+                        { year: 2019, count: 278 },
+                        { year: 2020, count: 1593 },
+                        { year: 2021, count: 1800 },
+                        { year: 2022, count: 2116 },
+                        { year: 2023, count: 51 },
+                        { year: 2024, count: 21267 },
+                        { year: 2025, count: 120 }
+                ];
+
+                // แปลงข้อมูลเป็น array สำหรับ ECharts
+                const years = data.map(item => item.year);
+                const counts = data.map(item => item.count);
+
+                // สร้างกราฟ
+                const chartDom = document.getElementById('chart');
+                const myChart = echarts.init(chartDom);
+
+                const option = {
+                        tooltip: {
+                                trigger: 'axis',
+                                axisPointer: { type: 'shadow' }
+                        },
+                        grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
+                        xAxis: [{
+                                type: 'category',
+                                data: years,
+                                axisTick: { alignWithLabel: true }
+                        }],
+                        yAxis: [{ type: 'value' }],
+                        series: [{
+                                name: 'จำนวนภาพ',
+                                type: 'bar',
+                                barWidth: '60%',
+                                data: counts,
+                                itemStyle: {
+                                        color: '#ff7f0e'
+                                }
+                        }]
+                };
+
+                myChart.setOption(option);
+        </script>
+</body>
+
+</html>

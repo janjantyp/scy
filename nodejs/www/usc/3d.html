@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+  <meta charset="utf-8">
+  <title>Urban Street Canyon</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="3d.css">
+  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5.7.1/dist/maplibre-gl.css" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Kanit:400,700&display=swap" rel="stylesheet">
+  <style>
+    body,
+    body,
+    html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      box-sizing: border-box;
+    }
+
+    /* เนื่องจาก Navbar และ Legend เป็น fixed position แล้ว ไม่ต้องใช้ padding-top ที่นี่ */
+    /* สามารถลบโค้ด padding-top ได้เลย */
+
+    #map {
+      width: 100vw;
+      height: 100vh;
+    }
+
+    #legend {
+      position: fixed;
+      /* เปลี่ยนเป็น fixed เพื่อให้ลอยอยู่บนแผนที่เสมอ */
+      bottom: 30px;
+      left: 10px;
+      z-index: 1000;
+      /* ... */
+    }
+
+    /* Sidebar styles */
+    .sidebar {
+      height: 100%;
+      width: 0;
+      position: fixed;
+      z-index: 2000;
+      top: 0;
+      right: 0;
+      background-color: #f5f5f5;
+      overflow-x: hidden;
+      transition: 0.5s;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      padding-left: 0px;
+      padding-right: 0px;
+      box-sizing: border-box;
+    }
+
+    .sidebar-content {
+      padding-top: 60px;
+      background-color: rgba(249, 244, 244, 0.088);
+    }
+
+    .sidebar .closebtn {
+      position: absolute;
+      top: 0;
+      left: 25px;
+      font-size: 36px;
+      color: #585757;
+      text-decoration: none;
+    }
+
+    /* Open button styles */
+    #open-btn-container {
+      position: fixed;
+      background-color: rgba(255, 255, 255, 0);
+      border-radius: 20px 0 0 20px;
+      width: 60px;
+      top: 50%;
+      right: 0;
+      z-index: 1000;
+      transform: translateY(-50%);
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .openbtn {
+      background-color: rgba(255, 255, 255, 0.85);
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      width: 60px;
+      height: 90px;
+      border-radius: 20px 0 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .openbtn:hover {
+      background-color: #ffffff;
+    }
+
+    .hamburger-icon {
+      background-image: url('pie-chart (1).png');
+      /* **เปลี่ยนเส้นทางไฟล์รูปภาพของคุณที่นี่** */
+      background-size: contain;
+      /* ปรับขนาดรูปภาพให้พอดีกับปุ่ม */
+      background-repeat: no-repeat;
+      /* ไม่ให้รูปภาพซ้ำ */
+      background-position: center;
+      /* จัดรูปภาพให้อยู่ตรงกลาง */
+      width: 40px;
+      /* **ปรับขนาดของไอคอนกราฟ** ภายในปุ่ม */
+      height: 40px;
+      /* **ปรับขนาดของไอคอนกราฟ** ภายในปุ่ม */
+      display: block;
+      /* ทำให้ background-image แสดงผล */
+    }
+
+
+    /* Graph container */
+    #bar-chart-container,
+    #pie-chart-container {
+      width: 100%;
+      height: 300px;
+      margin: 40px auto;
+    }
+
+    /* filter button */
+    /* ทำให้ ul ขยายเต็มซ้าย */
+    .navbar-links {
+      display: flex;
+      gap: 30px;
+      /* เพิ่มระยะห่างแต่ละเมนู */
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      flex: 1;
+      /*  ดันให้ ul กินพื้นที่ซ้ายเต็ม */
+    }
+
+    /* ทำให้ li ภายในไม่เบียดกัน */
+    .navbar-links li a {
+      text-decoration: none;
+      gap: 30px;
+      padding: 50;
+      font-weight: 400;
+      color: #717171;
+    }
+
+    /* จัดปุ่ม filter ไปขวาสุด */
+    #filterBtn {
+      margin-left: 90%;
+      color: #717171;
+      border-color: #717171;
+
+    }
+
+    #filterBtn:hover {
+      background-color: #717171;
+      color: white;
+      border-color: #717171;
+    }
+  </style>
+
+</head>
+
+<body>
+  <div id="mySidebar" class="sidebar">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+    <div class="sidebar-content">
+      <h4 style="text-align: center; margin-bottom: 20px;">ข้อมูลการจำแนกด้วยโมเดล</h4>
+
+      <div id="bar-chart-container"></div>
+      <div id="pie-chart-container"></div>
+    </div>
+  </div>
+
+  <div id="open-btn-container">
+    <button class="openbtn" onclick="openNav()">
+      <div class="hamburger-icon">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </button>
+  </div>
+
+  <nav class="navbar" style="display:flex;justify-content:space-between;align-items:center;">
+    <ul class="navbar-links" style="margin:0;display:flex;gap:10px;">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="boxplot.html">ANOVA</a></li>
+      <li><a href="confusion.html">Tukey HSD</a></li>
+      <li><a href="predict.html">Prediction</a></li>
+    </ul>
+
+    <button id="filterBtn" class="btn btn-outline-primary" style="margin-right:10px;" data-bs-toggle="modal"
+      data-bs-target="#filterModal">
+      <i class="bi bi-funnel"></i> Filter
+    </button>
+  </nav>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+
+  <div id="map"></div>
+
+  <div id="chartOverlay" style="display:none; position:fixed; left:0; top:0; width:100vw; height:100vh;
+  background:#f8fbfe; z-index:5000; overflow:auto;">
+    <nav
+      style="background:#fffdfc;border-bottom:1.5px solid #e5eff7;height:70px;display:flex;align-items:center;justify-content:space-between;padding:0 2vw;">
+      <div style="display:flex;align-items:center;">
+        <button id="chartOverlayBack"
+          style="background:none;border:none;font-size:1.8em;margin-right:18px;cursor:pointer;padding:0 6px;">&#8592;</button>
+        <span style="color:#1672c6;font-size:2em;font-weight:700;font-family:'Kanit',sans-serif">Air Data</span>
+        <span style="color:#a6aec9;font-size:1.35em;margin-left:12px;">| &nbsp;<span id="overlayLocation"></span></span>
+      </div>
+    </nav>
+    <div style="padding:32px 4vw 16px 4vw;max-width:100vw;">
+      <div style="
+      background:#fff;
+      border-radius:19px;
+      padding:32px 32px 94px 32px;
+      max-width:1100px;
+      margin:25px auto 0 auto;
+      box-shadow:0 6px 12px #d2e0f7;
+      height:502px;
+      display:flex;
+      flex-direction:column;">
+        <h2 id="overlayTitle" style="color:#1672c6;margin-bottom:32px;"></h2>
+        <div id="overlayChart" style="width:100%; height:330px;"></div>
+      </div>
+    </div>
+  </div>
+
+
+  <div id="legend" style="
+    position:absolute; bottom:30px; left:30px;
+    background:rgba(255, 255, 255, 0.85); padding:10px 14px;
+    border-radius:6px; font-family:'Kanit',sans-serif; font-size:14px;
+    box-shadow:0 2px 8px rgba(0,0,0,0.2); z-index:10;">
+    <b>Legend</b><br>
+    <i
+      style="background:#00FF00;width:18px;height:18px;display:inline-block;margin-right:6px;border:1px solid #ccc;"></i>
+    Non canyon<br>
+    <i
+      style="background:#66FF00;width:18px;height:18px;display:inline-block;margin-right:6px;border:1px solid #ccc;"></i>
+    On viaduct<br>
+    <i
+      style="background:#CCFF00;width:18px;height:18px;display:inline-block;margin-right:6px;border:1px solid #ccc;"></i>
+    Under viaduct<br>
+    <i
+      style="background:#FFFF00;width:18px;height:18px;display:inline-block;margin-right:6px;border:1px solid #ccc;"></i>
+    0&lt;H/W&lt;1<br>
+    <i
+      style="background:#FFCC00;width:18px;height:18px;display:inline-block;margin-right:6px;border:1px solid #ccc;"></i>
+    1&lt;H/W&lt;2<br>
+    <i
+      style="background:#Ff6600;width:18px;height:18px;display:inline-block;margin-right:6px;border:1px solid #ccc;"></i>
+    2&lt;H/W&lt;4<br>
+    <i
+      style="background:#FF0000;width:18px;height:18px;display:inline-block;margin-right:6px;border:1px solid #ccc;"></i>
+    H/W&gt;4<br>
+
+  </div>
+
+  <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="filterModalLabel">Filter by canyon types </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div id="filterOptions">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="non_canyon" id="filter-non-canyon" checked>
+              <label class="form-check-label" for="filter-non-canyon">Non canyon</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="on_viaduct" id="filter-on-viaduct" checked>
+              <label class="form-check-label" for="filter-on-viaduct">On viaduct</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="under_viaduct" id="filter-under-viaduct" checked>
+              <label class="form-check-label" for="filter-under-viaduct">Under viaduct</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="0_hw_1" id="filter-0-1" checked>
+              <label class="form-check-label" for="filter-0-1">0&lt;H/W&lt;1</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="1_hw_2" id="filter-1-2" checked>
+              <label class="form-check-label" for="filter-1-2">1&lt;H/W&lt;2</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="2_hw_4" id="filter-2-4" checked>
+              <label class="form-check-label" for="filter-2-4">2&lt;H/W&lt;4</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="hw_4" id="filter-4" checked>
+              <label class="form-check-label" for="filter-4">H/W&gt;4</label>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-warning" id="clearAllBtn">
+            <i class="bi bi-x-circle"></i> Clear filter
+          </button>
+          <button type="button" class="btn btn-info" id="selectAllBtn">
+            <i class="bi bi-check-circle"></i> Select All
+          </button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" id="applyFilterBtn">Filter</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <script src="https://unpkg.com/maplibre-gl@5.7.1/dist/maplibre-gl.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+
+    function openNav() {
+      document.getElementById("mySidebar").style.width = "400px";
+      setTimeout(() => {
+        renderCharts();
+      }, 600);
+    }
+
+    function closeNav() {
+      document.getElementById("mySidebar").style.width = "0";
+    }
+
+    function renderCharts() {
+      // --- Bar Chart ---
+      const barChart = echarts.init(document.getElementById('bar-chart-container'));
+      const barOption = {
+        title: { text: `ข้อมูลช่วงปีของภาพที่ได้จาก Google Street View`, left: 'center', textStyle: { fontSize: 14 } },
+        tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+        grid: { left: '5%', right: '5%', bottom: '5%', containLabel: true },
+        xAxis: [{ type: 'category', data: ['2011', '2013', '2014', '2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024', '2025'], axisLabel: { rotate: 45 } }],
+        yAxis: [{ type: 'value' }],
+        series: [{ name: 'จำนวนภาพ', type: 'bar', barWidth: '50%', data: [81, 16, 667, 41, 115, 130, 419, 278, 1593, 1800, 2116, 51, 21267, 120] }]
+      };
+      barChart.setOption(barOption);
+
+      // --- Pie Chart ---
+      const pieChart = echarts.init(document.getElementById('pie-chart-container'));
+      const DATA_FILE = 'label_and_pollution.geojson';
+      const nameMap = {
+        'non_canyon': 'Non canyon', 'on_viaduct': 'On viaduct', 'under_viaduct': 'Under viaduct',
+        '0_hw_1': '0<H/W<1', '1_hw_2': '1<H/W<2', '2_hw_4': '2<H/W<4', 'hw_4': 'H/W>4'
+      };
+      const desiredOrder = ['Non canyon', 'On viaduct', 'Under viaduct', '0<H/W<1', '1<H/W<2', '2<H/W<4', 'H/W>4'];
+
+      async function loadDataAndRenderPie() {
+        try {
+          const response = await fetch(DATA_FILE);
+          const geojson = await response.json();
+          const counts = {};
+          geojson.features.forEach(f => {
+            const rawLabel = f.properties.label;
+            const readable = nameMap[rawLabel] || rawLabel;
+            counts[readable] = (counts[readable] || 0) + 1;
+          });
+          const chartData = Object.keys(counts).map(label => ({ value: counts[label], name: label }));
+          const sortedChartData = desiredOrder.map(name => chartData.find(item => item.name === name)).filter(item => item !== undefined);
+
+          const pieOption = {
+            title: { text: `จำนวนของหุบเมืองแต่ละประเภท`, left: 'center', textStyle: { fontSize: 14 } },
+            tooltip: { trigger: 'item', formatter: '{b}<br/>จำนวน: {c} ({d}%)' },
+            legend: { orient: 'vertical', left: '65%', top: 'middle', itemGap: 8, itemWidth: 12, itemHeight: 12, textStyle: { fontSize: 10 }, data: desiredOrder },
+            series: [{
+              name: 'จำนวนหุบเมือง',
+              type: 'pie',
+              radius: ['40%', '70%'],
+              center: ['35%', '50%'],
+              avoidLabelOverlap: false,
+              itemStyle: { borderRadius: 10, borderColor: '#fff', borderWidth: 2 },
+              label: { show: false, position: 'center' },
+              emphasis: { label: { show: true, fontSize: 16, fontWeight: 'bold', formatter: '{b}\n{d}%' } },
+              labelLine: { show: false },
+              data: sortedChartData
+            }]
+          };
+          pieChart.setOption(pieOption);
+          pieChart.resize();
+        } catch (error) {
+          console.error("Error loading pie data:", error);
+        }
+      }
+      loadDataAndRenderPie();
+      barChart.resize();
+    }
+
+
+    function escapeHtml(text) { if (!text) return text; return text.replace(/</g, "&lt;"); }
+
+    async function showChartOverlay(x) {
+      try {
+        const result = await fetch(`/usc/api/point_chart/${x.id}`);
+        const p = await result.json();
+
+        console.log(p);
+
+        let weeks = [], pm25 = [], pm10 = [];
+        for (let w = 1; w <= 22; w++) {
+          weeks.push("week " + w);
+          pm25.push(Number(p['pm25_week' + w]) || null);
+          pm10.push(Number(p['pm10_week' + w]) || null);
+        }
+        document.getElementById('overlayLocation').innerText = `Lat: ${p.lat_ || '-'}, Lng: ${p.lon_ || '-'}`;
+        document.getElementById('overlayTitle').innerHTML = `${escapeHtml(p.label) || 'No label'} | Conf: ${p.conf || '-'}`;
+        document.getElementById('chartOverlay').style.display = 'block';
+
+        // สร้างกราฟ ECharts
+        const chartDom = document.getElementById('overlayChart');
+        const myChart = echarts.init(chartDom);
+
+        const option = {
+          tooltip: { trigger: 'axis' },
+          legend: { data: ['PM2.5', 'PM10'], bottom: 0 },
+          grid: { top: 40, left: 50, right: 30, bottom: 50 },
+          xAxis: { type: 'category', data: weeks },
+          yAxis: { type: 'value', name: 'ค่าฝุ่น (µg/m³)' },
+          series: [
+            {
+              name: 'PM2.5',
+              type: 'line',
+              data: pm25,
+              smooth: true,
+              symbolSize: 6,
+              lineStyle: { width: 3, color: '#1976d2' },
+              itemStyle: { color: '#1976d2' }
+            },
+            {
+              name: 'PM10',
+              type: 'line',
+              data: pm10,
+              smooth: true,
+              symbolSize: 6,
+              lineStyle: { width: 3, color: '#f39c12' },
+              itemStyle: { color: '#f39c12' }
+            }
+          ]
+        };
+
+        myChart.setOption(option);
+
+      } catch (error) {
+        console.error("Error in showChartOverlay:", error);
+
+      }
+
+
+    }
+
+    document.getElementById('chartOverlayBack').onclick = function () {
+      document.getElementById('chartOverlay').style.display = 'none';
+    };
+
+    const map = new maplibregl.Map({
+      container: 'map',
+      style: 'https://tiles.openfreemap.org/styles/bright',
+      center: [98.952046, 18.805586],
+      zoom: 16.5,
+      pitch: 45,
+      bearing: -17.6,
+      antialias: true
+    });
+
+    map.on('load', () => {
+      map.addSource('openfreemap', { url: 'https://tiles.openfreemap.org/planet', type: 'vector' });
+      map.addLayer({
+        'id': '3d-buildings',
+        'source': 'openfreemap',
+        'source-layer': 'building',
+        'type': 'fill-extrusion',
+        'minzoom': 15,
+        'paint': {
+          'fill-extrusion-color': [
+            'interpolate', ['linear'], ['get', 'render_height'],
+            0, 'lightgray', 20, '#a1dab4', 50, '#41b6c4', 100, '#2c7fb8', 200, '#253494'
+          ],
+          'fill-extrusion-height': ['interpolate', ['linear'], ['zoom'], 15, 0, 16, ['get', 'render_height']],
+          'fill-extrusion-base': ['case', ['>=', ['get', 'zoom'], 16], ['get', 'render_min_height'], 0],
+          'fill-extrusion-opacity': 0.9
+        }
+      });
+
+      map.addSource('pollution-points', { type: 'geojson', data: '/usc/api/points' });
+      map.addLayer({
+        id: 'pollution-3d',
+        type: 'circle',
+        source: 'pollution-points',
+        paint: {
+          // 'circle-radius':['interpolate',['linear'],['get','PM25'],0,2,50,6,100,12],
+          'circle-color': ['match', ['get', 'label'],
+            'non_canyon', '#00FF00',
+            '0_hw_1', '#FFFF00',
+            '1_hw_2', '#FFCC00',
+            '2_hw_4', '#Ff6600',
+            'hw_4', '#FF0000',
+            'on_viaduct', '#66FF00',
+            'under_viaduct', '#CCFF00',
+            '#3498db'],
+          'circle-opacity': 0.85,
+          'circle-stroke-color': '#fff',
+          'circle-stroke-width': 0
+        }
+      });
+
+      // ฟังก์ชันสำหรับอัปเดต Filter ของเลเยอร์บนแผนที่
+      function updateMapFilter() {
+        const selectedLabels = [];
+        document.querySelectorAll('#filterOptions input[type="checkbox"]:checked').forEach(checkbox => {
+          selectedLabels.push(checkbox.value);
+        });
+
+        // ถ้าไม่มี checkbox ถูกเลือกเลย ให้แสดงทั้งหมด
+        if (selectedLabels.length === 0) {
+          map.setFilter('pollution-3d', null);
+        } else {
+          // สร้าง filter expression จาก labels ที่ถูกเลือก
+          const filterExpression = ['match', ['get', 'label'], selectedLabels, true, false];
+          map.setFilter('pollution-3d', filterExpression);
+        }
+      }
+
+      // ฟังก์ชันสำหรับเลือก Checkbox ทั้งหมด
+      document.getElementById("selectAllBtn").addEventListener("click", () => {
+        document.querySelectorAll('#filterOptions input[type="checkbox"]').forEach(checkbox => {
+          checkbox.checked = true;
+        });
+      });
+
+      // ฟังก์ชันสำหรับเคลียร์ Checkbox ทั้งหมด
+      document.getElementById("clearAllBtn").addEventListener("click", () => {
+        document.querySelectorAll('#filterOptions input[type="checkbox"]').forEach(checkbox => {
+          checkbox.checked = false;
+        });
+      });
+
+      // เมื่อกดปุ่ม "ใช้ Filter" ใน Modal
+      document.getElementById("applyFilterBtn").addEventListener("click", () => {
+        updateMapFilter();
+        // ปิด modal หลังจากกดปุ่ม
+        const filterModal = bootstrap.Modal.getInstance(document.getElementById('filterModal'));
+        if (filterModal) {
+          filterModal.hide();
+        }
+      });
+
+      // เรียก filter ทันทีที่แผนที่โหลดเพื่อแสดงผลเริ่มต้น
+      updateMapFilter();
+
+      //map.on('click', 'pollution-3d', async (e) => {
+      //const p = e.features[0].properties;
+
+      //console.log('Feature properties:', p);
+
+      //  สร้าง path ของรูปที่อยู่ในโฟลเดอร์ images
+      //const localImagePath = `./image_png/${p.lat_}_${p.lon_}.png`;
+      // const localImagePath1 = './image_png/18.79973687_98.94342659.png'
+      //console.log(localImagePath);
+
+      // console.log('Local image path:', `./images/img_${p.id}_${p.latitude}_${p.longitude}_${p.pano_id}_${p.date}.jpg`);
+      // const localImagePath = `./images/img_${p.id}_${p.latitude}_${p.longitude}_${p.pano_id}_${p.date}.jpg`
+      //console.log('Local image path:', localImagePath);
+      //const popupContent = `
+
+      map.on('click', 'pollution-3d', async (e) => {
+        const p = e.features[0].properties;
+        console.log('Feature properties:', p);
+        const API_KEY = "AIzaSyAIry0CIsrbZz25K13Hx7k0RADrQKgsml4";
+        const lat = p.lat;  // Example: Chiang Mai
+        const lng = p.lon;
+        const heading = p.azimuth; //p.azimuth;
+        const pitch = 0;
+        const size = "640x640";
+
+        const url = `https://maps.googleapis.com/maps/api/streetview?size=${size}&location=${lat},${lng}&heading=${heading}&pitch=${pitch}&key=${API_KEY}`;
+        // console.log('Fetching image from URL:', url);
+
+        //const response = await fetch(url);
+        //if (!response.ok) throw new Error(`Failed to fetch image: ${response.statusText}`);
+
+        const popupContent = `
+        
+    <div style="min-width:220px;max-width:330px;">
+      <div style="background:#1976d2;color:#fff;padding:9px 16px;border-radius:8px 8px 0 0;font-size:1.1em;">
+        <b>รายละเอียด</b>
+      </div>
+      <div style="background:#fff;padding:13px 16px;border-radius:0 0 8px 8px;box-shadow:0 2px 7px #e5e7ef;">
+        <div><b>Latitude:</b> ${p.lat || '-'}</div>
+        <div><b>Longitude:</b> ${p.lon || '-'}</div>
+        <hr>
+        <div><b>Label:</b> ${escapeHtml(p.label) || '-'}</div>
+        <div><b>Conf:</b> ${p.conf || '-'}</div>
+
+        <img src="${url}"
+             alt="H/W Ratio"
+             style="width:100%;margin-top:8px;border-radius:6px;box-shadow:0 2px 6px #ccc;object-fit:cover;">
+
+        <hr>
+        <button id="showFullChartBtn"
+                style="margin-top:12px;width:100%;background:#22b28a;color:#fff;border:none;border-radius:6px;padding:9px 0;cursor:pointer;font-size:1.05em;">
+          <b>Show Air Data</b>
+        </button>
+      </div>
+    </div>
+  `;
+
+        const popup = new maplibregl.Popup({ offset: 25 })
+          .setLngLat(e.features[0].geometry.coordinates)
+          .setHTML(popupContent)
+          .addTo(map);
+
+        setTimeout(() => {
+          const btn = document.getElementById("showFullChartBtn");
+          if (btn) btn.onclick = function () { showChartOverlay(p); };
+        }, 100);
+      });
+
+      console.log(e.features);
+      const popup = new maplibregl.Popup({ offset: 25 })
+        .setLngLat(e.features[0].geometry.coordinates)
+        .setHTML(popupContent)
+        .addTo(map);
+      setTimeout(() => {
+        const btn = document.getElementById("showFullChartBtn");
+        if (btn) btn.onclick = function () { showChartOverlay(p); };
+      }, 100);
+    });
+
+  </script>
+
+</body>
+
+</html>

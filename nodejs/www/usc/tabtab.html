@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="tab.css">
+        <title>Slide-out Panel Example</title>
+        <style>
+                body {
+                        margin: 0;
+                        font-family: Arial, sans-serif;
+                        background-color: #f0f0f0;
+                }
+
+                /* Sidebar หลัก */
+                .sidebar {
+                        height: 100%;
+                        width: 0;
+                        /* เริ่มต้นด้วยความกว้าง 0 เพื่อซ่อนแถบเมนู */
+                        position: fixed;
+                        z-index: 2000;
+                        top: 0;
+                        right: 0;
+                        background-color: #f5f5f5;
+                        overflow-x: hidden;
+                        transition: 0.5s;
+                        /* สร้างเอฟเฟกต์เลื่อนเข้า-ออก */
+                        padding-top: 60px;
+                        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+                }
+
+                /* ปุ่มปิด (X) */
+                .sidebar .closebtn {
+                        position: absolute;
+                        top: 0;
+                        left: 25px;
+                        font-size: 36px;
+                        color: #333;
+                        text-decoration: none;
+                }
+
+                /* ปุ่มเปิดแถบเมนู */
+                #open-btn-container {
+                        position: fixed;
+                        top: 50%;
+                        right: 0;
+                        z-index: 1000;
+                        transform: translateY(-50%);
+                }
+
+                .openbtn {
+                        background-color: #333;
+                        color: white;
+                        border: none;
+                        cursor: pointer;
+                        padding: 10px;
+                        border-radius: 5px 0 0 5px;
+                        font-size: 24px;
+                        position: relative;
+                        transition: 0.3s;
+                }
+
+                .openbtn:hover {
+                        background-color: #555;
+                }
+
+                /* สี่เหลี่ยมกราฟภายในปุ่ม */
+                .chart-icon-box {
+                        width: 25px;
+                        height: 25px;
+                        background: linear-gradient(to right, #4CAF50 33%, #FF5722 33%, #FF5722 66%, #2196F3 66%);
+                        background-size: 300% 100%;
+                        background-position: left;
+                        border-radius: 3px;
+                        position: relative;
+                }
+
+                .chart-icon-box::before {
+                        content: '';
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        background: repeating-linear-gradient(45deg,
+                                        rgba(255, 255, 255, 0.2),
+                                        rgba(255, 255, 255, 0.2) 2px,
+                                        transparent 2px,
+                                        transparent 4px);
+                        border-radius: 3px;
+                }
+        </style>
+</head>
+
+<body>
+
+        <div id="mySidebar" class="sidebar">
+                <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+                <div style="padding: 15px;">
+                        <h2>กราฟ</h2>
+                        <p>นี่คือพื้นที่สำหรับแสดงกราฟข้อมูล</p>
+                </div>
+        </div>
+
+        <div id="open-btn-container">
+                <button class="openbtn" onclick="openNav()">
+                        <div class="hamburger-icon">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                        </div>
+                </button>
+        </div>
+
+        <script>
+                function openNav() {
+                        document.getElementById("mySidebar").style.width = "400px";
+                }
+
+                function closeNav() {
+                        document.getElementById("mySidebar").style.width = "0";
+                }
+        </script>
+</body>
+
+</html>

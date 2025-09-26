@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>ค่าฝุ่นรายสัปดาห์</title>
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js">
+
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: 'Kanit', sans-serif;
+    }
+    .main-content {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    #chart-container {
+      width: 100%;
+      height: 600px;
+      margin: auto;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="main-content">
+    <div id="chart-container"></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+  <script>
+    const chart = echarts.init(document.getElementById('chart-container'));
+
+    async function loadAndRenderChart() {
+      try {
+        const response_pm25 = await fetch('pm25_byweek.json');
+        const data_pm25 = await response_pm25.json();
+        
+        const response_pm10 = await fetch('pm10_byweek.json');
+        const data_pm10 = await response_pm10.json();
+
+        // สร้างรายการสัปดาห์ 1-22 สำหรับแกน X
+        const weeks = Array.from({ length: 22 }, (_, i) => `สัปดาห์ที่ ${i + 1}`);
+
+        // คำนวณค่าเฉลี่ยฝุ่น PM2.5 รายสัปดาห์
+        const pm25_values = weeks.map((week, index) => {
+          const weekNumber = index + 1;
+          const weekData = data_pm25.filter(d => d.week === weekNumber);
+          const totalPollution = weekData.reduce((sum, d) => sum + d.pollution, 0);
+          return weekData.length > 0 ? (totalPollution / weekData.length).toFixed(2) : 0;
+        });
+
+        // คำนวณค่าเฉลี่ยฝุ่น PM10 รายสัปดาห์
+        const pm10_values = weeks.map((week, index) => {
+          const weekNumber = index + 1;
+          const weekData = data_pm10.filter(d => d.week === weekNumber);
+          const totalPollution = weekData.reduce((sum, d) => sum + d.pollution, 0);
+          return weekData.length > 0 ? (totalPollution / weekData.length).toFixed(2) : 0;
+        });
+
+        const option = {
+          title: {
+            text: 'ค่าฝุ่น PM2.5 และ PM10 รายสัปดาห์',
+            left: 'center'
+          },
+          tooltip: {
+            trigger: 'axis'
+          },
+          legend: {
+            data: ['PM2.5', 'PM10'],
+            top: 'bottom'
+          },
+          toolbox: {
+            show: true,
+            feature: {
+              dataZoom: { yAxisIndex: 'none' },
+              dataView: { readOnly: false },
+              magicType: { type: ['line', 'bar'] },
+              restore: {},
+              saveAsImage: {}
+            }
+          },
+          xAxis: {
+            type: 'category',
+            boundaryGap: false,
+            data: weeks
+          },
+          yAxis: {
+            type: 'value',
+            min: 0,
+            axisLabel: {
+              formatter: '{value}'
+            }
+          },
+          series: [
+            {
+              name: 'PM2.5',
+              type: 'line',
+              data: pm25_values,
+              smooth: true,
+              markPoint: {
+                data: [
+                  { type: 'max', name: 'Max' },
+                  { type: 'min', name: 'Min' }
+                ]
+              },
+              markLine: {
+                data: [{ type: 'average', name: 'Avg' }]
+              }
+            },
+            {
+              name: 'PM10',
+              type: 'line',
+              data: pm10_values,
+              smooth: true,
+              markPoint: {
+                data: [
+                  { type: 'max', name: 'Max' },
+                  { type: 'min', name: 'Min' }
+                ]
+              },
+              markLine: {
+                data: [{ type: 'average', name: 'Avg' }]
+              }
+            }
+          ]
+        };
+        
+        chart.setOption(option);
+      } catch (error) {
+        console.error("Error loading or rendering data:", error);
+        alert("เกิดข้อผิดพลาดในการโหลดข้อมูล");
+      }
+    }
+
+    loadAndRenderChart();
+  </script>
+</body>
+</html>

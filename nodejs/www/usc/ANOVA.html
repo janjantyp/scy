@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ANOVA Results Viewer</title>
+
+  <!-- Bootstrap + DataTables -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+  <style>
+    body {
+      margin: 20px;
+      background: #f9f9f9;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    table.dataTable tbody tr {
+      background-color: #ffffff;
+    }
+    table.dataTable thead {
+      background-color: #939fa7; /* หัวตารางสีดำ */
+      color: #ffffff;
+    }
+    .filters {
+      margin-bottom: 15px;
+      width: 250px;
+    }
+  </style>
+</head>
+<body>
+  <h1>ANOVA Results</h1>
+
+  <div class="filters">
+    <label for="pollutantFilter" class="form-label">เลือกมลพิษ:</label>
+    <select id="pollutantFilter" class="form-control">
+      <option value="pm25">PM2.5</option>
+      <option value="pm10">PM10</option>
+    </select>
+  </div>
+
+  <div class="table-responsive">
+    <table id="anovaTable" class="table table-striped table-bordered">
+      <thead>
+        <tr>
+          <th>Week</th>
+          <th>df</th>
+          <th>Sum of Squares</th>
+          <th>Mean of Square</th>
+          <th>F-statistic</th>
+          <th>p-value</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <script>
+    let anova_pm25 = [];
+    let anova_pm10 = [];
+    let table;
+
+    async function loadData() {
+      try {
+        const res_pm25 = await fetch('ANOVA_PM2.5.json');
+        anova_pm25 = await res_pm25.json();
+
+        const res_pm10 = await fetch('ANOVA_PM10.json');
+        anova_pm10 = await res_pm10.json();
+
+        renderTable(anova_pm25);
+      } catch (error) {
+        console.error("Error loading JSON:", error);
+        alert("ไม่สามารถโหลดไฟล์ JSON ได้ ตรวจสอบว่าไฟล์อยู่ในโฟลเดอร์เดียวกับ HTML และเปิดผ่าน local server");
+      }
+    }
+
+    function renderTable(data) {
+      // แปลง week จาก "week2" → "2"
+      data = data.map(d => ({
+        ...d,
+        week: String(d.week).replace(/week/i, '')
+      }));
+
+      if (table) {
+        table.clear().rows.add(data).draw();
+      } else {
+        table = $('#anovaTable').DataTable({
+          data: data,
+          pageLength: 25,
+          columns: [
+            { data: 'week' },
+            { data: 'df' },
+            { data: 'sum_of_squares', render: d => Number(d).toFixed(4) },
+            { data: 'mean_of_square', render: d => Number(d).toFixed(4) },
+            { data: 'F_statistic ', render: d => Number(d).toFixed(4) },
+            { data: 'p_value', render: d => Number(d).toFixed(4) }
+          ]
+        });
+      }
+    }
+
+    $('#pollutantFilter').on('change', function() {
+      const selected = this.value;
+      renderTable(selected === 'pm25' ? anova_pm25 : anova_pm10);
+    });
+
+    loadData();
+  </script>
+</body>
+</html>

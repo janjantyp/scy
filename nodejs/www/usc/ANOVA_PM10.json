@@ -1,0 +1,178 @@
+[
+  {
+    "week":"week1",
+    "df":6,
+    "sum_of_squares":7580.7325,
+    "mean_of_square":1263.4554,
+    "F_statistic ":101.3718,
+    "p_value":0.0
+  },
+  {
+    "week":"week2",
+    "df":6,
+    "sum_of_squares":5409.6316,
+    "mean_of_square":901.6053,
+    "F_statistic ":40.4547,
+    "p_value":0.0
+  },
+  {
+    "week":"week3",
+    "df":6,
+    "sum_of_squares":9415.1985,
+    "mean_of_square":1569.1997,
+    "F_statistic ":101.1857,
+    "p_value":0.0
+  },
+  {
+    "week":"week4",
+    "df":6,
+    "sum_of_squares":4950.6781,
+    "mean_of_square":825.113,
+    "F_statistic ":39.1597,
+    "p_value":0.0
+  },
+  {
+    "week":"week5",
+    "df":6,
+    "sum_of_squares":3388.9828,
+    "mean_of_square":564.8305,
+    "F_statistic ":28.518,
+    "p_value":0.0
+  },
+  {
+    "week":"week6",
+    "df":6,
+    "sum_of_squares":1219.5717,
+    "mean_of_square":203.2619,
+    "F_statistic ":10.5933,
+    "p_value":0.0
+  },
+  {
+    "week":"week7",
+    "df":6,
+    "sum_of_squares":891.6256,
+    "mean_of_square":148.6043,
+    "F_statistic ":7.9535,
+    "p_value":0.0
+  },
+  {
+    "week":"week8",
+    "df":6,
+    "sum_of_squares":1771.374,
+    "mean_of_square":295.229,
+    "F_statistic ":67.9499,
+    "p_value":0.0
+  },
+  {
+    "week":"week9",
+    "df":6,
+    "sum_of_squares":2055.8488,
+    "mean_of_square":342.6415,
+    "F_statistic ":70.7894,
+    "p_value":0.0
+  },
+  {
+    "week":"week10",
+    "df":6,
+    "sum_of_squares":839.566,
+    "mean_of_square":139.9277,
+    "F_statistic ":7.4328,
+    "p_value":0.0
+  },
+  {
+    "week":"week11",
+    "df":6,
+    "sum_of_squares":4892.6423,
+    "mean_of_square":815.4404,
+    "F_statistic ":27.5914,
+    "p_value":0.0
+  },
+  {
+    "week":"week12",
+    "df":6,
+    "sum_of_squares":5657.9076,
+    "mean_of_square":942.9846,
+    "F_statistic ":7.4657,
+    "p_value":0.0
+  },
+  {
+    "week":"week13",
+    "df":6,
+    "sum_of_squares":8528.4028,
+    "mean_of_square":1421.4005,
+    "F_statistic ":10.2743,
+    "p_value":0.0
+  },
+  {
+    "week":"week14",
+    "df":6,
+    "sum_of_squares":6510.7182,
+    "mean_of_square":1085.1197,
+    "F_statistic ":30.1991,
+    "p_value":0.0
+  },
+  {
+    "week":"week15",
+    "df":6,
+    "sum_of_squares":2124.2998,
+    "mean_of_square":354.05,
+    "F_statistic ":47.9519,
+    "p_value":0.0
+  },
+  {
+    "week":"week16",
+    "df":6,
+    "sum_of_squares":821.0651,
+    "mean_of_square":136.8442,
+    "F_statistic ":60.3673,
+    "p_value":0.0
+  },
+  {
+    "week":"week17",
+    "df":6,
+    "sum_of_squares":1676.7354,
+    "mean_of_square":279.4559,
+    "F_statistic ":32.8823,
+    "p_value":0.0
+  },
+  {
+    "week":"week18",
+    "df":6,
+    "sum_of_squares":541.4396,
+    "mean_of_square":90.2399,
+    "F_statistic ":46.5301,
+    "p_value":0.0
+  },
+  {
+    "week":"week19",
+    "df":6,
+    "sum_of_squares":584.966,
+    "mean_of_square":97.4943,
+    "F_statistic ":42.279,
+    "p_value":0.0
+  },
+  {
+    "week":"week20",
+    "df":6,
+    "sum_of_squares":367.3316,
+    "mean_of_square":61.2219,
+    "F_statistic ":59.2169,
+    "p_value":0.0
+  },
+  {
+    "week":"week21",
+    "df":6,
+    "sum_of_squares":127.1569,
+    "mean_of_square":21.1928,
+    "F_statistic ":22.7776,
+    "p_value":0.0
+  },
+  {
+    "week":"week22",
+    "df":6,
+    "sum_of_squares":828.402,
+    "mean_of_square":138.067,
+    "F_statistic ":83.9688,
+    "p_value":0.0
+  }
+]

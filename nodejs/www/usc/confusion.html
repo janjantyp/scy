@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Tukey P-Value Matrix (เลือกช่วงสัปดาห์)</title>
+  <link rel="stylesheet" href="navbarconf.css">
+  <style>
+    body {
+      margin: 0;
+      padding-top: 5rem;
+      font-family: 'Kanit', sans-serif;
+    }
+
+    .main-content {
+      padding: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    #controls {
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
+    #controls label {
+      font-size: 1rem;
+      /* ปรับขนาดตัวอักษรให้ใหญ่ขึ้น */
+      font-weight: bold;
+      /* ทำให้ข้อความเป็นตัวหนา */
+      color: #333;
+      /* เปลี่ยนสีข้อความ */
+      margin-right: 10px;
+      /* เพิ่มระยะห่างจากเมนู */
+    }
+
+    #controls select {
+      font-size: 1rem;
+      /* ปรับขนาดตัวอักษรให้ใหญ่ขึ้น */
+      padding: 7px 15px;
+      /* เพิ่ม padding เพื่อให้ดูใหญ่ขึ้น */
+      margin-right: 20px;
+      /* เพิ่มระยะห่างระหว่าง dropdowns */
+      border-radius: 8px;
+      /* ทำให้ขอบมนขึ้น */
+      border: 1px solid #ccc;
+      /* เพิ่มเส้นขอบเล็กน้อย */
+      background-color: #f9f9f9;
+      /* เปลี่ยนสีพื้นหลังให้เป็นสีเทาอ่อน */
+      cursor: pointer;
+      /* แสดงสัญลักษณ์มือเมื่อเอาเมาส์ไปชี้ */
+      transition: background-color 0.3s ease;
+      /* เพิ่ม transition */
+    }
+
+    .grid-container {
+      display: grid;
+      grid-template-columns: 2fr 2fr;
+      gap: 40px;
+      align-items: stretch;
+      padding: 50px;
+      /* เพิ่ม padding ให้ใหญ่ขึ้น */
+      background-color: #fff;
+      border-radius: 20px;
+      max-width: 1300px;
+      /* กำหนดความกว้างสูงสุด */
+      margin: 0 auto;
+      /* จัดให้อยู่กึ่งกลางหน้าจอ */
+    }
+
+    .matrix-chart {
+      width: 100%;
+      height: 450px;
+      /* กำหนดความสูงคงที่แทน height: 100% */
+      min-height: 450px;
+      /* อาจกำหนดด้วยเพื่อกันกรณีเล็กมาก */
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      display: flex;
+    }
+
+    @media (max-width: 768px) {
+      .grid-container {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav class="navbar">
+    <ul class="navbar-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="3d.html">Urban Street Canyon</a></li>
+      <li><a href="boxplot.html">ANOVA</a></li>
+      <li><a href="Tukey.html">Report</a></li>
+    </ul>
+  </nav>
+
+  <div class="main-content">
+    <h2>Tukey P-Value Matrix</h2>
+
+    <div id="controls">
+      <label for="pollutant">เลือกมลพิษ: </label>
+      <select id="pollutant">
+        <option value="pm25">PM2.5</option>
+        <option value="pm10">PM10</option>
+      </select>
+
+      <label for="week-range">เลือกช่วงสัปดาห์: </label>
+      <select id="week-range"></select>
+    </div>
+
+    <!-- 4 บล็อกแสดงกราฟ -->
+    <div class="grid-container">
+      <div id="matrix1" class="matrix-chart"></div>
+      <div id="matrix2" class="matrix-chart"></div>
+      <div id="matrix3" class="matrix-chart"></div>
+      <div id="matrix4" class="matrix-chart"></div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+  <script>
+    const charts = [
+      echarts.init(document.getElementById('matrix1')),
+      echarts.init(document.getElementById('matrix2')),
+      echarts.init(document.getElementById('matrix3')),
+      echarts.init(document.getElementById('matrix4'))
+    ];
+
+    let jsonData = [];
+    let allWeeks = [];
+
+    async function loadData() {
+      const pollutant = document.getElementById('pollutant').value;
+      const response = await fetch(`tukey_results_${pollutant}.json`);
+      jsonData = await response.json();
+
+      allWeeks = [...new Set(jsonData.map(d => d.week))].sort((a, b) => a - b);
+      populateWeekDropdown();
+      loadAndRender();
+    }
+
+    function populateWeekDropdown() {
+      const weekSelect = document.getElementById('week-range');
+      weekSelect.innerHTML = '';
+      const totalWeeks = allWeeks.length;
+      const groupSize = 2; // <-- แก้ไข: เปลี่ยนเป็น 2 สัปดาห์ต่อช่วง
+
+      for (let i = 0; i < totalWeeks; i += groupSize) {
+        const start = allWeeks[i];
+        const end = allWeeks[Math.min(i + groupSize - 1, totalWeeks - 1)];
+        const option = document.createElement('option');
+        option.value = `${start}-${end}`;
+        option.textContent = `สัปดาห์ ${start} - ${end}`; // <-- แก้ไข: แสดงผลเป็นช่วง
+        weekSelect.appendChild(option);
+      }
+    }
+
+    function loadAndRender() {
+      const selectedRange = document.getElementById('week-range').value;
+      const [start, end] = selectedRange.split('-').map(Number);
+      const weeksToShow = allWeeks.filter(w => w >= start && w <= end);
+
+      // ซ่อนกราฟที่ไม่ต้องการแสดงโดยใช้ display: 'none'
+      charts.forEach((chart, idx) => {
+        const chartElement = chart.getDom();
+        if (idx < weeksToShow.length) {
+          const selectedWeek = weeksToShow[idx];
+          const weekData = jsonData.filter(d => d.week === selectedWeek);
+          renderChart(chart, weekData, selectedWeek);
+          chartElement.style.display = 'flex'; // แสดงกราฟ
+        } else {
+          chart.clear();
+          chartElement.style.display = 'none'; // ซ่อนกราฟ
+        }
+      });
+    }
+
+    function renderChart(chart, weekData, selectedWeek) {
+      const groups = Array.from(new Set(weekData.flatMap(d => [d.group1, d.group2]))).sort();
+      const n = groups.length;
+      const matrix = Array.from({ length: n }, () => Array(n).fill(null));
+
+      weekData.forEach(d => {
+        const i = groups.indexOf(d.group1);
+        const j = groups.indexOf(d.group2);
+        matrix[i][j] = d.p_value;
+        matrix[j][i] = d.p_value;
+      });
+
+      const data = [];
+      for (let i = 0; i < n; i++) {
+        for (let j = 0; j < n; j++) {
+          data.push([i, j, matrix[i][j] ?? 1.0]);
+        }
+      }
+
+      chart.setOption({
+        title: {
+          text: `สัปดาห์ ${selectedWeek}`,
+          left: 'center',
+          top: 10,
+          textStyle: { fontSize: 14, fontWeight: 'bold' }
+        },
+        tooltip: {
+          position: 'top',
+          formatter: params =>
+            `${groups[params.value[0]]} vs ${groups[params.value[1]]}<br>` +
+            `p-value: <b>${params.value[2].toFixed(4)}</b>`
+        },
+        grid: { top: 50, left: 70, right: 20, bottom: 60 },
+        xAxis: {
+          type: 'category',
+          data: groups,
+          splitArea: { show: true },
+          axisLabel: { rotate: 30 }
+        },
+        yAxis: {
+          type: 'category',
+          data: groups,
+          splitArea: { show: true }
+        },
+        visualMap: {
+          min: 0,
+          max: 1,
+          calculable: false,
+          orient: 'horizontal',
+          left: 'center',
+          bottom: 0,
+          inRange: {
+            color: ['#99FFCC', '#ffffbf', '#d73027']
+          }
+        },
+        series: [{
+          type: 'heatmap',
+          data: data,
+          label: {
+            show: true,
+            formatter: p => p.value[2].toFixed(3)
+          },
+          emphasis: {
+            itemStyle: {
+              shadowBlur: 10,
+              shadowColor: 'rgba(0, 0, 0, 0.5)'
+            }
+          }
+        }]
+      });
+      chart.resize(); // ปรับขนาดกราฟเมื่อแสดงผล
+    }
+
+    document.getElementById('pollutant').addEventListener('change', loadData);
+    document.getElementById('week-range').addEventListener('change', loadAndRender);
+    window.addEventListener('resize', () => {
+      charts.forEach(chart => chart.resize());
+    });
+    loadData();
+  </script>
+</body>
+
+</html>

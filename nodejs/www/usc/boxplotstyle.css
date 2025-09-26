@@ -1,0 +1,143 @@
+/* Simple reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: Kanit, sans-serif;
+}
+
+/* body padding เพื่อไม่ให้ทับ navbar */
+body {
+  padding-top: 120px;
+  background: #f5f6f7;
+}
+
+/* Floating centered navbar */
+nav.navbar {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  max-width: 1200px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 1rem 2rem;
+  min-height: 70px;
+
+  background-color: rgba(255, 255, 255, 0.92);
+  border-radius: 20px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+
+  pointer-events: none;
+  z-index: 10000;
+}
+
+/* ให้ element ภายในใช้งานได้ */
+nav.navbar * {
+  pointer-events: auto;
+}
+
+/* ul reset & center */
+.navbar-links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 1.6rem;
+  align-items: center;
+}
+
+.navbar-links li {
+  margin: 0;
+}
+
+.navbar-links a {
+  text-decoration: none;
+  color: #3b3b3b;
+  font-size: 1rem;
+  padding: 6px 8px;
+  border-radius: 8px;
+}
+
+.navbar-links a:hover {
+  color: #636566;
+  /* สีของตัวอักษรเปลี่ยนเป็นสีฟ้า */
+  background-color: rgba(187, 178, 178, 0.249);
+  /* เพิ่มสีพื้นหลังอ่อนๆ ให้เหมือนในรูป */
+  box-shadow: 0 0 0 15px rgba(187, 178, 178, 0.249);
+  /* สร้างเงาเป็นกรอบสีฟ้าจางๆ */
+  border-radius: 5px;
+}
+
+.navbar-links a:visited {
+  color: #5a5858;
+}
+
+.navbar-links a:active {
+  color: #777071;
+  /* เปลี่ยนสีเมื่อกำลังคลิก (กดเมาส์ค้าง) */
+}
+
+/* ---- ตรงนี้เพิ่มเข้ามาเพื่อจัด h2 + ปุ่มตรงกลาง ---- */
+.content-header {
+  display: flex;
+  flex-direction: column;
+  /* เรียง h2 กับปุ่มแนวตั้ง */
+  align-items: center;
+  /* จัดกึ่งกลางแนวนอน */
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.content-header h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.button-group button {
+  padding: 0.5rem 1.2rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 10px;
+  background: #f0f0f0;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.button-group button:hover {
+  background: #ddd;
+}
+
+/* -------------------------------------------------------- */
+
+/* ตัวอย่างเนื้อหายาวด้านล่าง */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.box {
+  height: 900px;
+  background: linear-gradient(#fff, #eee);
+  border-radius: 8px;
+  padding: 2rem;
+}

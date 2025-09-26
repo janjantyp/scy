@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+        <meta charset="UTF-8">
+        <title>Graphs</title>
+
+
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;700&display=swap">
+
+        <style>
+                body {
+                        margin: 0;
+                        padding-top: 5rem;
+                        font-family: 'Kanit', sans-serif;
+                }
+
+                .main-content {
+                        padding: 20px;
+                        max-width: 900px;
+                        margin: 50px auto 0 auto;
+                }
+
+                h2 {
+                        text-align: center;
+                        margin-bottom: 20px;
+                }
+
+                /* container ของกราฟแท่ง */
+                #bar-chart-container {
+                        width: 90%;
+                        height: 400px;
+                        margin: 20px auto;
+                }
+
+                /* container ของกราฟโดนัท */
+                #pie-chart-container {
+                        width: 90%;
+                        height: 400px;
+                        /* ปรับให้เล็กลง */
+                        margin: 20px auto;
+                }
+
+                .navbar {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        padding: 0.75rem 2rem;
+                        background-color: #FFFFFF;
+                        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                        position: fixed;
+                        width: 100%;
+                        max-width: 1200px;
+                        top: 0;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        z-index: 6000;
+                        font-family: 'Kanit', sans-serif;
+                }
+        </style>
+</head>
+
+<body>
+
+        <div class="main-content">
+                <div id="bar-chart-container"></div>
+
+                <div id="pie-chart-container"></div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+
+        <script>
+                // --- กราฟแท่ง ---
+                const barChart = echarts.init(document.getElementById('bar-chart-container'));
+
+                const barOption = {
+                        title: {
+                                text: `ข้อมูลช่วงปีของภาพที่ได้จาก Google Street View`,
+                                left: 'center'
+                        },
+                        tooltip: {
+                                trigger: 'axis',
+                                axisPointer: { type: 'shadow' }
+                        },
+                        grid: { left: '5%', right: '5%', bottom: '5%', containLabel: true },
+                        xAxis: [{ type: 'category', data: ['2011', '2013', '2014', '2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024', '2025'], axisTick: { alignWithLabel: true } }],
+                        yAxis: [{ type: 'value' }],
+                        series: [{
+                                name: 'จำนวนภาพ',
+                                type: 'bar',
+                                barWidth: '50%',
+                                data: [81, 16, 667, 41, 115, 130, 419, 278, 1593, 1800, 2116, 51, 21267, 120]
+                        }]
+                };
+
+                barChart.setOption(barOption);
+
+                // --- กราฟโดนัท ---
+                const pieChart = echarts.init(document.getElementById('pie-chart-container'));
+                const DATA_FILE = 'label_and_pollution.geojson';
+
+                const nameMap = {
+                        'non_canyon': 'Non canyon',
+                        'on_viaduct': 'On viaduct',
+                        'under_viaduct': 'Under viaduct',
+                        '0_hw_1': '0<H/W<1',
+                        '1_hw_2': '1<H/W<2',
+                        '2_hw_4': '2<H/W<4',
+                        'hw_4': 'H/W>4'
+                };
+
+                const desiredOrder = [
+                        'Non canyon',
+                        'On viaduct',
+                        'Under viaduct',
+                        '0<H/W<1',
+                        '1<H/W<2',
+                        '2<H/W<4',
+                        'H/W>4'
+                ];
+
+                async function loadDataAndRenderPie() {
+                        try {
+                                const response = await fetch(DATA_FILE);
+                                const geojson = await response.json();
+
+                                const counts = {};
+                                geojson.features.forEach(f => {
+                                        const rawLabel = f.properties.label;
+                                        const readable = nameMap[rawLabel] || rawLabel;
+                                        counts[readable] = (counts[readable] || 0) + 1;
+                                });
+
+                                const chartData = Object.keys(counts).map(label => ({
+                                        value: counts[label],
+                                        name: label
+                                }));
+
+                                const sortedChartData = desiredOrder
+                                        .map(name => chartData.find(item => item.name === name))
+                                        .filter(item => item !== undefined);
+
+
+                                const pieOption = {
+                                        title: {
+                                                text: `จำนวนของหุบเมืองแต่ละประเภท`,
+                                                left: 'center'
+                                        },
+                                        tooltip: {
+                                                trigger: 'item',
+                                                formatter: '{b}<br/>จำนวน: {c} ({d}%)'
+                                        },
+                                        legend: {
+                                                orient: 'vertical',
+                                                // ปรับตำแหน่ง Legend ให้ใกล้กับกราฟมากที่สุด
+                                                left: '70%',
+                                                top: 'middle',
+                                                itemGap: 8,
+                                                itemWidth: 18,
+                                                itemHeight: 12,
+                                                textStyle: {
+                                                        fontSize: 12
+                                                },
+                                                data: desiredOrder
+                                        },
+                                        series: [{
+                                                name: 'จำนวนหุบเมือง',
+                                                type: 'pie',
+                                                radius: ['40%', '70%'],
+                                                // ปรับตำแหน่งกราฟให้เหมาะสมกับ Legend ที่ย้ายมา
+                                                center: ['40%', '50%'],
+                                                avoidLabelOverlap: false,
+                                                itemStyle: {
+                                                        borderRadius: 10,
+                                                        borderColor: '#fff',
+                                                        borderWidth: 2
+                                                },
+                                                label: {
+                                                        show: false,
+                                                        position: 'center'
+                                                },
+                                                emphasis: {
+                                                        label: {
+                                                                show: true,
+                                                                fontSize: 22,
+                                                                fontWeight: 'bold',
+                                                                formatter: '{b}\n{d}%'
+                                                        }
+                                                },
+                                                labelLine: {
+                                                        show: false
+                                                },
+                                                data: sortedChartData
+                                        }]
+                                };
+
+                                pieChart.setOption(pieOption);
+
+                        } catch (error) {
+                                console.error("Error loading pie data:", error);
+                        }
+                }
+
+                loadDataAndRenderPie();
+        </script>
+</body>
+
+</html>

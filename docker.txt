@@ -1,0 +1,8 @@
+## run dockrt
+docker compose up 
+
+## stop docker 
+docker compose stop
+
+## remove all container
+docker compose down

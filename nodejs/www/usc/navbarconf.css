@@ -1,0 +1,137 @@
+/* Base Styles */
+body {
+    font-family: 'Kanit', sans-serif;
+    margin: 0;
+    padding-top: 5rem;
+    /* กำหนดช่องว่างด้านบนสำหรับ Navbar */
+    background-color: #f8f9fa;
+    /* สีพื้นหลังอ่อนๆ */
+    color: #343a40;
+    /* สีข้อความหลัก */
+}
+
+h2 {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.navbar {
+    /* Position and Layout */
+    position: fixed;
+    top: 20px;
+    /* เลื่อนลงมาจากขอบบน 20px */
+    left: 50%;
+    transform: translateX(-50%);
+    /* จัดให้อยู่กึ่งกลางหน้าจอแนวนอน */
+    z-index: 6000;
+    width: 80%;
+    max-width: 1200px;
+
+    display: flex;
+    justify-content: center;
+    /* จัดให้ลิงก์อยู่กึ่งกลาง */
+    align-items: center;
+
+    /* Appearance */
+    padding: 1rem 2rem;
+    min-height: 40px;
+    background-color: rgba(255, 255, 255, 0.9);
+    /* สีพื้นหลังขาวโปร่งใสเล็กน้อย */
+    border-radius: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    /* เพิ่มเงาให้ดูมีมิติ */
+}
+
+/* Navbar Links */
+.navbar-links {
+    list-style: none;
+    font-size: 1.2rem;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 4rem;
+    /* เพิ่มช่องว่างระหว่างลิงก์ */
+}
+
+.navbar-links li a {
+    text-decoration: none;
+    color: #686868;
+    font-size: 1.1rem;
+    font-weight: 500;
+    /*transition: color 0.3s ease;*/
+    /* เพิ่ม transition ให้การเปลี่ยนสีดูนุ่มนวล */
+}
+
+.navbar-links li a:hover {
+    color: #636566;
+    /* สีของตัวอักษรเปลี่ยนเป็นสีฟ้า */
+    background-color: rgba(187, 178, 178, 0.249);
+    /* เพิ่มสีพื้นหลังอ่อนๆ ให้เหมือนในรูป */
+    box-shadow: 0 0 0 22px rgba(187, 178, 178, 0.249);
+    /* สร้างเงาเป็นกรอบสีฟ้าจางๆ */
+    border-radius: 5px;
+}
+
+
+.navbar-contact .contact-button:hover {
+    background-color: #0056b3;
+}
+
+/* Controls and Buttons */
+.controls {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+button {
+    font-family: 'Kanit', sans-serif;
+    font-size: 1rem;
+    padding: 10px 25px;
+    margin: 0 10px;
+    border: 1px solid #007BFF;
+    border-radius: 25px;
+    background-color: #FFFFFF;
+    color: #007BFF;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    background-color: #999b9d;
+    color: #FFFFFF;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Chart container */
+#trend {
+    width: 90%;
+    max-width: 1000px;
+    height: 500px;
+    margin: 0 auto;
+    border: 1px solid #e9ecef;
+    background-color: #FFFFFF;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    padding: 20px;
+}
+
+/* Error box */
+#error-box {
+    color: #dc3545;
+    /* สีแดงเข้ม */
+    background: #f8d7da;
+    /* พื้นหลังสีอ่อน */
+    border: 1px solid #f5c6cb;
+    padding: 20px;
+    margin: 20px auto;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-radius: 8px;
+    text-align: center;
+    display: none;
+    width: 90%;
+    max-width: 800px;
+}
