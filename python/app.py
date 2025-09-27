@@ -49,9 +49,9 @@ class Box(BaseModel):
 
 class PredictionResponse(BaseModel):
     boxes: List[Box]
-    # cannotated_image_base64: Optional[str] = None  # data:image/png;base64,...
-    width: int
-    height: int
+    image_width: int
+    image_height: int
+    annotated_image: str
 
 
 @app.on_event("startup")
@@ -200,3 +200,78 @@ async def predict_image_from_url(
 
     height, width = img.shape[:2]
     return PredictionResponse(boxes=boxes, annotated_image_base64=data_uri, width=width, height=height)
+
+
+@app.post("/usc_api/predict_url2", response_model=PredictionResponse)
+async def predict_image_from_url(
+    url: str = Body(..., embed=True),
+    conf: float = Query(0.25),
+    iou: float = Query(0.45),
+    imgsz: int = Query(640)
+):
+    """
+    Provide an image URL (e.g. Google Street View) and get YOLO predictions.
+    """
+    print("Received URL:", url)
+    MODEL = YOLO("best_mAP50.pt")
+    if MODEL is None:
+        raise HTTPException(status_code=503, detail="Model not loaded yet")
+
+    try:
+        response = requests.get(url)
+        response.raise_for_status()
+    except Exception as e:
+        raise HTTPException(
+            status_code=400, detail=f"Could not download image: {e}")
+
+    try:
+        img = read_imagefile(response.content)
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Invalid image data: {e}")
+
+    results = MODEL.predict(source=img, imgsz=imgsz,
+                            conf=conf, iou=iou, verbose=False)
+
+    boxes = []
+    if len(results):
+        res = results[0]
+
+        # Use YOLO's built-in plotting - IT ALREADY DRAWS LABELS!
+        annotated_np = res.plot()  # This draws boxes + labels + confidence!
+
+        # Extract box data
+        xyxy = res.boxes.xyxy.cpu().numpy()
+        confs = res.boxes.conf.cpu().numpy()
+        cls_ids = res.boxes.cls.cpu().numpy().astype(int)
+        names = MODEL.model.names if hasattr(
+            MODEL, "model") and hasattr(MODEL.model, "names") else {}
+
+        for (x1, y1, x2, y2), c, cls in zip(xyxy, confs, cls_ids):
+            boxes.append({
+                "xmin": float(x1),
+                "ymin": float(y1),
+                "xmax": float(x2),
+                "ymax": float(y2),
+                "confidence": float(c),
+                "class_id": int(cls),
+                "class_name": names.get(cls, str(cls))
+            })
+    else:
+        annotated_np = img
+
+    # Convert BGR to RGB for encoding
+    success, buffer = cv2.imencode(".png", annotated_np)
+    if not success:
+        raise HTTPException(status_code=500, detail="Failed to encode image")
+
+    b64 = base64.b64encode(buffer.tobytes()).decode("utf-8")
+    data_uri = f"data:image/png;base64,{b64}"
+
+    height, width = img.shape[:2]
+
+    return PredictionResponse(
+        boxes=boxes,
+        image_width=width,
+        image_height=height,
+        annotated_image=data_uri
+    )

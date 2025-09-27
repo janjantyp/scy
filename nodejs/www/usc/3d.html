@@ -239,25 +239,25 @@
     box-shadow:0 2px 8px rgba(0,0,0,0.2); z-index:10;">
     <b>Legend</b><br>
     <i
-      style="background:#00FF00;width:18px;height:18px;display:inline-block;margin-right:6px;border:1px solid #ccc;"></i>
+      style="background:#c1f868;width:18px;height:18px;display:inline-block;margin-right:6px;border:1px solid #ccc;"></i>
     Non canyon<br>
     <i
-      style="background:#66FF00;width:18px;height:18px;display:inline-block;margin-right:6px;border:1px solid #ccc;"></i>
+      style="background:#a0d534;width:18px;height:18px;display:inline-block;margin-right:6px;border:1px solid #ccc;"></i>
     On viaduct<br>
     <i
-      style="background:#CCFF00;width:18px;height:18px;display:inline-block;margin-right:6px;border:1px solid #ccc;"></i>
+      style="background:#fdf73d;width:18px;height:18px;display:inline-block;margin-right:6px;border:1px solid #ccc;"></i>
     Under viaduct<br>
     <i
-      style="background:#FFFF00;width:18px;height:18px;display:inline-block;margin-right:6px;border:1px solid #ccc;"></i>
+      style="background:#f2d371;width:18px;height:18px;display:inline-block;margin-right:6px;border:1px solid #ccc;"></i>
     0&lt;H/W&lt;1<br>
     <i
-      style="background:#FFCC00;width:18px;height:18px;display:inline-block;margin-right:6px;border:1px solid #ccc;"></i>
+      style="background:#f67604;width:18px;height:18px;display:inline-block;margin-right:6px;border:1px solid #ccc;"></i>
     1&lt;H/W&lt;2<br>
     <i
-      style="background:#Ff6600;width:18px;height:18px;display:inline-block;margin-right:6px;border:1px solid #ccc;"></i>
+      style="background:#f90f06;width:18px;height:18px;display:inline-block;margin-right:6px;border:1px solid #ccc;"></i>
     2&lt;H/W&lt;4<br>
     <i
-      style="background:#FF0000;width:18px;height:18px;display:inline-block;margin-right:6px;border:1px solid #ccc;"></i>
+      style="background:#d7191c;width:18px;height:18px;display:inline-block;margin-right:6px;border:1px solid #ccc;"></i>
     H/W&gt;4<br>
 
   </div>
@@ -463,7 +463,7 @@
     const map = new maplibregl.Map({
       container: 'map',
       style: 'https://tiles.openfreemap.org/styles/bright',
-      center: [98.952046, 18.805586],
+      center: [98.966648, 18.798591],
       zoom: 16.5,
       pitch: 45,
       bearing: -17.6,
@@ -497,13 +497,13 @@
         paint: {
           // 'circle-radius':['interpolate',['linear'],['get','PM25'],0,2,50,6,100,12],
           'circle-color': ['match', ['get', 'label'],
-            'non_canyon', '#00FF00',
-            '0_hw_1', '#FFFF00',
-            '1_hw_2', '#FFCC00',
-            '2_hw_4', '#Ff6600',
-            'hw_4', '#FF0000',
-            'on_viaduct', '#66FF00',
-            'under_viaduct', '#CCFF00',
+            'non_canyon', '#c1f868',
+            '0_hw_1', '#f2d371',
+            '1_hw_2', '#f67604',
+            '2_hw_4', '#f90f06',
+            'hw_4', '#d7191c',
+            'on_viaduct', '#a0d534',
+            'under_viaduct', '#fdf73d',
             '#3498db'],
           'circle-opacity': 0.85,
           'circle-stroke-color': '#fff',

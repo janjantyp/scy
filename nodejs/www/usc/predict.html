@@ -29,10 +29,10 @@
 
         <nav class="navbar">
                 <ul class="navbar-links">
-                        <li><a href="index.html">HOME</a></li>
-                        <li><a href="3d.html">USC</a></li>
+                        <li><a href="index.html">Home</a></li>
                         <li><a href="boxplot.html">ANOVA</a></li>
-                        <li><a href="confusion.html">TUKEY'HSD</a></li>
+                        <li><a href="confusion.html">Tukey HSD</a></li>
+                        <li><a href="3d.html">USC</a></li>
                 </ul>
         </nav>
 
@@ -70,11 +70,60 @@
                 </div>
         </div>
 
-
-
         <script src="https://unpkg.com/maplibre-gl@5.7.1/dist/maplibre-gl.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
         <script>
+                function escapeHtml(text) { if (!text) return text; return text.replace(/</g, "&lt;"); }
+
+                function showChartOverlay(p) {
+                        let weeks = [], pm25 = [], pm10 = [];
+                        for (let w = 1; w <= 22; w++) {
+                                weeks.push("Week " + w);
+                                pm25.push(Number(p['PM25_Week' + w]) || null);
+                                pm10.push(Number(p['PM10_Week' + w]) || null);
+                        }
+                        document.getElementById('overlayLocation').innerText = `Lat: ${p.latitude || '-'}, Lng: ${p.longitude || '-'}`;
+                        document.getElementById('overlayTitle').innerHTML = `${escapeHtml(p.label) || 'No label'} | Conf: ${p.conf || '-'}`;
+                        document.getElementById('chartOverlay').style.display = 'block';
+
+                        // สร้างกราฟ ECharts
+                        const chartDom = document.getElementById('overlayChart');
+                        const myChart = echarts.init(chartDom);
+
+                        const option = {
+                                tooltip: { trigger: 'axis' },
+                                legend: { data: ['PM2.5', 'PM10'], bottom: 0 },
+                                grid: { top: 40, left: 50, right: 30, bottom: 50 },
+                                xAxis: { type: 'category', data: weeks },
+                                yAxis: { type: 'value', name: 'ค่าฝุ่น (µg/m³)' },
+                                series: [
+                                        {
+                                                name: 'PM2.5',
+                                                type: 'line',
+                                                data: pm25,
+                                                smooth: true,
+                                                symbolSize: 6,
+                                                lineStyle: { width: 3, color: '#1976d2' },
+                                                itemStyle: { color: '#1976d2' }
+                                        },
+                                        {
+                                                name: 'PM10',
+                                                type: 'line',
+                                                data: pm10,
+                                                smooth: true,
+                                                symbolSize: 6,
+                                                lineStyle: { width: 3, color: '#f39c12' },
+                                                itemStyle: { color: '#f39c12' }
+                                        }
+                                ]
+                        };
+
+                        myChart.setOption(option);
+                }
+
+                document.getElementById('chartOverlayBack').onclick = function () {
+                        document.getElementById('chartOverlay').style.display = 'none';
+                };
 
                 const map = new maplibregl.Map({
                         container: 'map',
@@ -88,13 +137,18 @@
 
                 async function predictFromStreetView(url) {
                         console.log("Sending URL to prediction API:", url);
-                        const res = await fetch("https://geodev.fun/usc_api/predict_url", {
+                        // const res = await fetch("https://geodev.fun/usc_api/predict_url", {
+                        const res = await fetch("http://localhost:6504/usc_api/predict_url2", {
                                 method: "POST",
                                 headers: { "Content-Type": "application/json" },
                                 body: JSON.stringify({ url })
                         });
                         const data = await res.json();
                         console.log("Predictions:", data);
+
+                        //  add img src 
+                        document.getElementById("annotated_image").src = data.annotated_image;
+
                         // document.getElementById("result").src = data.annotated_image_base64;
                         document.getElementById("class").innerText = `${data.boxes[0].class_name}`;
                         document.getElementById("conf").innerText = `${data.boxes[0].confidence.toFixed(3)}`;
@@ -171,11 +225,10 @@
                                                 <div><b>Label:</b>&nbsp;<span id="class"></span></div>
                                                 <div><b>Conf:</b>&nbsp;<span id="conf"></span></div>
 
-                                                <img src="${url}"
+                                                <img id="annotated_image"
                                                 alt="H/W Ratio"
                                                 style="width:100%;margin-top:8px;border-radius:6px;box-shadow:0 2px 6px #ccc;">
                                                 <hr>
-                                        
                                         </div>
                                         </div>
                                 `;
