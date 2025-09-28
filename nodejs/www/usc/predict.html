@@ -22,6 +22,37 @@
                         width: 100%;
                         height: 100%;
                 }
+
+                #loading-overlay {
+                        position: fixed;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        background: rgba(0, 0, 0, 0.6);
+                        /* จอมืดลง */
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        color: white;
+                        font-size: 2rem;
+                        font-family: 'Kanit', sans-serif;
+                        z-index: 10000;
+                }
+
+                .loader {
+                        animation: dance 1s infinite alternate;
+                }
+
+                @keyframes dance {
+                        from {
+                                transform: translateY(0);
+                        }
+
+                        to {
+                                transform: translateY(-12px);
+                        }
+                }
         </style>
 </head>
 
@@ -37,6 +68,10 @@
         </nav>
 
         <div id="map"></div>
+
+        <div id="loading-overlay" style="display:none;">
+                <div class="loader">Predicting...</div>
+        </div>
 
         <div id="chartOverlay" style="display:none; position:fixed; left:0; top:0; width:100vw; height:100vh;
   background:#f8fbfe; z-index:5000; overflow:auto;">
@@ -137,24 +172,39 @@
 
                 async function predictFromStreetView(url) {
                         console.log("Sending URL to prediction API:", url);
-                        // const res = await fetch("https://geodev.fun/usc_api/predict_url", {
-                        const res = await fetch("https://geodev.fun/usc_api/predict_url2", {
-                                method: "POST",
-                                headers: { "Content-Type": "application/json" },
-                                body: JSON.stringify({ url })
-                        });
-                        const data = await res.json();
-                        console.log("Predictions:", data);
 
-                        //  add img src 
-                        document.getElementById("annotated_image").src = data.annotated_image;
+                        showLoading();
 
-                        // document.getElementById("result").src = data.annotated_image_base64;
-                        document.getElementById("class").innerText = `${data.boxes[0].class_name}`;
-                        document.getElementById("conf").innerText = `${data.boxes[0].confidence.toFixed(3)}`;
+                        try {
+                                // const res = await fetch("https://geodev.fun/usc_api/predict_url", {
+                                const res = await fetch("http://localhost:6504/usc_api/predict_url2", {
+                                        method: "POST",
+                                        headers: { "Content-Type": "application/json" },
+                                        body: JSON.stringify({ url })
+                                });
+                                const data = await res.json();
+                                console.log("Predictions:", data);
+
+                                //  add img src 
+                                document.getElementById("annotated_image").src = data.annotated_image;
+
+                                // document.getElementById("result").src = data.annotated_image_base64;
+                                document.getElementById("class").innerText = `${data.boxes[0].class_name}`;
+                                document.getElementById("conf").innerText = `${data.boxes[0].confidence.toFixed(3)}`;
+                        } catch (error) {
+                                console.error("Error during prediction:", error);
+                                alert("เกิดข้อผิดพลาดในการประมวลผลภาพ โปรดลองอีกครั้ง.");
+                        } finally {
+                                hideLoading();
+                        }
+                }
+                function showLoading() {
+                        document.getElementById('loading-overlay').style.display = 'flex';
                 }
 
-
+                function hideLoading() {
+                        document.getElementById('loading-overlay').style.display = 'none';
+                }
                 map.on('load', () => {
                         map.addSource('openfreemap', { url: 'https://tiles.openfreemap.org/planet', type: 'vector' });
                         map.addLayer({
@@ -226,7 +276,7 @@
                                                 <div><b>Conf:</b>&nbsp;<span id="conf"></span></div>
 
                                                 <img id="annotated_image"
-                                                alt="H/W Ratio"
+                                                alt="Loading image..."
                                                 style="width:100%;margin-top:8px;border-radius:6px;box-shadow:0 2px 6px #ccc;">
                                                 <hr>
                                         </div>
