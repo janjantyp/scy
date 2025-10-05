@@ -166,12 +166,6 @@ body {
   margin-right: 5px;
 }
 
-.about-image-container {
-  flex: 1;
-  max-width: 500px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
 .about-image {
   width: 100%;
   height: auto;
@@ -298,4 +292,61 @@ body {
 
 html {
   scroll-behavior: smooth;
+}
+
+/* --- About Section --- */
+.about-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  padding: 80px 5%;
+  background-color: #fff;
+}
+
+.about-content {
+  /* ใช้ .about-content แทน .div-about-content */
+  flex: 1;
+  max-width: 600px;
+  /* เพิ่มกรอบและ Padding */
+  border: 3px solid #f0f0f0;
+  /* ปรับขนาดและสีตามที่ต้องการ */
+  background-color: #f0f0f0;
+  padding: 20px;
+  /* เพิ่มระยะห่างภายในกรอบ */
+  border-radius: 30px;
+  /* ทำให้มุมมน */
+}
+
+.about-text {
+  line-height: 1.8;
+  color: #666;
+  margin-bottom: 20px;
+
+  /* ******* เพิ่มโค้ดนี้ ******* */
+  text-align: justify;
+  /* *************************** */
+}
+
+.about-image-container {
+  flex: 1;
+  max-width: 500px;
+  /*box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);*/
+}
+
+.about-image {
+  width: 100%;
+  height: auto;
+  display: block;
+
+  /* สไตล์และระยะห่าง */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  margin-bottom: 25px;
+  /* กำหนดระยะห่างเฉพาะรูปภาพแรก */
+}
+
+/* ลบ margin ด้านล่างออกจากรูปภาพตัวสุดท้าย */
+.about-image.second-image {
+  margin-bottom: 0;
 }
