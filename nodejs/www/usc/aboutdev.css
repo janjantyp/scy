@@ -1,0 +1,462 @@
+/* style.css (แก้ไขเพื่อให้ 2 บล็อกอยู่ตรงกลางอย่างถูกต้อง) */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+
+
+:root {
+        --bg-color-dark: #ffffff;
+        --bg-color-medium: rgba(218, 216, 216, 0.8);
+        --text-color-light: #5d5a5a;
+        --text-color-secondary: #6b6767;
+        --accent-color: #9c7d5c;
+        /* สีฟ้า */
+        --border-color: #aaa8a8;
+        --card-bg: rgba(255, 255, 255, 0.8);
+        --icon-bg: #cccccc;
+        --font-family: 'Poppins', sans-serif;
+}
+
+
+* {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+}
+
+
+
+body {
+
+        font-family: var(--font-family);
+
+        background-color: var(--bg-color-dark);
+
+        color: var(--text-color-light);
+
+        line-height: 1.6;
+
+        min-height: 100vh;
+
+}
+
+
+
+a {
+        color: var(--accent-color);
+        text-decoration: none;
+        transition: color 0.3s;
+}
+
+
+
+/* --- โครงสร้างหลัก 3 คอลัมน์ --- */
+
+/* --- โครงสร้างหลัก จัดเนื้อหาให้อยู่ตรงกลางหน้าจอ --- */
+.main-wrapper {
+        position: relative;
+        padding: 20px 0;
+        min-height: 100vh;
+
+        /* This pair centers the content group horizontally on the page */
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        /* Keeps them aligned to the top */
+}
+
+/* The .container simply holds the three blocks */
+.container {
+        width: 100%;
+        max-width: 1250px;
+        margin: 0;
+}
+
+
+.three-column-layout {
+        display: flex;
+        gap: 20px;
+        align-items: flex-start;
+        justify-content: center;
+        padding-top: 50px;
+        /* เว้นที่ว่างด้านบน */
+}
+
+
+
+.page-mockup {
+        flex: 1;
+        min-width: 300px;
+        max-width: 400px;
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
+        overflow: hidden;
+        background-color: var(--bg-color-dark);
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.8);
+        height: 850px;
+        /* กำหนดความสูงคงที่เพื่อจำลองหน้าจอ */
+        display: flex;
+        flex-direction: column;
+}
+
+
+.page-content-scroll {
+        overflow-y: auto;
+        flex-grow: 1;
+        padding: 0 15px 15px 15px;
+}
+
+
+/* --- Header & Navigation (ที่ใช้ซ้ำในแต่ละบล็อก) --- */
+.header-mockup {
+        background-color: var(--bg-color-medium);
+        padding: 10px 15px;
+        border-bottom: 1px solid var(--border-color);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+}
+
+.header-mockup .logo a {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--text-color-light);
+}
+
+.header-mockup .logo span {
+        color: var(--accent-color);
+        margin-right: 3px;
+}
+
+
+
+.header-mockup .nav-links a {
+        margin-left: 10px;
+        font-size: 0.75rem;
+        padding: 5px 8px;
+        font-weight: 500;
+}
+
+.header-mockup .nav-links a.active {
+        background-color: var(--accent-color);
+        color: var(--bg-color-dark);
+        border-radius: 5px;
+}
+
+
+/* --- องค์ประกอบเฉพาะ (Blog List - คอลัมน์ซ้าย) --- */
+.blog-header {
+        text-align: center;
+}
+
+.blog-header h4 {
+        font-size: 1.1rem;
+        color: var(--text-color-secondary);
+        margin-bottom: 5px;
+        font-weight: 500;
+        padding: 20px 0;
+
+
+}
+
+.page-title {
+        font-size: 2.2rem;
+        font-weight: 700;
+        margin-bottom: 5px;
+}
+
+.page-subtitle {
+        font-size: 0.85rem;
+        color: var(--text-color-secondary);
+        margin-bottom: 25px;
+}
+
+.subscribe-btn {
+        display: block;
+        width: 80%;
+        margin: 0 auto 30px;
+        background-color: var(--accent-color);
+        color: var(--bg-color-dark);
+        padding: 10px;
+        border-radius: 5px;
+        font-weight: 600;
+        font-size: 0.9rem;
+}
+
+.blog-card {
+        background-color: var(--card-bg);
+        padding: 0px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+}
+
+.blog-card h3 {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--accent-color);
+        margin-bottom: 5px;
+}
+
+.blog-card p.excerpt {
+        font-size: 0.85rem;
+        color: var(--text-color-secondary);
+}
+
+.read-more {
+        font-size: 0.8rem;
+        margin-top: 5px;
+}
+
+.blog-meta {
+        display: flex;
+        gap: 10px;
+        color: var(--text-color-secondary);
+        font-size: 0.7rem;
+        padding-top: 8px;
+        margin-top: 8px;
+        border-top: 1px dashed var(--border-color);
+}
+
+.blog-meta i {
+        color: var(--text-color-secondary);
+        margin-right: 3px;
+}
+
+/* --- องค์ประกอบเฉพาะ (Developer Profile - คอลัมน์กลาง) --- */
+.profile-section {
+        padding: 20px 0;
+        background-size: 50px 50px;
+        height: 100%;
+}
+
+.hero-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+}
+
+.profile-card {
+        background-color: var(--card-bg);
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        width: 90%;
+        text-align: center;
+}
+
+.profile-img {
+        width: 130px;
+        height: 130px;
+        border-radius: 50%;
+        border: 3px solid var(--accent-color);
+        margin-bottom: 10px;
+        object-fit: cover;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+}
+
+.contact-links {
+        list-style: none;
+        padding-top: 10px;
+        border-top: 1px solid var(--border-color);
+        margin-top: 10px;
+        font-size: 0.8rem;
+        text-align: left;
+}
+
+.contact-links li {
+        padding: 5px 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+}
+
+.hero-info h1 {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 10px;
+}
+
+.hero-info .cta-button {
+        background-color: var(--accent-color);
+        color: var(--bg-color-dark);
+        padding: 8px 20px;
+        border-radius: 5px;
+        font-weight: 600;
+}
+
+.about-box {
+        background-color: var(--bg-color-medium);
+        margin-top: 0px;
+        padding: 15px;
+        border-radius: 6px;
+        width: 90%;
+}
+
+.about-box img {
+        width: 100%;
+        border-radius: 6px;
+        margin-top: 10px;
+        opacity: 0.8;
+}
+
+.about-box p {
+        font-size: 0.85rem;
+        color: var(--text-color-secondary);
+        margin-top: 10px;
+        line-height: 1.4;
+        text-align: justify;
+}
+
+.blog-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        margin-top: 20px;
+        padding-bottom: 20px;
+        align-items: center;
+        width: 100%;
+}
+
+.blog-grid p {
+        font-size: 0.85rem;
+        color: var(--text-color-secondary);
+        text-align: justify;
+        margin: 0;
+        padding: 0;
+        text-align: center;
+}
+
+.skills-section {
+        padding: 30px 0;
+}
+
+.skills-grid {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        flex-wrap: wrap;
+}
+
+.skills-grid p {
+        font-size: 0.65rem;
+        color: var(--text-color-secondary);
+        margin: 0;
+        text-align: center;
+}
+
+
+.skill-card {
+        background-color: var(--card-bg);
+        padding: 10px;
+        border-radius: 8px;
+        width: 80px;
+        text-align: center;
+}
+
+.skill-icon {
+        width: 40px;
+        height: 40px;
+        line-height: 40px;
+        font-size: 1.5rem;
+        background-color: var(--icon-bg);
+        border-radius: 50%;
+        margin: 0 auto 5px;
+        color: var(--accent-color);
+}
+
+/* --- องค์ประกอบเฉพาะ (Post Detail - คอลัมน์ขวา) --- */
+.post-header {
+        margin-top: 20px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid var(--border-color);
+}
+
+.post-header h1 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 5px;
+}
+
+.post-content {
+        padding: 0px 0 0px;
+        font-size: 0.9rem;
+        color: var(--text-color-secondary);
+        text-justify: inter-word;
+}
+
+.post-content img {
+        width: 100%;
+        height: auto;
+        border-radius: 8px;
+        margin: 15px 0;
+}
+
+.post-content h2 {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: var(--text-color-light);
+        margin-top: 20px;
+        margin-bottom: 10px;
+        padding-left: 5px;
+        border-left: 3px solid var(--accent-color);
+        margin: 0.8em 0 0.4em 0;
+}
+
+.post-content p {
+        margin-bottom: 20px;
+        text-align: justify;
+        text-justify: inter-word;
+        margin: 0;
+}
+
+.post-content a {
+        color: var(--accent-color);
+        font-weight: 600;
+}
+
+/* --- ส่วนเสริมสำหรับ SinanTokmak Label ด้านซ้าย --- */
+.side-label {
+        position: absolute;
+        top: 650px;
+        left: 60px;
+        /* ปรับตำแหน่งให้อยู่ตรงกลางของพื้นที่ที่เว้นไว้ */
+        transform: rotate(-90deg);
+        transform-origin: left top;
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--text-color-light);
+        letter-spacing: 5px;
+        white-space: nowrap;
+        z-index: 10;
+}
+
+.johann-leon {
+        position: absolute;
+        top: 20px;
+        left: 47%;
+        font-size: 0.8rem;
+        color: var(--text-color-secondary);
+        z-index: 10;
+        display: flex;
+        align-items: center;
+}
+
+.johann-leon .logo-j {
+        font-size: 1.5rem;
+        color: var(--accent-color);
+        margin-right: 5px;
+}
+
+.johann-leon span {
+        display: block;
+        line-height: 1.2;
+        font-weight: 600;
+}
+
+.contact-links li i {
+        /* โค้ดที่มีอยู่เดิม */
+        color: var(--text-color-light);
+
+        /* ********** เพิ่ม: กำหนดระยะห่าง 10 พิกเซลทางด้านขวา ********** */
+        margin-right: 10px;
+}
