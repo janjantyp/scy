@@ -172,7 +172,6 @@ body {
   display: block;
 }
 
-/* --- Services Section --- */
 .services-section {
   display: flex;
   justify-content: center;
@@ -183,72 +182,48 @@ body {
 
 .service-item {
   text-align: center;
+  max-width: 150px;
 }
 
 .service-item img {
-  width: 50px;
-  height: 50px;
+  filter: brightness(0) invert(1);
+  /* ทำให้รูปเป็นขาว */
+  width: 35px;
+  height: 35px;
   margin-bottom: 10px;
 }
 
 .service-item p {
-  font-size: 0.9em;
-  color: #555;
+  font-size: 0.5em;
+  color: #ffffff;
   line-height: 1.4;
 }
 
-/* --- Our Room Section --- */
-.our-room-section {
-  text-align: center;
-  padding: 80px 5%;
-  background-color: #fff;
-}
-
-.our-room-section .section-title {
-  margin-bottom: 50px;
-}
-
-.room-card {
+.services-section {
+  background-color: rgba(255, 255, 255, 0.1);
   display: flex;
+  /* จัดให้อยู่แนวนอน */
   justify-content: center;
+  /* จัดให้อยู่กลางแนวนอน */
   align-items: center;
-  gap: 40px;
-  background-color: #f9f9f9;
-  padding: 20px;
+  /* จัดให้อยู่กลางแนวตั้ง */
+  gap: 30px;
+  /* ระยะห่างระหว่างกล่อง */
+  margin-top: 40px;
+  flex-wrap: wrap;
+  /* ถ้าหน้าจอแคบ ให้ขึ้นบรรทัดใหม่อัตโนมัติ */
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  max-width: 900px;
-  margin: 0 auto;
-}
 
-.room-image-container {
-  flex: 1;
-  max-width: 450px;
-}
-
-.room-image {
   width: 100%;
-  border-radius: 5px;
-}
-
-.room-details {
-  flex: 1;
-  text-align: left;
-}
-
-.room-details h3 {
-  font-size: 2em;
-  font-weight: 700;
-  margin-bottom: 5px;
-}
-
-.room-details p {
-  color: #666;
-  margin-bottom: 10px;
-}
-
-.room-details .description {
-  line-height: 1.6;
+  /* ความกว้างของกรอบ (ปรับได้เป็น %, px, หรือ vw) */
+  height: 90px;
+  /* ความสูงของกรอบ */
+  margin-left: auto;
+  /* จัดให้อยู่กลางแนวนอน */
+  margin-right: auto;
+  /* จัดให้อยู่กลางแนวนอน */
+  padding: 20px;
+  /* เพิ่มพื้นที่ด้านในกรอบ */
 }
 
 .view-btn {
