@@ -1,2 +1,4 @@
 git config --global user.email "thunyapornbuajai@gmail.com"
 git config --global user.name "janajantyp"
+
+https://maps.googleapis.com/maps/api/streetview?size=640x640&location=18.79776229,98.96629172&heading=278.29306&pitch=0&key=AIzaSyCOxmBFILJaHcG-CKOGKSj89_mm4ENBiuQ
