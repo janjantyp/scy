@@ -1,91 +1,429 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
   <meta charset="UTF-8">
-  <title>Tukey P-Value Matrix (เลือกช่วงสัปดาห์)</title>
-  <link rel="stylesheet" href="navbarconf.css">
+  <title>Tukey HSD — Thanyaphon B.</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400&display=swap"
+    rel="stylesheet">
+
   <style>
-    body {
+    *,
+    *::before,
+    *::after {
       margin: 0;
-      padding-top: 5rem;
-      font-family: 'Kanit', sans-serif;
+      padding: 0;
+      box-sizing: border-box;
     }
 
-    .main-content {
-      padding: 20px;
-      max-width: 1200px;
+    :root {
+      --cream: #F5F0E8;
+      --stone: #8A8680;
+      --accent: #C4956A;
+      --gb: rgba(255, 255, 255, 0.13);
+      --s1: #141414;
+      --s2: #1c1c1c;
+      --border: rgba(255, 255, 255, 0.08);
+      --pm25: #C4956A;
+      --pm10: #5ba4d4;
+      --sig: #4CAF7D;
+      --nonsig: #f67604;
+    }
+
+    html,
+    body {
+      min-height: 100vh;
+      font-family: 'DM Sans', sans-serif;
+      background: #0D0D0D;
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    /* ── Topnav ── */
+    .topnav {
+      position: fixed;
+      top: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1000;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      align-items: center;
+      gap: .3rem;
+      padding: 8px 8px 8px 22px;
+      background: rgba(13, 13, 13, .88);
+      backdrop-filter: blur(20px);
+      border: .5px solid var(--gb);
+      border-radius: 100px;
+      white-space: nowrap;
+      pointer-events: none;
+    }
+
+    .topnav * {
+      pointer-events: auto;
+    }
+
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem;
+      font-weight: 300;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--cream);
+      text-decoration: none;
+      padding-right: .5rem;
+    }
+
+    .nav-logo span {
+      color: var(--accent);
+    }
+
+    .navbar-links {
+      display: flex;
+      gap: 0;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .navbar-links li a {
+      display: block;
+      text-decoration: none;
+      font-size: .72rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, .55);
+      padding: 8px 15px;
+      border-radius: 100px;
+      transition: all .2s;
+    }
+
+    .navbar-links li a:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, .08);
+    }
+
+    .navbar-links li a.active {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    /* ── Page ── */
+    .page {
+      max-width: 1100px;
       margin: 0 auto;
+      padding: 100px 2rem 4rem;
     }
 
-    h2 {
-      text-align: center;
-      margin-bottom: 20px;
+    .page-header {
+      margin-bottom: 2.5rem;
+      animation: fadeUp .7s ease both;
     }
 
-    #controls {
-      text-align: center;
-      margin-bottom: 15px;
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(16px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
-    #controls label {
-      font-size: 1rem;
-      /* ปรับขนาดตัวอักษรให้ใหญ่ขึ้น */
-      font-weight: bold;
-      /* ทำให้ข้อความเป็นตัวหนา */
-      color: #333;
-      /* เปลี่ยนสีข้อความ */
-      margin-right: 10px;
-      /* เพิ่มระยะห่างจากเมนู */
+    .page-eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: .62rem;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: .5rem;
     }
 
-    #controls select {
-      font-size: 1rem;
-      /* ปรับขนาดตัวอักษรให้ใหญ่ขึ้น */
-      padding: 7px 15px;
-      /* เพิ่ม padding เพื่อให้ดูใหญ่ขึ้น */
-      margin-right: 20px;
-      /* เพิ่มระยะห่างระหว่าง dropdowns */
-      border-radius: 8px;
-      /* ทำให้ขอบมนขึ้น */
-      border: 1px solid #ccc;
-      /* เพิ่มเส้นขอบเล็กน้อย */
-      background-color: #f9f9f9;
-      /* เปลี่ยนสีพื้นหลังให้เป็นสีเทาอ่อน */
+    .page-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 300;
+      color: var(--cream);
+      line-height: 1.05;
+    }
+
+    .page-title em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .page-desc {
+      margin-top: .6rem;
+      font-size: .82rem;
+      font-weight: 300;
+      line-height: 1.75;
+      color: rgba(255, 255, 255, .45);
+      max-width: 600px;
+    }
+
+    /* ── Stat pills ── */
+    .stat-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 1.5rem;
+      animation: fadeUp .7s ease .1s both;
+    }
+
+    .stat-pill {
+      background: var(--s2);
+      border: .5px solid var(--border);
+      border-radius: 12px;
+      padding: .7rem 1.1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      min-width: 130px;
+    }
+
+    .stat-pill-label {
+      font-family: 'DM Mono', monospace;
+      font-size: .55rem;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--stone);
+    }
+
+    .stat-pill-value {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.35rem;
+      font-weight: 300;
+      color: var(--cream);
+      line-height: 1;
+    }
+
+    .stat-pill-value.accent {
+      color: var(--accent);
+    }
+
+    .stat-pill-value.blue {
+      color: var(--pm10);
+    }
+
+    .stat-pill-value.green {
+      color: var(--sig);
+    }
+
+    /* ── Controls ── */
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.5rem;
+      animation: fadeUp .7s ease .15s both;
+    }
+
+    .ctrl-group {
+      display: flex;
+      gap: 4px;
+      background: var(--s2);
+      border: .5px solid var(--border);
+      border-radius: 100px;
+      padding: 4px;
+    }
+
+    .ctrl-btn {
+      font-family: 'DM Sans', sans-serif;
+      font-size: .7rem;
+      font-weight: 400;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: 7px 18px;
+      border-radius: 100px;
+      border: none;
       cursor: pointer;
-      /* แสดงสัญลักษณ์มือเมื่อเอาเมาส์ไปชี้ */
-      transition: background-color 0.3s ease;
-      /* เพิ่ม transition */
+      background: transparent;
+      color: rgba(255, 255, 255, .45);
+      transition: all .2s;
     }
 
-    .grid-container {
-      display: grid;
-      grid-template-columns: 2fr 2fr;
-      gap: 40px;
-      align-items: stretch;
-      padding: 50px;
-      /* เพิ่ม padding ให้ใหญ่ขึ้น */
-      background-color: #fff;
+    .ctrl-btn:hover {
+      color: rgba(255, 255, 255, .75);
+      background: rgba(255, 255, 255, .06);
+    }
+
+    .ctrl-btn.active {
+      color: #fff;
+    }
+
+    .ctrl-btn.active.pm25 {
+      background: var(--pm25);
+    }
+
+    .ctrl-btn.active.pm10 {
+      background: var(--pm10);
+    }
+
+    .ctrl-divider {
+      width: 1px;
+      height: 28px;
+      background: var(--border);
+      align-self: center;
+    }
+
+    /* week selector pills */
+    .week-selector {
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .week-pill {
+      font-family: 'DM Mono', monospace;
+      font-size: .6rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: 6px 12px;
+      border-radius: 100px;
+      border: .5px solid var(--border);
+      cursor: pointer;
+      background: transparent;
+      color: rgba(255, 255, 255, .4);
+      transition: all .2s;
+    }
+
+    .week-pill:hover {
+      color: rgba(255, 255, 255, .75);
+      background: rgba(255, 255, 255, .06);
+    }
+
+    .week-pill.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+
+    /* ── Chart card ── */
+    .chart-card {
+      background: var(--s1);
+      border: .5px solid var(--border);
       border-radius: 20px;
-      max-width: 1300px;
-      /* กำหนดความกว้างสูงสุด */
-      margin: 0 auto;
-      /* จัดให้อยู่กึ่งกลางหน้าจอ */
+      overflow: hidden;
+      animation: fadeUp .7s ease .2s both;
+      margin-bottom: 1.5rem;
+    }
+
+    .chart-card-header {
+      padding: 1.25rem 1.5rem .75rem;
+      border-bottom: .5px solid var(--border);
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .chart-card-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem;
+      font-weight: 300;
+      color: var(--cream);
+    }
+
+    .chart-card-title em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .chart-card-sub {
+      font-size: .7rem;
+      color: var(--stone);
+      margin-top: 2px;
+    }
+
+    /* ── Heat matrix grid ── */
+    .matrix-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1px;
+      background: var(--border);
+    }
+
+    .matrix-cell {
+      background: var(--s1);
+      position: relative;
     }
 
     .matrix-chart {
       width: 100%;
-      height: 450px;
-      /* กำหนดความสูงคงที่แทน height: 100% */
-      min-height: 450px;
-      /* อาจกำหนดด้วยเพื่อกันกรณีเล็กมาก */
-      border: 1px solid #ccc;
-      border-radius: 10px;
-      display: flex;
+      height: 400px;
     }
 
-    @media (max-width: 768px) {
-      .grid-container {
+    /* ── Legend strip ── */
+    .legend-strip {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      padding: .75rem 1.5rem;
+      border-top: .5px solid var(--border);
+      font-size: .68rem;
+      color: rgba(255, 255, 255, .35);
+      flex-wrap: wrap;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .legend-swatch {
+      width: 20px;
+      height: 10px;
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+
+    /* ── Error ── */
+    #error-box {
+      display: none;
+      margin: 1.5rem;
+      padding: 1.25rem 1.5rem;
+      background: rgba(255, 80, 80, .08);
+      border: .5px solid rgba(255, 80, 80, .2);
+      border-radius: 14px;
+      font-family: 'DM Mono', monospace;
+      font-size: .72rem;
+      color: rgba(255, 150, 150, .8);
+      line-height: 1.6;
+    }
+
+    /* ── Footer ── */
+    .chart-footer {
+      padding: .75rem 1.5rem;
+      border-top: .5px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: .68rem;
+      color: rgba(255, 255, 255, .25);
+    }
+
+    .chart-footer svg {
+      width: 12px;
+      height: 12px;
+      stroke: var(--stone);
+      fill: none;
+      stroke-width: 1.5;
+      stroke-linecap: round;
+      flex-shrink: 0;
+    }
+
+    @media (max-width: 700px) {
+      .matrix-grid {
         grid-template-columns: 1fr;
       }
     }
@@ -94,175 +432,282 @@
 
 <body>
 
-  <nav class="navbar">
+  <!-- TOPNAV -->
+  <div class="topnav">
+    <a href="index.html" class="nav-logo">Thanyaphon <span>B.</span></a>
     <ul class="navbar-links">
-      <li><a href="index.html">HOME</a></li>
-      <li><a href="3d.html">USC</a></li>
-      <li><a href="predict.html">PREDICTION</a></li>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="3d.html">Street Canyon</a></li>
+      <li><a href="predict.html">Prediction</a></li>
       <li><a href="boxplot.html">ANOVA</a></li>
-      <li><a href="Tukey.html">REPORT</a></li>
+      <li><a href="confusion.html" class="active">Tukey HSD</a></li>
     </ul>
-  </nav>
-
-  <div class="main-content">
-    <h2>Tukey P-Value Matrix</h2>
-
-    <div id="controls">
-      <label for="pollutant">เลือกมลพิษ: </label>
-      <select id="pollutant">
-        <option value="pm25">PM2.5</option>
-        <option value="pm10">PM10</option>
-      </select>
-
-      <label for="week-range">เลือกช่วงสัปดาห์: </label>
-      <select id="week-range"></select>
-    </div>
-
-    <!-- 4 บล็อกแสดงกราฟ -->
-    <div class="grid-container">
-      <div id="matrix1" class="matrix-chart"></div>
-      <div id="matrix2" class="matrix-chart"></div>
-      <div id="matrix3" class="matrix-chart"></div>
-      <div id="matrix4" class="matrix-chart"></div>
-    </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+  <!-- PAGE -->
+  <div class="page">
+
+    <!-- header -->
+    <div class="page-header">
+      <p class="page-eyebrow">Post-hoc Analysis</p>
+      <h1 class="page-title">Tukey <em>HSD</em></h1>
+      <p class="page-desc">Pairwise p-value matrix comparing pollution levels between each pair of canyon types —
+        identifying which groups are statistically different from one another.</p>
+    </div>
+
+    <!-- stat pills -->
+    <div class="stat-row">
+      <div class="stat-pill">
+        <span class="stat-pill-label">Pollutant</span>
+        <span class="stat-pill-value accent" id="statType">PM2.5</span>
+      </div>
+      <div class="stat-pill">
+        <span class="stat-pill-label">Week Range</span>
+        <span class="stat-pill-value" id="statWeekRange">—</span>
+      </div>
+      <div class="stat-pill">
+        <span class="stat-pill-label">Sig. Pairs avg.</span>
+        <span class="stat-pill-value green" id="statSigCount">—</span>
+      </div>
+    </div>
+
+    <!-- controls -->
+    <div class="controls">
+      <!-- pollutant -->
+      <div class="ctrl-group">
+        <button class="ctrl-btn pm25 active" id="btn-pm25" onclick="setPollutant('pm25')">PM2.5</button>
+        <button class="ctrl-btn pm10" id="btn-pm10" onclick="setPollutant('pm10')">PM10</button>
+      </div>
+      <div class="ctrl-divider"></div>
+      <!-- week range pills (populated dynamically) -->
+      <div class="week-selector" id="weekSelector"></div>
+    </div>
+
+    <!-- chart card -->
+    <div class="chart-card">
+      <div class="chart-card-header">
+        <div>
+          <div class="chart-card-title" id="chartTitle">P-value Matrix — <em>PM2.5</em></div>
+          <div class="chart-card-sub" id="chartSub">Heatmap of Tukey HSD p-values for each week pair</div>
+        </div>
+      </div>
+
+      <div id="error-box"></div>
+      <div class="matrix-grid" id="matrixGrid"></div>
+
+      <!-- color scale legend -->
+      <div class="legend-strip">
+        <span style="color:rgba(255,255,255,.45);">p-value scale:</span>
+        <div class="legend-item">
+          <div class="legend-swatch" style="background:#4CAF7D"></div>
+          <span>p &lt; 0.05 — Significant</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-swatch" style="background:#fdf73d"></div>
+          <span>p ≈ 0.05 — Borderline</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-swatch" style="background:#d73027"></div>
+          <span>p &gt; 0.05 — Not significant</span>
+        </div>
+      </div>
+
+      <div class="chart-footer">
+        <svg viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="10" />
+          <line x1="12" y1="8" x2="12" y2="12" />
+          <line x1="12" y1="16" x2="12.01" y2="16" />
+        </svg>
+        Tukey HSD post-hoc test &nbsp;|&nbsp; α = 0.05 &nbsp;|&nbsp; Data: Jan–May 2025
+      </div>
+    </div>
+
+  </div>
+
   <script>
-    const charts = [
-      echarts.init(document.getElementById('matrix1')),
-      echarts.init(document.getElementById('matrix2')),
-      echarts.init(document.getElementById('matrix3')),
-      echarts.init(document.getElementById('matrix4'))
-    ];
+    const FILES = { pm25: 'tukey_results_pm25.json', pm10: 'tukey_results_pm10.json' };
+    const GROUP_SIZE = 2; // weeks per range
 
     let jsonData = [];
     let allWeeks = [];
+    let currentPollutant = 'pm25';
+    let currentRangeIdx = 0;
+    const chartInstances = {};
 
-    async function loadData() {
-      const pollutant = document.getElementById('pollutant').value;
-      const response = await fetch(`tukey_results_${pollutant}.json`);
-      jsonData = await response.json();
+    /* ── helpers ── */
+    function showError(msg) { const el = document.getElementById('error-box'); el.innerHTML = '⚠ ' + msg; el.style.display = 'block'; }
+    function hideError() { const el = document.getElementById('error-box'); el.innerHTML = ''; el.style.display = 'none'; }
 
-      allWeeks = [...new Set(jsonData.map(d => d.week))].sort((a, b) => a - b);
-      populateWeekDropdown();
-      loadAndRender();
+    function setPollutant(p) {
+      currentPollutant = p;
+      ['pm25', 'pm10'].forEach(t => document.getElementById('btn-' + t).classList.remove('active'));
+      document.getElementById('btn-' + p).classList.add('active');
+      document.getElementById('statType').textContent = p === 'pm25' ? 'PM2.5' : 'PM10';
+      document.getElementById('statType').className = 'stat-pill-value ' + (p === 'pm25' ? 'accent' : 'blue');
+      document.getElementById('chartTitle').innerHTML = `P-value Matrix — <em>${p === 'pm25' ? 'PM2.5' : 'PM10'}</em>`;
+      loadData();
     }
 
-    function populateWeekDropdown() {
-      const weekSelect = document.getElementById('week-range');
-      weekSelect.innerHTML = '';
-      const totalWeeks = allWeeks.length;
-      const groupSize = 2; // <-- แก้ไข: เปลี่ยนเป็น 2 สัปดาห์ต่อช่วง
-
-      for (let i = 0; i < totalWeeks; i += groupSize) {
-        const start = allWeeks[i];
-        const end = allWeeks[Math.min(i + groupSize - 1, totalWeeks - 1)];
-        const option = document.createElement('option');
-        option.value = `${start}-${end}`;
-        option.textContent = `สัปดาห์ ${start} - ${end}`; // <-- แก้ไข: แสดงผลเป็นช่วง
-        weekSelect.appendChild(option);
-      }
-    }
-
-    function loadAndRender() {
-      const selectedRange = document.getElementById('week-range').value;
-      const [start, end] = selectedRange.split('-').map(Number);
-      const weeksToShow = allWeeks.filter(w => w >= start && w <= end);
-
-      // ซ่อนกราฟที่ไม่ต้องการแสดงโดยใช้ display: 'none'
-      charts.forEach((chart, idx) => {
-        const chartElement = chart.getDom();
-        if (idx < weeksToShow.length) {
-          const selectedWeek = weeksToShow[idx];
-          const weekData = jsonData.filter(d => d.week === selectedWeek);
-          renderChart(chart, weekData, selectedWeek);
-          chartElement.style.display = 'flex'; // แสดงกราฟ
-        } else {
-          chart.clear();
-          chartElement.style.display = 'none'; // ซ่อนกราฟ
-        }
+    function buildWeekPills(ranges) {
+      const sel = document.getElementById('weekSelector');
+      sel.innerHTML = '';
+      ranges.forEach((r, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'week-pill' + (i === 0 ? ' active' : '');
+        btn.textContent = `W${r.start}–${r.end}`;
+        btn.onclick = () => { currentRangeIdx = i; renderRange(ranges[i]); updatePills(i); };
+        sel.appendChild(btn);
       });
     }
 
-    function renderChart(chart, weekData, selectedWeek) {
-      const groups = Array.from(new Set(weekData.flatMap(d => [d.group1, d.group2]))).sort();
+    function updatePills(idx) {
+      document.querySelectorAll('.week-pill').forEach((p, i) => p.classList.toggle('active', i === idx));
+    }
+
+    /* ── load ── */
+    async function loadData() {
+      hideError();
+      try {
+        const res = await fetch(FILES[currentPollutant]);
+        if (!res.ok) throw new Error('File not found: ' + FILES[currentPollutant]);
+        jsonData = await res.json();
+        allWeeks = [...new Set(jsonData.map(d => d.week))].sort((a, b) => a - b);
+
+        // Build ranges
+        const ranges = [];
+        for (let i = 0; i < allWeeks.length; i += GROUP_SIZE) {
+          const start = allWeeks[i];
+          const end = allWeeks[Math.min(i + GROUP_SIZE - 1, allWeeks.length - 1)];
+          ranges.push({ start, end });
+        }
+
+        buildWeekPills(ranges);
+        currentRangeIdx = Math.min(currentRangeIdx, ranges.length - 1);
+        updatePills(currentRangeIdx);
+        renderRange(ranges[currentRangeIdx]);
+
+      } catch (e) { showError(e.message); }
+    }
+
+    /* ── render a week range (max 4 weeks → max 4 cells) ── */
+    function renderRange(range) {
+      const weeksToShow = allWeeks.filter(w => w >= range.start && w <= range.end);
+      document.getElementById('statWeekRange').textContent = `W${range.start} – W${range.end}`;
+      document.getElementById('chartSub').textContent =
+        `Weeks ${range.start}–${range.end} · ${weeksToShow.length} chart${weeksToShow.length > 1 ? 's' : ''}`;
+
+      // % of pairs that are significant (p<0.05), averaged across shown weeks
+      let pctSum = 0;
+      weeksToShow.forEach(w => {
+        const weekPairs = jsonData.filter(d => d.week === w);
+        const sigPairs = weekPairs.filter(d => d.p_value < 0.05);
+        pctSum += weekPairs.length > 0 ? (sigPairs.length / weekPairs.length) * 100 : 0;
+      });
+      const avgPct = weeksToShow.length > 0 ? Math.round(pctSum / weeksToShow.length) : 0;
+      document.getElementById('statSigCount').textContent = avgPct + '%';
+
+      const grid = document.getElementById('matrixGrid');
+      grid.innerHTML = '';
+
+      // Destroy old instances
+      Object.values(chartInstances).forEach(c => c && c.dispose());
+      Object.keys(chartInstances).forEach(k => delete chartInstances[k]);
+
+      // Adjust columns: 1 week = 1 col, 2 weeks = 2 cols
+      const cols = Math.min(weeksToShow.length, 2);
+      grid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+
+      weeksToShow.forEach((week, idx) => {
+        const cell = document.createElement('div'); cell.className = 'matrix-cell';
+        const chartEl = document.createElement('div'); chartEl.className = 'matrix-chart';
+        cell.appendChild(chartEl); grid.appendChild(cell);
+        const inst = echarts.init(chartEl);
+        chartInstances['w' + week] = inst;
+        renderWeekChart(inst, week);
+      });
+    }
+
+    /* ── render single week heatmap ── */
+    function renderWeekChart(chart, week) {
+      const weekData = jsonData.filter(d => d.week === week);
+      const groups = [...new Set(weekData.flatMap(d => [d.group1, d.group2]))].sort();
       const n = groups.length;
       const matrix = Array.from({ length: n }, () => Array(n).fill(null));
 
       weekData.forEach(d => {
-        const i = groups.indexOf(d.group1);
-        const j = groups.indexOf(d.group2);
-        matrix[i][j] = d.p_value;
-        matrix[j][i] = d.p_value;
+        const i = groups.indexOf(d.group1), j = groups.indexOf(d.group2);
+        matrix[i][j] = d.p_value; matrix[j][i] = d.p_value;
       });
 
       const data = [];
-      for (let i = 0; i < n; i++) {
-        for (let j = 0; j < n; j++) {
-          data.push([i, j, matrix[i][j] ?? 1.0]);
-        }
-      }
+      for (let i = 0; i < n; i++) for (let j = 0; j < n; j++) data.push([j, i, matrix[i][j] ?? 1.0]);
+
+      // Pretty-print group names
+      const prettyGroups = groups.map(g => {
+        const m = {
+          'non_canyon': 'Non canyon', 'on_viaduct': 'On viaduct', 'under_viaduct': 'Under viaduct',
+          '0_hw_1': '0<H/W<1', '1_hw_2': '1<H/W<2', '2_hw_4': '2<H/W<4', 'hw_4': 'H/W>4'
+        };
+        return m[g] || g;
+      });
 
       chart.setOption({
+        backgroundColor: 'transparent',
         title: {
-          text: `สัปดาห์ ${selectedWeek}`,
-          left: 'center',
-          top: 10,
-          textStyle: { fontSize: 14, fontWeight: 'bold' }
+          text: `Week  ${week}`,
+          left: 'center', top: 12,
+          textStyle: {
+            color: 'rgba(255,255,255,.55)', fontSize: 12,
+            fontFamily: "'DM Mono', monospace", fontWeight: 'normal'
+          }
         },
         tooltip: {
-          position: 'top',
-          formatter: params =>
-            `${groups[params.value[0]]} vs ${groups[params.value[1]]}<br>` +
-            `p-value: <b>${params.value[2].toFixed(4)}</b>`
+          position: 'top', confine: true,
+          backgroundColor: '#1c1c1c', borderColor: 'rgba(255,255,255,.12)',
+          textStyle: { color: '#fff', fontSize: 11 },
+          formatter: p => {
+            const pv = p.value[2];
+            const sig = pv < 0.05 ? '<span style="color:#4CAF7D">✓ Significant</span>' : '<span style="color:#f67604">✗ Not significant</span>';
+            return `<b>${prettyGroups[p.value[1]]}</b> vs <b>${prettyGroups[p.value[0]]}</b><br/>
+p-value: <b>${pv.toFixed(4)}</b><br/>${sig}`;
+          }
         },
-        grid: { top: 50, left: 70, right: 20, bottom: 60 },
+        grid: { top: 48, left: 10, right: 110, bottom: 60, containLabel: true },
         xAxis: {
-          type: 'category',
-          data: groups,
-          splitArea: { show: true },
-          axisLabel: { rotate: 30 }
+          type: 'category', data: prettyGroups,
+          axisLabel: { rotate: 35, fontSize: 10, color: 'rgba(255,255,255,.5)', interval: 0 },
+          axisLine: { lineStyle: { color: 'rgba(255,255,255,.1)' } },
+          splitArea: { show: true, areaStyle: { color: ['rgba(255,255,255,.02)', 'rgba(255,255,255,.04)'] } }
         },
         yAxis: {
-          type: 'category',
-          data: groups,
-          splitArea: { show: true }
+          type: 'category', data: prettyGroups,
+          axisLabel: { fontSize: 10, color: 'rgba(255,255,255,.5)', interval: 0 },
+          axisLine: { lineStyle: { color: 'rgba(255,255,255,.1)' } },
+          splitArea: { show: true, areaStyle: { color: ['rgba(255,255,255,.02)', 'rgba(255,255,255,.04)'] } }
         },
         visualMap: {
-          min: 0,
-          max: 1,
-          calculable: false,
-          orient: 'horizontal',
-          left: 'center',
-          bottom: 0,
-          inRange: {
-            color: ['#99FFCC', '#ffffbf', '#d73027']
-          }
+          min: 0, max: 1, calculable: false,
+          orient: 'vertical', right: 10, top: 'middle',
+          itemWidth: 14, itemHeight: 100,
+          textStyle: { color: 'rgba(255,255,255,.4)', fontSize: 10 },
+          text: ['1.0', '0.0'],
+          inRange: { color: ['#4CAF7D', '#fdf73d', '#d73027'] }
         },
         series: [{
-          type: 'heatmap',
-          data: data,
+          type: 'heatmap', data,
           label: {
             show: true,
-            formatter: p => p.value[2].toFixed(3)
+            formatter: p => p.value[2] === null ? '' : p.value[2].toFixed(3),
+            fontSize: 9,
+            color: p => p.value[2] < 0.3 ? '#fff' : '#111'
           },
-          emphasis: {
-            itemStyle: {
-              shadowBlur: 10,
-              shadowColor: 'rgba(0, 0, 0, 0.5)'
-            }
-          }
+          emphasis: { itemStyle: { shadowBlur: 8, shadowColor: 'rgba(0,0,0,.5)' } }
         }]
       });
-      chart.resize(); // ปรับขนาดกราฟเมื่อแสดงผล
+      chart.resize();
     }
 
-    document.getElementById('pollutant').addEventListener('change', loadData);
-    document.getElementById('week-range').addEventListener('change', loadAndRender);
-    window.addEventListener('resize', () => {
-      charts.forEach(chart => chart.resize());
-    });
+    window.addEventListener('resize', () => Object.values(chartInstances).forEach(c => c && c.resize()));
     loadData();
   </script>
 </body>
