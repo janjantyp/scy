@@ -468,7 +468,7 @@
             <rect x="1" y="9" width="6" height="6" rx="1" />
             <rect x="9" y="9" width="6" height="6" rx="1" />
           </svg>
-          Small Multiples
+          By Type
         </button>
         <button class="ctrl-btn view" id="btn-view-combined" onclick="setViewMode('combined')">
           <svg viewBox="0 0 16 16" width="13" height="13" style="vertical-align:middle;margin-right:4px" fill="none"
@@ -477,7 +477,17 @@
             <line x1="1" y1="6" x2="15" y2="6" />
             <line x1="1" y1="11" x2="15" y2="11" />
           </svg>
-          Combined
+          Overview
+        </button>
+        <button class="ctrl-btn view" id="btn-view-week" onclick="setViewMode('week')">
+          <svg viewBox="0 0 16 16" width="13" height="13" style="vertical-align:middle;margin-right:4px" fill="none"
+            stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+            <rect x="1" y="1" width="14" height="14" rx="1" />
+            <line x1="1" y1="5" x2="15" y2="5" />
+            <line x1="5" y1="1" x2="5" y2="5" />
+            <line x1="10" y1="1" x2="10" y2="5" />
+          </svg>
+          Weekly
         </button>
       </div>
     </div>
@@ -493,6 +503,28 @@
       <div id="error-box"></div>
       <div id="sm-grid"></div>
       <div id="combined-chart" style="display:none; width:100%; height:700px; padding:.5rem 0;"></div>
+      <!-- By Week view -->
+      <div id="week-view" style="display:none;">
+        <div id="week-nav"
+          style="display:flex;align-items:center;justify-content:center;gap:12px;padding:1rem 1.5rem .5rem;border-bottom:.5px solid var(--border);">
+          <button id="week-prev" onclick="stepWeek(-1)"
+            style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.06);border:.5px solid var(--border);color:rgba(255,255,255,.6);cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:all .2s;">&#8249;</button>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span
+              style="font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;color:var(--stone);">Week</span>
+            <span id="week-display"
+              style="font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.15em;color:var(--stone);min-width:2rem;text-align:center;">1</span>
+            <span style="font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.1em;color:var(--stone);"
+              id="week-total">/ 22</span>
+          </div>
+          <button id="week-next" onclick="stepWeek(1)"
+            style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.06);border:.5px solid var(--border);color:rgba(255,255,255,.6);cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:all .2s;">&#8250;</button>
+        </div>
+        <!-- week dots -->
+        <div id="week-dots"
+          style="display:flex;gap:4px;justify-content:center;padding:.6rem 1.5rem .4rem;flex-wrap:wrap;"></div>
+        <div id="week-chart" style="width:100%;height:420px;"></div>
+      </div>
 
       <div class="chart-footer">
         <svg viewBox="0 0 24 24">
@@ -565,6 +597,9 @@
     let currentView = 'small';
     const chartInstances = {};
     let combinedInstance = null;
+    let weekInstance = null;
+    let currentWeekIdx = 0;
+    let sortedWeekKeys = [];
 
     function showError(msg) { const el = document.getElementById('error-box'); el.innerHTML = '⚠ ' + msg; el.style.display = 'block'; }
     function hideError() { const el = document.getElementById('error-box'); el.innerHTML = ''; el.style.display = 'none'; }
@@ -580,9 +615,126 @@
       currentView = mode;
       document.getElementById('btn-view-small').classList.toggle('active', mode === 'small');
       document.getElementById('btn-view-combined').classList.toggle('active', mode === 'combined');
+      document.getElementById('btn-view-week').classList.toggle('active', mode === 'week');
       document.getElementById('sm-grid').style.display = mode === 'small' ? '' : 'none';
       document.getElementById('combined-chart').style.display = mode === 'combined' ? 'block' : 'none';
+      document.getElementById('week-view').style.display = mode === 'week' ? 'block' : 'none';
       draw(currentType);
+    }
+
+    /* ── By Week navigation ── */
+    function stepWeek(dir) {
+      currentWeekIdx = Math.max(0, Math.min(sortedWeekKeys.length - 1, currentWeekIdx + dir));
+      drawWeekChart(currentType, currentWeekIdx);
+    }
+
+    function buildWeekDots(total) {
+      const dotsEl = document.getElementById('week-dots');
+      dotsEl.innerHTML = '';
+      for (let i = 0; i < total; i++) {
+        const dot = document.createElement('div');
+        dot.id = 'wdot-' + i;
+        dot.onclick = (function (idx) { return function () { currentWeekIdx = idx; drawWeekChart(currentType, idx); }; })(i);
+        dot.style.cssText = `width:8px;height:8px;border-radius:50%;cursor:pointer;transition:all .2s;flex-shrink:0;`;
+        dotsEl.appendChild(dot);
+      }
+    }
+
+    function updateWeekDots(idx) {
+      document.querySelectorAll('[id^="wdot-"]').forEach((d, i) => {
+        d.style.background = i === idx ? 'var(--accent)' : 'rgba(255,255,255,.15)';
+        d.style.transform = i === idx ? 'scale(1.4)' : 'scale(1)';
+      });
+      document.getElementById('week-display').textContent = idx + 1;
+      document.getElementById('week-prev').style.opacity = idx === 0 ? '0.3' : '1';
+      document.getElementById('week-next').style.opacity = idx === sortedWeekKeys.length - 1 ? '0.3' : '1';
+    }
+
+    function drawWeekChart(type, weekIdx) {
+      const raw = allData[type];
+      if (!raw) return;
+      const pollLabel = type === 'pm25' ? 'PM2.5' : 'PM10';
+      const weekKey = sortedWeekKeys[weekIdx];
+      if (!weekKey) return;
+
+      updateWeekDots(weekIdx);
+
+      const rawLabels = [...new Set(raw.map(d => d.label))];
+      const rawKeyOf = {};
+      rawLabels.forEach(rk => { rawKeyOf[rk] = rk; });
+      const ordered = LABEL_ORDER.filter(k => rawLabels.includes(k));
+      const rest = rawLabels.filter(k => !LABEL_ORDER.includes(k)).sort();
+      const keys = [...ordered, ...rest];
+
+      // For each label, get all pollution values for this week → single boxplot
+      const boxData = [];
+      const colors = [];
+      const names = [];
+      keys.forEach(key => {
+        const vals = raw.filter(d => d.label === key && d.pollutant_week === weekKey).map(d => d.pollution);
+        if (vals.length > 0) {
+          boxData.push(vals);
+          colors.push(labelColor(key));
+          names.push(labelName(key));
+        }
+      });
+
+      if (boxData.length === 0) return;
+      const prepared = echarts.dataTool.prepareBoxplotData(boxData);
+
+      if (weekInstance) { weekInstance.dispose(); weekInstance = null; }
+      const el = document.getElementById('week-chart');
+      weekInstance = echarts.init(el);
+
+      weekInstance.setOption({
+        backgroundColor: 'transparent',
+        textStyle: { fontFamily: "'DM Sans', sans-serif", color: 'rgba(255,255,255,.55)' },
+        tooltip: {
+          trigger: 'axis', confine: true,
+          backgroundColor: '#1c1c1c', borderColor: 'rgba(255,255,255,.12)',
+          textStyle: { color: '#fff', fontSize: 11 },
+          formatter: params => {
+            const p = params[0]; if (!p || !p.data) return '';
+            const v = p.data;
+            const col = colors[p.dataIndex] || '#C4956A';
+            const name = names[p.dataIndex] || '';
+            return `<span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${col};margin-right:5px;vertical-align:middle"></span>
+<b style="color:${col}">${escLabel(name)}</b><br/>
+Max <b>${Number(v[5]).toFixed(1)}</b> &nbsp; Q3 <b>${Number(v[4]).toFixed(1)}</b><br/>
+Med <b>${Number(v[3]).toFixed(1)}</b> &nbsp; Q1 <b>${Number(v[2]).toFixed(1)}</b><br/>
+Min <b>${Number(v[1]).toFixed(1)}</b>`;
+          }
+        },
+        grid: { left: '6%', right: '3%', top: 24, bottom: 60, containLabel: true },
+        xAxis: {
+          type: 'category',
+          data: names,
+          axisLabel: { fontSize: 11, color: 'rgba(255,255,255,.55)', interval: 0 },
+          axisLine: { lineStyle: { color: 'rgba(255,255,255,.1)' } },
+          splitLine: { show: false }, axisTick: { show: false }
+        },
+        yAxis: {
+          type: 'value', scale: true,
+          name: pollLabel + ' (µg/m³)',
+          nameLocation: 'middle', nameGap: 56, nameRotate: 90,
+          nameTextStyle: { color: 'rgba(255,255,255,.4)', fontSize: 11 },
+          axisLabel: { color: 'rgba(255,255,255,.45)', fontSize: 11, margin: 8 },
+          splitLine: { lineStyle: { color: 'rgba(255,255,255,.05)' } },
+          axisLine: { lineStyle: { color: 'rgba(255,255,255,.1)' } }
+        },
+        series: [{
+          type: 'boxplot',
+          data: prepared.boxData.map((d, i) => ({
+            value: d,
+            itemStyle: {
+              color: hexToRgba(colors[i] || '#C4956A', 0.25),
+              borderColor: colors[i] || '#C4956A',
+              borderWidth: 2
+            }
+          })),
+          emphasis: { itemStyle: { borderWidth: 2.5 } }
+        }]
+      });
     }
 
     function getSortedWeeks(raw) {
@@ -664,6 +816,9 @@ Min <b>${Number(v[1]).toFixed(1)}</b>`;
       if (!raw) { showError('Data not loaded: ' + type); return; }
 
       const pollLabel = type === 'pm25' ? 'PM2.5' : 'PM10';
+      // Always update sorted weeks (used by week view)
+      sortedWeekKeys = getSortedWeeks(raw);
+      document.getElementById('week-total').textContent = '/ ' + sortedWeekKeys.length;
       const rawLabels = [...new Set(raw.map(d => d.label))];
       const allLabels = rawLabels.map(normKey);
       const rawKeyOf = {};
@@ -676,8 +831,8 @@ Min <b>${Number(v[1]).toFixed(1)}</b>`;
       document.getElementById('statWeeks').textContent = getSortedWeeks(raw).length;
 
       if (currentView === 'small') {
-        document.getElementById('chartTitle').innerHTML = `Boxplot of <em>${pollLabel}</em> — Small Multiples`;
-        document.getElementById('chartSub').textContent = 'Each panel shows 22-week distribution for one canyon type';
+        document.getElementById('chartTitle').innerHTML = `Boxplot of <em>${pollLabel}</em> — By Type`;
+        document.getElementById('chartSub').textContent = '22-week trend for each canyon type individually';
 
         const grid = document.getElementById('sm-grid');
         grid.innerHTML = '';
@@ -694,10 +849,16 @@ Min <b>${Number(v[1]).toFixed(1)}</b>`;
           requestAnimationFrame(() => buildSmallChart(chartEl, label, rawKeyOf[label] || label, raw, pollLabel));
         });
 
-      } else {
-        document.getElementById('chartTitle').innerHTML = `Boxplot of <em>${pollLabel}</em> — All Types Combined`;
-        document.getElementById('chartSub').textContent = 'All 7 canyon types overlaid — 22 weeks';
+      } else if (currentView === 'combined') {
+        document.getElementById('chartTitle').innerHTML = `Boxplot of <em>${pollLabel}</em> — Overview`;
+        document.getElementById('chartSub').textContent = 'All canyon types across all 22 weeks — full overview';
         drawCombined(type);
+      } else if (currentView === 'week') {
+        document.getElementById('chartTitle').innerHTML = `Boxplot of <em>${pollLabel}</em> — Weekly`;
+        document.getElementById('chartSub').textContent = 'Distribution of all canyon types in one selected week';
+        buildWeekDots(sortedWeekKeys.length);
+        currentWeekIdx = Math.min(currentWeekIdx, Math.max(0, sortedWeekKeys.length - 1));
+        drawWeekChart(type, currentWeekIdx);
       }
     }
 
@@ -801,6 +962,13 @@ Min <b>${Number(v[1]).toFixed(1)}</b>`;
     window.addEventListener('resize', () => {
       Object.values(chartInstances).forEach(ch => ch && ch.resize());
       if (combinedInstance) combinedInstance.resize();
+      if (weekInstance) weekInstance.resize();
+    });
+
+    document.addEventListener('keydown', e => {
+      if (currentView !== 'week') return;
+      if (e.key === 'ArrowLeft') stepWeek(-1);
+      if (e.key === 'ArrowRight') stepWeek(1);
     });
   </script>
 </body>
