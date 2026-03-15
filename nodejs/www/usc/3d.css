@@ -1,0 +1,346 @@
+/* Navbar styles */
+html,
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+    background: #000;
+    /* กันไม่ให้เห็นขาวถ้ามีช่องโหว่ */
+}
+
+#map {
+    position: absolute;
+    top: 0;
+    /* แผนที่ต้องเริ่มบนสุด */
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.navbar {
+    position: fixed;
+    top: 20px;
+    /* 👈 เลื่อน navbar ลงมา 20px */
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 1rem 2rem;
+    /* เดิม 1rem 2rem → ใหญ่ขึ้น */
+    min-height: 70px;
+    /* บังคับความสูงขั้นต่ำ */
+    font-size: 1rem;
+    /* ตัวหนังสือใหญ่ขึ้น */
+    width: 90%;
+    /* ไม่เต็มจอ เหมือน floating bar */
+    max-width: 1200px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem 2rem;
+
+    background-color: rgba(255, 255, 255, 0.85);
+    border-radius: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+
+    font-family: 'Kanit', sans-serif;
+    z-index: 1000;
+
+    pointer-events: none;
+}
+
+.navbar * {
+    pointer-events: auto;
+}
+
+/* Legend styles */
+/* Legend styles */
+#legend {
+    position: absolute;
+    bottom: 30px;
+    left: 10px;
+    background: rgba(255, 255, 255, 0.094);
+    /* เปลี่ยนเป็นสีโปร่งใส */
+    padding: 10px 14px;
+    border-radius: 15px;
+    font-family: 'Kanit', sans-serif;
+    font-size: 14px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+}
+
+/* Navbar Brand  */
+.navbar-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Navbar Links (ลิงก์เมนู) */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    /* ซ้าย-ขวา */
+    align-items: center;
+    position: relative;
+    /* ต้องมี เพื่อให้ลูก absolute อิงกับ navbar */
+}
+
+.navbar-links {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    /* ดึงมาอยู่ตรงกลางพอดี */
+
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* โค้ดสำหรับเมนูในสถานะปกติ */
+.navbar-links a {
+    text-decoration: none;
+    color: rgb(104, 104, 104);
+    font-size: 1.2rem;
+    padding: 1rem 2rem;
+    /* กำหนด padding ให้คงที่ */
+    border-radius: 15px;
+    /* ทำให้ขอบมนตั้งแต่ต้น */
+    transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+    /* เพิ่ม transition */
+}
+
+/* โค้ดสำหรับเมนูเมื่อนำเมาส์ไปชี้ */
+.navbar-links li a:hover {
+    color: #636566;
+    background-color: rgba(187, 178, 178, 0.249);
+    box-shadow: 0 0 0 0px rgba(187, 178, 178, 0.249);
+    /* ปรับความหนาของเงาให้เล็กลง */
+    /* ลบบรรทัด 'padding' และ 'border-radius' ออกจากส่วนนี้ */
+}
+
+/* Navbar Contact Button */
+.navbar-contact .contact-button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.navbar-contact .contact-button:hover {
+    background-color: #0056b3;
+}
+
+
+
+
+/* Styling for the Filter Modal */
+.modal-content {
+    border-radius: 50px;
+    /* Rounded corners */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    /* Subtle shadow for depth */
+
+}
+
+.modal-header {
+    background-color: #f3f6f9;
+    /* Light gray background */
+    border-bottom: 1px solid #dee2e6;
+    /* Subtle border */
+    border-radius: 6px 6px 0 0;
+}
+
+.modal-title {
+    font-weight: 600;
+    color: #343a40;
+    /* Darker text for readability */
+}
+
+/* Modal Body */
+.modal-body {
+    padding: 2rem;
+}
+
+/* Checkbox and Label Styles */
+.form-check {
+    padding-left: 2.5rem;
+    /* Add space for custom checkbox */
+}
+
+.form-check-label {
+    color: #495057;
+    /* Darker text */
+    font-weight: 400;
+}
+
+/* Modal Footer (Buttons) */
+.modal-footer {
+    justify-content: space-between;
+    /* Spread buttons out evenly */
+    padding: 1rem 2rem;
+}
+
+/* Button Colors and Hover Effects */
+#clearAllBtn {
+    background-color: #dc3545;
+    /* Red for 'Clear' to indicate caution */
+    border-color: #dc3545;
+}
+
+#clearAllBtn:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
+}
+
+#selectAllBtn {
+    background-color: #20c997;
+    /* Green for 'Select All' */
+    border-color: #20c997;
+}
+
+#selectAllBtn:hover {
+    background-color: #1aa27d;
+    border-color: #178f6d;
+}
+
+#applyFilterBtn {
+    background-color: #007bff;
+    /* Blue for 'Apply' */
+    border-color: #007bff;
+}
+
+#applyFilterBtn:hover {
+    background-color: #0069d9;
+    border-color: #0062cc;
+}
+
+.modal-footer .btn-secondary {
+    background-color: #6c757d;
+    /* Gray for 'Close' */
+    border-color: #6c757d;
+}
+
+.modal-footer .btn-secondary:hover {
+    background-color: #5a6268;
+    border-color: #545b62;
+}
+
+
+
+
+/* ปรับแต่งสีของกล่อง Checkbox และเครื่องหมายถูก */
+.form-check-input:checked {
+    background-color: transparent !important;
+    /* ลบสีพื้นหลังเริ่มต้นของ Bootstrap */
+    border-color: #000;
+    /* กำหนดสีขอบใหม่ให้เข้มขึ้น */
+}
+
+/* เพิ่มเครื่องหมายถูกแบบกำหนดเองด้วย CSS */
+.form-check-input:checked[type="checkbox"] {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23000' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10l3 3 6-6'/%3e%3c/svg%3e");
+}
+
+/* กำหนดสีของเครื่องหมายถูกสำหรับแต่ละประเภท */
+#filter-non-canyon:checked {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23c1f868' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10l3 3 6-6'/%3e%3c/svg%3e");
+}
+
+#filter-on-viaduct:checked {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23a0d534' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10l3 3 6-6'/%3e%3c/svg%3e");
+}
+
+#filter-under-viaduct:checked {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fdf73d' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10l3 3 6-6'/%3e%3c/svg%3e");
+}
+
+#filter-0-1:checked {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23f2d371' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10l3 3 6-6'/%3e%3c/svg%3e");
+}
+
+#filter-1-2:checked {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23f67604' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10l3 3 6-6'/%3e%3c/svg%3e");
+}
+
+#filter-2-4:checked {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23f90f06' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10l3 3 6-6'/%3e%3c/svg%3e");
+}
+
+#filter-4:checked {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23d7191c' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10l3 3 6-6'/%3e%3c/svg%3e");
+}
+
+/* loading */
+#loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.loader-container {
+    position: relative;
+    width: 140px;
+    height: 60px;
+}
+
+.shape {
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    top: 5px;
+}
+
+/* สี่เหลี่ยม */
+.square {
+    background: #e67e22;
+    animation: moveSquare 1.5s infinite ease-in-out;
+}
+
+/* วงกลม */
+.circle {
+    background: #6ce55c;
+    border-radius: 50%;
+    animation: moveCircle 1.5s infinite ease-in-out;
+}
+
+/* animation สี่เหลี่ยม */
+@keyframes moveSquare {
+    0% {
+        left: 0;
+    }
+
+    50% {
+        left: 90px;
+    }
+
+    100% {
+        left: 0;
+    }
+}
+
+/* animation วงกลม */
+@keyframes moveCircle {
+    0% {
+        left: 90px;
+    }
+
+    50% {
+        left: 0;
+    }
+
+    100% {
+        left: 90px;
+    }
+}
