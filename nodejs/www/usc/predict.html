@@ -759,8 +759,15 @@
                                 }
                                 if (!fetchSuccess) throw new Error("All endpoints failed");
                                 console.log("Predictions:", data);
+                                // console.log("RAW CLASS NAME:", JSON.stringify(data.boxes?.[0]?.class_name));
+                                // console.log("BOX[0] FULL:", JSON.stringify(data.boxes?.[0]));
 
-                                const className = data.boxes?.[0]?.class_name ?? '—';
+                                const LABEL_MAP = {
+                                        'non_canyon': 'Non canyon', 'on_viaduct': 'On viaduct', 'under_viaduct': 'Under viaduct',
+                                        '0_hw_1': '0<H/W<1', '1_hw_2': '1<H/W<2', '2_hw_4': '2<H/W<4', 'hw_4': 'H/W>4'
+                                };
+                                const rawClass = data.boxes?.[0]?.class_name ?? '—';
+                                const className = LABEL_MAP[rawClass] ?? rawClass;
                                 const confidence = data.boxes?.[0]?.confidence ?? 0;
                                 const confPct = (confidence * 100).toFixed(1) + '%';
 
