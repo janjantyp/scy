@@ -499,6 +499,129 @@
                                 transform: translateX(-50%) translateY(-5px);
                         }
                 }
+
+                /* ── Canyon Type Guide ── */
+                .guide-btn {
+                        display: inline-flex;
+                        align-items: center;
+                        gap: 6px;
+                        font-family: 'DM Sans', sans-serif;
+                        font-size: .7rem;
+                        font-weight: 400;
+                        letter-spacing: .08em;
+                        text-transform: uppercase;
+                        color: rgba(255, 255, 255, .55);
+                        background: rgba(255, 255, 255, .07);
+                        border: .5px solid rgba(255, 255, 255, .13);
+                        border-radius: 100px;
+                        padding: 7px 16px;
+                        cursor: pointer;
+                        transition: all .2s;
+                        margin-left: .25rem;
+                }
+
+                .guide-btn:hover {
+                        color: #fff;
+                        background: rgba(255, 255, 255, .12);
+                }
+
+                .guide-btn svg {
+                        width: 13px;
+                        height: 13px;
+                        stroke: currentColor;
+                        fill: none;
+                        stroke-width: 2;
+                        stroke-linecap: round;
+                        flex-shrink: 0;
+                }
+
+                .guide-panel {
+                        position: fixed;
+                        bottom: 28px;
+                        left: 20px;
+                        z-index: 1000;
+                        width: 260px;
+                        background: rgba(13, 13, 13, .9);
+                        backdrop-filter: blur(14px);
+                        border: .5px solid rgba(255, 255, 255, .1);
+                        border-radius: 16px;
+                        overflow: hidden;
+                        max-height: 0;
+                        opacity: 0;
+                        transition: max-height .4s cubic-bezier(.77, 0, .18, 1), opacity .3s ease;
+                        pointer-events: none;
+                }
+
+                .guide-panel.open {
+                        max-height: 620px;
+                        opacity: 1;
+                        pointer-events: all;
+                }
+
+                .guide-panel-header {
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        padding: .75rem 1rem .5rem;
+                        border-bottom: .5px solid rgba(255, 255, 255, .08);
+                }
+
+                .guide-panel-title {
+                        font-family: 'DM Mono', monospace;
+                        font-size: .58rem;
+                        letter-spacing: .18em;
+                        text-transform: uppercase;
+                        color: var(--accent);
+                }
+
+                .guide-panel-close {
+                        width: 24px;
+                        height: 24px;
+                        border-radius: 50%;
+                        background: rgba(255, 255, 255, .06);
+                        border: .5px solid rgba(255, 255, 255, .1);
+                        cursor: pointer;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        color: rgba(255, 255, 255, .5);
+                        font-size: .85rem;
+                        transition: background .2s, transform .2s;
+                }
+
+                .guide-panel-close:hover {
+                        background: rgba(255, 255, 255, .12);
+                        transform: rotate(90deg);
+                }
+
+                .guide-row {
+                        display: flex;
+                        align-items: flex-start;
+                        gap: 10px;
+                        padding: .6rem 1rem;
+                        border-bottom: .5px solid rgba(255, 255, 255, .05);
+                }
+
+                .guide-row:last-child {
+                        border-bottom: none;
+                }
+
+                .guide-row-label {
+                        font-family: 'DM Mono', monospace;
+                        font-size: .62rem;
+                        letter-spacing: .05em;
+                        color: var(--cream);
+                        min-width: 90px;
+                        padding-top: 1px;
+                        flex-shrink: 0;
+                }
+
+                .guide-row-desc {
+                        font-size: .7rem;
+                        color: rgba(255, 255, 255, .45);
+                        line-height: 1.5;
+                        font-weight: 300;
+                }
         </style>
 </head>
 
@@ -514,6 +637,55 @@
                         <li><a href="boxplot.html">ANOVA</a></li>
                         <li><a href="confusion.html">Tukey HSD</a></li>
                 </ul>
+                <button class="guide-btn" onclick="toggleGuide()">
+                        <svg viewBox="0 0 24 24">
+                                <circle cx="12" cy="12" r="10" />
+                                <line x1="12" y1="8" x2="12" y2="12" />
+                                <line x1="12" y1="16" x2="12.01" y2="16" />
+                        </svg>
+                        Canyon Types
+                </button>
+        </div>
+
+        <!-- ══════════ CANYON TYPE GUIDE ══════════ -->
+        <div class="guide-panel" id="guidePanel">
+                <div class="guide-panel-header">
+                        <span class="guide-panel-title">Canyon Type Guide</span>
+                        <button class="guide-panel-close" onclick="toggleGuide()">×</button>
+                </div>
+                <div class="guide-row">
+                        <span class="guide-row-label">Non canyon</span>
+                        <span class="guide-row-desc">Open road, no buildings on either side — H/W ≈ 0, good
+                                airflow.</span>
+                </div>
+                <div class="guide-row">
+                        <span class="guide-row-label">On viaduct</span>
+                        <span class="guide-row-desc">Located on an elevated road structure above ground level.</span>
+                </div>
+                <div class="guide-row">
+                        <span class="guide-row-label">Under viaduct</span>
+                        <span class="guide-row-desc">Located beneath an elevated road — shaded, reduced airflow.</span>
+                </div>
+                <div class="guide-row">
+                        <span class="guide-row-label">0 &lt; H/W &lt; 1</span>
+                        <span class="guide-row-desc">Low-rise buildings — good sunlight and ventilation, low pollution
+                                trapping.</span>
+                </div>
+                <div class="guide-row">
+                        <span class="guide-row-label">1 &lt; H/W &lt; 2</span>
+                        <span class="guide-row-desc">Moderate density — buildings roughly as tall as the street is
+                                wide.</span>
+                </div>
+                <div class="guide-row">
+                        <span class="guide-row-label">2 &lt; H/W &lt; 4</span>
+                        <span class="guide-row-desc">Deep canyon — limited airflow, higher pollution
+                                concentration.</span>
+                </div>
+                <div class="guide-row">
+                        <span class="guide-row-label">H/W &gt; 4</span>
+                        <span class="guide-row-desc">Very deep canyon — poor ventilation, highest pollution trapping
+                                risk.</span>
+                </div>
         </div>
 
         <!-- ══════════ MAP ══════════ -->
@@ -564,12 +736,28 @@
                         if (resultEl) resultEl.classList.remove('show');
 
                         try {
-                                const res = await fetch("http://localhost:6504/usc_api/predict_url2", {
-                                        method: "POST",
-                                        headers: { "Content-Type": "application/json" },
-                                        body: JSON.stringify({ url })
-                                });
-                                const data = await res.json();
+                                // Try localhost first (dev), fall back to production
+                                let data;
+                                const tryEndpoints = [
+                                        "http://localhost:6504/usc_api/predict_url2",
+                                        "https://geodev.fun/usc_api/predict_url2"
+                                ];
+                                let fetchSuccess = false;
+                                for (const endpoint of tryEndpoints) {
+                                        try {
+                                                const res = await fetch(endpoint, {
+                                                        method: "POST",
+                                                        headers: { "Content-Type": "application/json" },
+                                                        body: JSON.stringify({ url })
+                                                });
+                                                data = await res.json();
+                                                fetchSuccess = true;
+                                                break;
+                                        } catch (e) {
+                                                console.warn("Endpoint failed:", endpoint, e.message);
+                                        }
+                                }
+                                if (!fetchSuccess) throw new Error("All endpoints failed");
                                 console.log("Predictions:", data);
 
                                 const className = data.boxes?.[0]?.class_name ?? '—';
@@ -728,6 +916,11 @@
           <div class="pu-img-overlay"></div>
         </div>
       </div>`;
+                }
+        </script>
+        <script>
+                function toggleGuide() {
+                        document.getElementById('guidePanel').classList.toggle('open');
                 }
         </script>
 </body>

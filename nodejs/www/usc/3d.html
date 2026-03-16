@@ -199,6 +199,12 @@
       color: rgba(255, 255, 255, .6);
       padding: 3px 0;
       line-height: 1;
+      position: relative;
+      cursor: default;
+    }
+
+    .legend-item:hover {
+      color: rgba(255, 255, 255, .9);
     }
 
     .legend-item:last-child {
@@ -210,6 +216,44 @@
       height: 10px;
       border-radius: 50%;
       flex-shrink: 0;
+    }
+
+    .legend-tooltip {
+      position: absolute;
+      left: calc(100% + 10px);
+      top: 50%;
+      transform: translateY(-50%) translateX(-4px);
+      background: #1c1c1c;
+      border: .5px solid rgba(255, 255, 255, .15);
+      border-radius: 12px;
+      padding: 9px 12px;
+      width: 200px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .2s, transform .2s;
+      z-index: 2000;
+      white-space: normal;
+    }
+
+    .legend-item:hover .legend-tooltip {
+      opacity: 1;
+      transform: translateY(-50%) translateX(0);
+    }
+
+    .legend-tooltip-title {
+      font-family: 'DM Mono', monospace;
+      font-size: .58rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+
+    .legend-tooltip-desc {
+      font-size: .72rem;
+      color: rgba(255, 255, 255, .55);
+      line-height: 1.55;
+      font-weight: 300;
     }
 
     /* ══════════════════════════════
@@ -899,24 +943,54 @@
     <div class="legend-title">Canyon Types</div>
     <div class="legend-item">
       <div class="legend-dot" style="background:#c1f868"></div>Non canyon
+      <div class="legend-tooltip">
+        <div class="legend-tooltip-title">Non canyon</div>
+        <div class="legend-tooltip-desc">Open road, no buildings on either side — H/W ≈ 0, good airflow and sunlight.
+        </div>
+      </div>
     </div>
     <div class="legend-item">
       <div class="legend-dot" style="background:#a0d534"></div>On viaduct
+      <div class="legend-tooltip">
+        <div class="legend-tooltip-title">On viaduct</div>
+        <div class="legend-tooltip-desc">Located on an elevated road structure above ground level.</div>
+      </div>
     </div>
     <div class="legend-item">
       <div class="legend-dot" style="background:#fdf73d"></div>Under viaduct
+      <div class="legend-tooltip">
+        <div class="legend-tooltip-title">Under viaduct</div>
+        <div class="legend-tooltip-desc">Located beneath an elevated road — shaded with reduced airflow.</div>
+      </div>
     </div>
     <div class="legend-item">
       <div class="legend-dot" style="background:#f2d371"></div>0 &lt; H/W &lt; 1
+      <div class="legend-tooltip">
+        <div class="legend-tooltip-title">0 &lt; H/W &lt; 1</div>
+        <div class="legend-tooltip-desc">Low-rise buildings — wider than tall, good sunlight and ventilation.</div>
+      </div>
     </div>
     <div class="legend-item">
       <div class="legend-dot" style="background:#f67604"></div>1 &lt; H/W &lt; 2
+      <div class="legend-tooltip">
+        <div class="legend-tooltip-title">1 &lt; H/W &lt; 2</div>
+        <div class="legend-tooltip-desc">Moderate urban density — buildings roughly as tall as the street is wide.</div>
+      </div>
     </div>
     <div class="legend-item">
       <div class="legend-dot" style="background:#f90f06"></div>2 &lt; H/W &lt; 4
+      <div class="legend-tooltip">
+        <div class="legend-tooltip-title">2 &lt; H/W &lt; 4</div>
+        <div class="legend-tooltip-desc">Deep canyon — limited airflow and sunlight, higher pollution concentration.
+        </div>
+      </div>
     </div>
     <div class="legend-item">
       <div class="legend-dot" style="background:#d7191c"></div>H/W &gt; 4
+      <div class="legend-tooltip">
+        <div class="legend-tooltip-title">H/W &gt; 4</div>
+        <div class="legend-tooltip-desc">Very deep canyon — poor ventilation, highest pollution trapping risk.</div>
+      </div>
     </div>
   </div>
 
