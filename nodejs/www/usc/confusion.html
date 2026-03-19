@@ -23,6 +23,7 @@
       --cream: #F5F0E8;
       --stone: #8A8680;
       --accent: #C4956A;
+      --al: rgba(196, 149, 106, 0.15);
       --gb: rgba(255, 255, 255, 0.13);
       --s1: #141414;
       --s2: #1c1c1c;
@@ -110,6 +111,208 @@
     .navbar-links li a.active {
       background: var(--accent);
       color: #fff;
+    }
+
+    /* ── Guide Button ── */
+    .guide-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: .7rem;
+      font-weight: 400;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, .55);
+      background: rgba(255, 255, 255, .07);
+      border: .5px solid rgba(255, 255, 255, .13);
+      border-radius: 100px;
+      padding: 7px 16px;
+      cursor: pointer;
+      transition: all .2s;
+      margin-left: .25rem;
+    }
+
+    .guide-btn:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, .12);
+    }
+
+    .guide-btn svg {
+      width: 13px;
+      height: 13px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      flex-shrink: 0;
+    }
+
+    /* ── Guide Panel ── */
+    .guide-panel {
+      position: fixed;
+      bottom: 28px;
+      right: 20px;
+      z-index: 1000;
+      width: 300px;
+      background: rgba(13, 13, 13, .95);
+      backdrop-filter: blur(18px);
+      border: .5px solid rgba(255, 255, 255, .1);
+      border-radius: 18px;
+      overflow: hidden;
+      max-height: 0;
+      opacity: 0;
+      transition: max-height .4s cubic-bezier(.77, 0, .18, 1), opacity .3s ease;
+      pointer-events: none;
+    }
+
+    .guide-panel.open {
+      max-height: calc(100vh - 120px - 28px);
+      opacity: 1;
+      pointer-events: all;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255, 255, 255, .08) transparent;
+    }
+
+    .guide-panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: .85rem 1.1rem .6rem;
+      border-bottom: .5px solid rgba(255, 255, 255, .08);
+    }
+
+    .guide-panel-title {
+      font-family: 'DM Mono', monospace;
+      font-size: .58rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .guide-panel-close {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, .06);
+      border: .5px solid rgba(255, 255, 255, .1);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255, 255, 255, .5);
+      font-size: .85rem;
+      transition: background .2s, transform .2s;
+    }
+
+    .guide-panel-close:hover {
+      background: rgba(255, 255, 255, .12);
+      transform: rotate(90deg);
+    }
+
+    .guide-intro {
+      padding: .75rem 1.1rem .6rem;
+      border-bottom: .5px solid rgba(255, 255, 255, .06);
+    }
+
+    .guide-intro p {
+      font-size: .73rem;
+      font-weight: 300;
+      line-height: 1.7;
+      color: rgba(255, 255, 255, .45);
+    }
+
+    .guide-intro strong {
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    .guide-section-label {
+      padding: .6rem 1.1rem .2rem;
+      font-family: 'DM Mono', monospace;
+      font-size: .54rem;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--stone);
+    }
+
+    .guide-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: .55rem 1.1rem;
+      border-bottom: .5px solid rgba(255, 255, 255, .05);
+    }
+
+    .guide-row:last-child {
+      border-bottom: none;
+    }
+
+    .guide-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 4px;
+    }
+
+    .guide-row-label {
+      font-family: 'DM Mono', monospace;
+      font-size: .62rem;
+      letter-spacing: .04em;
+      color: var(--cream);
+      min-width: 80px;
+      padding-top: 1px;
+      flex-shrink: 0;
+    }
+
+    .guide-row-desc {
+      font-size: .7rem;
+      color: rgba(255, 255, 255, .42);
+      line-height: 1.5;
+      font-weight: 300;
+    }
+
+    .guide-row-desc strong {
+      color: var(--cream);
+      font-weight: 500;
+    }
+
+    /* color swatch row */
+    .guide-swatch-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: .55rem 1.1rem;
+      border-bottom: .5px solid rgba(255, 255, 255, .05);
+    }
+
+    .guide-swatch {
+      width: 28px;
+      height: 14px;
+      border-radius: 3px;
+      flex-shrink: 0;
+      margin-top: 3px;
+    }
+
+    /* p-value scale bar */
+    .guide-scale-bar {
+      margin: .5rem 1.1rem .75rem;
+      border-radius: 6px;
+      overflow: hidden;
+      height: 10px;
+      background: linear-gradient(to right, #4CAF7D, #fdf73d, #d73027);
+    }
+
+    .guide-scale-labels {
+      display: flex;
+      justify-content: space-between;
+      padding: 3px 1.1rem 0;
+      font-family: 'DM Mono', monospace;
+      font-size: .52rem;
+      color: rgba(255, 255, 255, .35);
+      letter-spacing: .05em;
     }
 
     /* ── Page ── */
@@ -442,6 +645,119 @@
       <li><a href="boxplot.html">ANOVA</a></li>
       <li><a href="confusion.html" class="active">Tukey HSD</a></li>
     </ul>
+    <button class="guide-btn" onclick="toggleGuide()">
+      <svg viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="10" />
+        <line x1="12" y1="8" x2="12" y2="12" />
+        <line x1="12" y1="16" x2="12.01" y2="16" />
+      </svg>
+      How to Read
+    </button>
+  </div>
+
+  <!-- GUIDE PANEL -->
+  <div class="guide-panel" id="guidePanel">
+    <div class="guide-panel-header">
+      <span class="guide-panel-title">How to Read Tukey HSD</span>
+      <button class="guide-panel-close" onclick="toggleGuide()">×</button>
+    </div>
+
+    <div class="guide-intro">
+      <p>กราฟ <strong>Tukey HSD</strong> แสดง <strong>p-value</strong> จากการเปรียบเทียบแบบ Pairwise ระหว่างทุกคู่ของ
+        Canyon Type ในแต่ละสัปดาห์ — ใช้ดูว่าคู่ไหนมีค่ามลพิษแตกต่างกันอย่างมีนัยสำคัญทางสถิติ</p>
+    </div>
+
+    <div class="guide-section-label">การอ่านค่า p-value</div>
+
+    <div class="guide-row">
+      <div class="guide-dot" style="background:var(--sig)"></div>
+      <span class="guide-row-label">p &lt; 0.05</span>
+      <span class="guide-row-desc"><strong>มีนัยสำคัญ</strong> — คู่นี้มีค่ามลพิษต่างกันจริง ไม่ใช่ความบังเอิญ</span>
+    </div>
+    <div class="guide-row">
+      <div class="guide-dot" style="background:#fdf73d"></div>
+      <span class="guide-row-label">p ≈ 0.05</span>
+      <span class="guide-row-desc"><strong>Borderline</strong> — อยู่แนวขอบ ควรตีความด้วยความระมัดระวัง</span>
+    </div>
+    <div class="guide-row">
+      <div class="guide-dot" style="background:#d73027"></div>
+      <span class="guide-row-label">p &gt; 0.05</span>
+      <span class="guide-row-desc"><strong>ไม่มีนัยสำคัญ</strong> — คู่นี้ค่ามลพิษไม่ต่างกัน
+        หรือต่างได้จากความบังเอิญ</span>
+    </div>
+
+    <div class="guide-section-label">สเกลสี</div>
+    <div class="guide-scale-bar"></div>
+    <div class="guide-scale-labels">
+      <span>0.0 (Sig.)</span>
+      <span>0.5</span>
+      <span>1.0 (Non-sig.)</span>
+    </div>
+
+    <div class="guide-section-label">วิธีอ่าน Heatmap</div>
+
+    <div class="guide-row">
+      <div class="guide-dot" style="background:var(--stone)"></div>
+      <span class="guide-row-label">แกน X / Y</span>
+      <span class="guide-row-desc">แต่ละแกนคือ Canyon Type — ช่องตัดกันแสดง p-value ของคู่นั้น</span>
+    </div>
+
+    <div class="guide-row">
+      <div class="guide-dot" style="background:var(--stone)"></div>
+      <span class="guide-row-label">สมมาตร</span>
+      <span class="guide-row-desc">Matrix มีความสมมาตร — ช่องบนขวา = ช่องล่างซ้าย ค่าเหมือนกันทุกคู่</span>
+    </div>
+    <div class="guide-row">
+      <div class="guide-dot" style="background:var(--accent)"></div>
+      <span class="guide-row-label">Hover ช่อง</span>
+      <span class="guide-row-desc">วาง cursor บนช่องใดก็ได้เพื่อดู p-value และผลการทดสอบแบบละเอียด</span>
+    </div>
+
+    <div class="guide-section-label">Canyon Types</div>
+
+    <div class="guide-row">
+      <div class="guide-dot" style="background:#c1f868"></div>
+      <span class="guide-row-label">Non canyon</span>
+      <span class="guide-row-desc">ถนนโล่ง H/W ≈ 0 อากาศถ่ายเทดี มลพิษสะสมน้อยที่สุด</span>
+    </div>
+    <div class="guide-row">
+      <div class="guide-dot" style="background:#a0d534"></div>
+      <span class="guide-row-label">On viaduct</span>
+      <span class="guide-row-desc">บนทางยกระดับ โล่งกว่าปกติ</span>
+    </div>
+    <div class="guide-row">
+      <div class="guide-dot" style="background:#fdf73d"></div>
+      <span class="guide-row-label">Under viaduct</span>
+      <span class="guide-row-desc">ใต้ทางยกระดับ ร่มและอากาศถ่ายเทลดลง</span>
+    </div>
+    <div class="guide-row">
+      <div class="guide-dot" style="background:#f2d371"></div>
+      <span class="guide-row-label">0&lt;H/W&lt;1</span>
+      <span class="guide-row-desc">อาคารเตี้ย แสงแดดและอากาศยังดี</span>
+    </div>
+    <div class="guide-row">
+      <div class="guide-dot" style="background:#f67604"></div>
+      <span class="guide-row-label">1&lt;H/W&lt;2</span>
+      <span class="guide-row-desc">ความหนาแน่นปานกลาง เริ่มสะสมมลพิษ</span>
+    </div>
+    <div class="guide-row">
+      <div class="guide-dot" style="background:#f90f06"></div>
+      <span class="guide-row-label">2&lt;H/W&lt;4</span>
+      <span class="guide-row-desc">หุบลึก อากาศถ่ายเทน้อย มลพิษสูง</span>
+    </div>
+    <div class="guide-row">
+      <div class="guide-dot" style="background:#d7191c"></div>
+      <span class="guide-row-label">H/W&gt;4</span>
+      <span class="guide-row-desc">หุบลึกมาก อากาศแทบไม่ถ่ายเท ความเสี่ยงสูงสุด</span>
+    </div>
+
+    <div class="guide-section-label">Sig. Pairs avg.</div>
+    <div class="guide-row">
+      <div class="guide-dot" style="background:var(--sig)"></div>
+      <span class="guide-row-label">% Sig.</span>
+      <span class="guide-row-desc">เปอร์เซ็นต์ของคู่ทั้งหมดที่มี p &lt; 0.05 เฉลี่ยจากสัปดาห์ที่แสดงในช่วงนั้น —
+        ยิ่งสูงยิ่งมีหลายคู่ที่แตกต่างกัน</span>
+    </div>
   </div>
 
   <!-- PAGE -->
@@ -518,7 +834,8 @@
           <line x1="12" y1="8" x2="12" y2="12" />
           <line x1="12" y1="16" x2="12.01" y2="16" />
         </svg>
-        Tukey HSD post-hoc test &nbsp;|&nbsp; α = 0.05 &nbsp;|&nbsp; Data: Jan–May 2025
+        Tukey HSD post-hoc test &nbsp;|&nbsp; α = 0.05 &nbsp;|&nbsp; Data: Jan–May 2025 &nbsp;|&nbsp; คลิก <strong
+          style="color:var(--accent)">How to Read</strong> มุมขวาบนเพื่อดูคำอธิบาย
       </div>
     </div>
 
@@ -526,7 +843,7 @@
 
   <script>
     const FILES = { pm25: 'tukey_results_pm25.json', pm10: 'tukey_results_pm10.json' };
-    const GROUP_SIZE = 2; // weeks per range
+    const GROUP_SIZE = 2;
 
     let jsonData = [];
     let allWeeks = [];
@@ -534,9 +851,12 @@
     let currentRangeIdx = 0;
     const chartInstances = {};
 
-    /* ── helpers ── */
     function showError(msg) { const el = document.getElementById('error-box'); el.innerHTML = '⚠ ' + msg; el.style.display = 'block'; }
     function hideError() { const el = document.getElementById('error-box'); el.innerHTML = ''; el.style.display = 'none'; }
+
+    function toggleGuide() {
+      document.getElementById('guidePanel').classList.toggle('open');
+    }
 
     function setPollutant(p) {
       currentPollutant = p;
@@ -564,7 +884,6 @@
       document.querySelectorAll('.week-pill').forEach((p, i) => p.classList.toggle('active', i === idx));
     }
 
-    /* ── load ── */
     async function loadData() {
       hideError();
       try {
@@ -573,7 +892,6 @@
         jsonData = await res.json();
         allWeeks = [...new Set(jsonData.map(d => d.week))].sort((a, b) => a - b);
 
-        // Build ranges
         const ranges = [];
         for (let i = 0; i < allWeeks.length; i += GROUP_SIZE) {
           const start = allWeeks[i];
@@ -589,14 +907,12 @@
       } catch (e) { showError(e.message); }
     }
 
-    /* ── render a week range (max 4 weeks → max 4 cells) ── */
     function renderRange(range) {
       const weeksToShow = allWeeks.filter(w => w >= range.start && w <= range.end);
       document.getElementById('statWeekRange').textContent = `W${range.start} – W${range.end}`;
       document.getElementById('chartSub').textContent =
         `Weeks ${range.start}–${range.end} · ${weeksToShow.length} chart${weeksToShow.length > 1 ? 's' : ''}`;
 
-      // % of pairs that are significant (p<0.05), averaged across shown weeks
       let pctSum = 0;
       weeksToShow.forEach(w => {
         const weekPairs = jsonData.filter(d => d.week === w);
@@ -609,15 +925,13 @@
       const grid = document.getElementById('matrixGrid');
       grid.innerHTML = '';
 
-      // Destroy old instances
       Object.values(chartInstances).forEach(c => c && c.dispose());
       Object.keys(chartInstances).forEach(k => delete chartInstances[k]);
 
-      // Adjust columns: 1 week = 1 col, 2 weeks = 2 cols
       const cols = Math.min(weeksToShow.length, 2);
       grid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
 
-      weeksToShow.forEach((week, idx) => {
+      weeksToShow.forEach((week) => {
         const cell = document.createElement('div'); cell.className = 'matrix-cell';
         const chartEl = document.createElement('div'); chartEl.className = 'matrix-chart';
         cell.appendChild(chartEl); grid.appendChild(cell);
@@ -627,7 +941,6 @@
       });
     }
 
-    /* ── render single week heatmap ── */
     function renderWeekChart(chart, week) {
       const weekData = jsonData.filter(d => d.week === week);
       const groups = [...new Set(weekData.flatMap(d => [d.group1, d.group2]))].sort();
@@ -642,7 +955,6 @@
       const data = [];
       for (let i = 0; i < n; i++) for (let j = 0; j < n; j++) data.push([j, i, matrix[i][j] ?? 1.0]);
 
-      // Pretty-print group names
       const prettyGroups = groups.map(g => {
         const m = {
           'non_canyon': 'Non canyon', 'on_viaduct': 'On viaduct', 'under_viaduct': 'Under viaduct',
