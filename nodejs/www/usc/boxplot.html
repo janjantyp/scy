@@ -116,6 +116,194 @@
       color: #fff;
     }
 
+    .guide-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: .7rem;
+      font-weight: 400;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, .55);
+      background: rgba(255, 255, 255, .07);
+      border: .5px solid rgba(255, 255, 255, .13);
+      border-radius: 100px;
+      padding: 7px 16px;
+      cursor: pointer;
+      transition: all .2s;
+      margin-left: .25rem;
+    }
+
+    .guide-btn:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, .12);
+    }
+
+    .guide-btn svg {
+      width: 13px;
+      height: 13px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      flex-shrink: 0;
+    }
+
+    .guide-panel {
+      position: fixed;
+      bottom: 28px;
+      right: 20px;
+      z-index: 1000;
+      width: 290px;
+      background: rgba(13, 13, 13, .95);
+      backdrop-filter: blur(18px);
+      border: .5px solid rgba(255, 255, 255, .1);
+      border-radius: 18px;
+      overflow: hidden;
+      max-height: 0;
+      opacity: 0;
+      transition: max-height .4s cubic-bezier(.77, 0, .18, 1), opacity .3s ease;
+      pointer-events: none;
+    }
+
+    .guide-panel.open {
+      max-height: calc(100vh - 120px - 28px);
+      opacity: 1;
+      pointer-events: all;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255, 255, 255, .08) transparent;
+    }
+
+    .guide-panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: .85rem 1.1rem .6rem;
+      border-bottom: .5px solid rgba(255, 255, 255, .08);
+    }
+
+    .guide-panel-title {
+      font-family: 'DM Mono', monospace;
+      font-size: .58rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .guide-panel-close {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, .06);
+      border: .5px solid rgba(255, 255, 255, .1);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255, 255, 255, .5);
+      font-size: .85rem;
+      transition: background .2s, transform .2s;
+    }
+
+    .guide-panel-close:hover {
+      background: rgba(255, 255, 255, .12);
+      transform: rotate(90deg);
+    }
+
+    .guide-intro {
+      padding: .75rem 1.1rem .6rem;
+      border-bottom: .5px solid rgba(255, 255, 255, .06);
+    }
+
+    .guide-intro p {
+      font-size: .73rem;
+      font-weight: 300;
+      line-height: 1.7;
+      color: rgba(255, 255, 255, .45);
+    }
+
+    .guide-intro strong {
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    .guide-section-label {
+      padding: .6rem 1.1rem .2rem;
+      font-family: 'DM Mono', monospace;
+      font-size: .54rem;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--stone);
+    }
+
+    .guide-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: .55rem 1.1rem;
+      border-bottom: .5px solid rgba(255, 255, 255, .05);
+    }
+
+    .guide-row:last-child {
+      border-bottom: none;
+    }
+
+    .guide-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 4px;
+    }
+
+    .guide-row-label {
+      font-family: 'DM Mono', monospace;
+      font-size: .62rem;
+      letter-spacing: .04em;
+      color: var(--cream);
+      min-width: 92px;
+      padding-top: 1px;
+      flex-shrink: 0;
+    }
+
+    .guide-row-desc {
+      font-size: .7rem;
+      color: rgba(255, 255, 255, .42);
+      line-height: 1.5;
+      font-weight: 300;
+    }
+
+    .guide-row-desc strong {
+      color: var(--cream);
+      font-weight: 500;
+    }
+
+    .guide-view-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: .55rem 1.1rem;
+      border-bottom: .5px solid rgba(255, 255, 255, .05);
+    }
+
+    .guide-view-badge {
+      display: inline-block;
+      font-family: 'DM Mono', monospace;
+      font-size: .56rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: 3px 9px;
+      border-radius: 100px;
+      background: var(--al);
+      border: .5px solid rgba(196, 149, 106, .3);
+      color: var(--accent);
+      white-space: nowrap;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
     .page {
       max-width: 1100px;
       margin: 0 auto;
@@ -350,34 +538,6 @@
       margin-top: 2px;
     }
 
-    .chart-legend {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      align-items: center;
-    }
-
-    .chart-legend-item {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: .68rem;
-      color: rgba(255, 255, 255, .5);
-    }
-
-    .chart-legend-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
-
-    #trend {
-      width: 100%;
-      height: 560px;
-      padding: .5rem 0;
-    }
-
     #error-box {
       display: none;
       margin: 1.5rem;
@@ -425,6 +585,98 @@
       <li><a href="boxplot.html" class="active">ANOVA</a></li>
       <li><a href="confusion.html">Tukey HSD</a></li>
     </ul>
+    <button class="guide-btn" onclick="toggleGuide()">
+      <svg viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="10" />
+        <line x1="12" y1="8" x2="12" y2="12" />
+        <line x1="12" y1="16" x2="12.01" y2="16" />
+      </svg>
+      How to Read
+    </button>
+  </div>
+
+  <div class="guide-panel" id="guidePanel">
+    <div class="guide-panel-header">
+      <span class="guide-panel-title">How to Read Boxplot</span>
+      <button class="guide-panel-close" onclick="toggleGuide()">×</button>
+    </div>
+
+    <div class="guide-intro">
+      <p>กราฟ <strong>Boxplot</strong> แสดงการกระจายตัวของ <strong>PM2.5 / PM10</strong> ในแต่ละประเภทหุบเมือง (Canyon
+        Type) รายสัปดาห์ ใช้เปรียบเทียบว่า Type ใดมีมลพิษสูง-ต่ำ และกระจายมากน้อยแค่ไหน</p>
+    </div>
+
+    <div class="guide-section-label">ส่วนประกอบของ Box</div>
+
+    <div class="guide-row">
+      <div class="guide-dot" style="background:var(--accent)"></div>
+      <span class="guide-row-label">เส้นกลาง</span>
+      <span class="guide-row-desc"><strong>Median (Q2)</strong> — ค่ากลาง 50% ต่ำกว่า / 50% สูงกว่า</span>
+    </div>
+    <div class="guide-row">
+      <div class="guide-dot" style="background:var(--stone)"></div>
+      <span class="guide-row-label">กล่อง</span>
+      <span class="guide-row-desc"><strong>IQR (Q1–Q3)</strong> — ช่วงกลาง 50% ของข้อมูล กล่องกว้าง = กระจายมาก</span>
+    </div>
+    <div class="guide-row">
+      <div class="guide-dot" style="background:var(--stone)"></div>
+      <span class="guide-row-label">หนวด</span>
+      <span class="guide-row-desc"><strong>Whisker</strong> — Min / Max ที่ไม่ใช่ outlier ยิ่งยาว
+        ค่าสุดขั้วยิ่งมาก</span>
+    </div>
+
+    <div class="guide-section-label">3 มุมมองกราฟ</div>
+
+    <div class="guide-view-row">
+      <span class="guide-view-badge">By Type</span>
+      <span class="guide-row-desc">แยก Canyon Type ละ 1 กราฟ ดูแนวโน้มรายสัปดาห์ของแต่ละประเภท</span>
+    </div>
+    <div class="guide-view-row">
+      <span class="guide-view-badge">Overview</span>
+      <span class="guide-row-desc">รวมทุก Type ในกราฟเดียว เปรียบเทียบภาพรวม 22 สัปดาห์พร้อมกัน</span>
+    </div>
+    <div class="guide-view-row">
+      <span class="guide-view-badge">Weekly</span>
+      <span class="guide-row-desc">เลือกสัปดาห์ที่สนใจ แล้วดูทุก Canyon Type ในสัปดาห์นั้นเปรียบเทียบกัน</span>
+    </div>
+
+    <div class="guide-section-label">Canyon Types</div>
+
+    <div class="guide-row">
+      <div class="guide-dot" style="background:#c1f868"></div>
+      <span class="guide-row-label">Non canyon</span>
+      <span class="guide-row-desc">ถนนโล่ง H/W ≈ 0 อากาศถ่ายเทดี มลพิษสะสมน้อยที่สุด</span>
+    </div>
+    <div class="guide-row">
+      <div class="guide-dot" style="background:#a0d534"></div>
+      <span class="guide-row-label">On viaduct</span>
+      <span class="guide-row-desc">บนทางยกระดับ โล่งกว่าปกติ</span>
+    </div>
+    <div class="guide-row">
+      <div class="guide-dot" style="background:#fdf73d"></div>
+      <span class="guide-row-label">Under viaduct</span>
+      <span class="guide-row-desc">ใต้ทางยกระดับ ร่มและอากาศถ่ายเทลดลง</span>
+    </div>
+    <div class="guide-row">
+      <div class="guide-dot" style="background:#f2d371"></div>
+      <span class="guide-row-label">0&lt;H/W&lt;1</span>
+      <span class="guide-row-desc">อาคารเตี้ย แสงแดดและอากาศยังดี</span>
+    </div>
+    <div class="guide-row">
+      <div class="guide-dot" style="background:#f67604"></div>
+      <span class="guide-row-label">1&lt;H/W&lt;2</span>
+      <span class="guide-row-desc">ความหนาแน่นปานกลาง เริ่มสะสมมลพิษ</span>
+    </div>
+    <div class="guide-row">
+      <div class="guide-dot" style="background:#f90f06"></div>
+      <span class="guide-row-label">2&lt;H/W&lt;4</span>
+      <span class="guide-row-desc">หุบลึก อากาศถ่ายเทน้อย มลพิษสูง</span>
+    </div>
+    <div class="guide-row">
+      <div class="guide-dot" style="background:#d7191c"></div>
+      <span class="guide-row-label">H/W&gt;4</span>
+      <span class="guide-row-desc">หุบลึกมาก อากาศแทบไม่ถ่ายเท ความเสี่ยงสูงสุด</span>
+    </div>
   </div>
 
   <div class="page">
@@ -503,7 +755,7 @@
       <div id="error-box"></div>
       <div id="sm-grid"></div>
       <div id="combined-chart" style="display:none; width:100%; height:700px; padding:.5rem 0;"></div>
-      <!-- By Week view -->
+
       <div id="week-view" style="display:none;">
         <div id="week-nav"
           style="display:flex;align-items:center;justify-content:center;gap:12px;padding:1rem 1.5rem .5rem;border-bottom:.5px solid var(--border);">
@@ -520,7 +772,6 @@
           <button id="week-next" onclick="stepWeek(1)"
             style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.06);border:.5px solid var(--border);color:rgba(255,255,255,.6);cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:all .2s;">&#8250;</button>
         </div>
-        <!-- week dots -->
         <div id="week-dots"
           style="display:flex;gap:4px;justify-content:center;padding:.6rem 1.5rem .4rem;flex-wrap:wrap;"></div>
         <div id="week-chart" style="width:100%;height:420px;"></div>
@@ -532,7 +783,8 @@
           <line x1="12" y1="8" x2="12" y2="12" />
           <line x1="12" y1="16" x2="12.01" y2="16" />
         </svg>
-        Box: min · Q1 · median · Q3 · max &nbsp;
+        Box: min · Q1 · median · Q3 · max &nbsp;·&nbsp; คลิก <strong style="color:var(--accent)">How to Read</strong>
+        มุมขวาบนเพื่อดูคำอธิบาย
       </div>
     </div>
 
@@ -622,7 +874,6 @@
       draw(currentType);
     }
 
-    /* ── By Week navigation ── */
     function stepWeek(dir) {
       currentWeekIdx = Math.max(0, Math.min(sortedWeekKeys.length - 1, currentWeekIdx + dir));
       drawWeekChart(currentType, currentWeekIdx);
@@ -651,71 +902,59 @@
     }
 
     function drawWeekChart(type, weekIdx) {
-      const raw = allData[type];
-      if (!raw) return;
+      const raw = allData[type]; if (!raw) return;
       const pollLabel = type === 'pm25' ? 'PM2.5' : 'PM10';
-      const weekKey = sortedWeekKeys[weekIdx];
-      if (!weekKey) return;
-
+      const weekKey = sortedWeekKeys[weekIdx]; if (!weekKey) return;
       updateWeekDots(weekIdx);
 
+      // ใช้ logic เดียวกับ drawCombined ทุกอย่าง
       const rawLabels = [...new Set(raw.map(d => d.label))];
       const rawKeyOf = {};
-      rawLabels.forEach(rk => { rawKeyOf[rk] = rk; });
-      const ordered = LABEL_ORDER.filter(k => rawLabels.includes(k));
-      const rest = rawLabels.filter(k => !LABEL_ORDER.includes(k)).sort();
-      const keys = [...ordered, ...rest];
+      rawLabels.forEach(rk => { rawKeyOf[normKey(rk)] = rk; });
+      const allNormLabels = rawLabels.map(normKey);
+      const orderedLabels = LABEL_ORDER.filter(k => allNormLabels.includes(k));
+      const remaining = allNormLabels.filter(k => !LABEL_ORDER.includes(k)).sort();
+      const labels = [...orderedLabels, ...remaining];
+      const weekKeys = getSortedWeeks(raw);
 
-      // For each label, get all pollution values for this week → single boxplot
-      const boxData = [];
-      const colors = [];
-      const names = [];
-      keys.forEach(key => {
-        const vals = raw.filter(d => d.label === key && d.pollutant_week === weekKey).map(d => d.pollution);
-        if (vals.length > 0) {
-          boxData.push(vals);
-          colors.push(labelColor(key));
-          names.push(labelName(key));
-        }
+      const colors = labels.map(k => labelColor(k));
+      const names = labels.map(k => labelName(k));
+
+      // สร้าง boxData แบบเดียวกับ drawCombined แล้วดึงเฉพาะ index ของ weekIdx
+      const boxDataPerLabel = labels.map(label => {
+        const rawLbl = rawKeyOf[label] || label;
+        const weekData = weekKeys.map(wk => raw.filter(d => d.label === rawLbl && d.pollutant_week === wk).map(d => d.pollution));
+        const prepared = echarts.dataTool.prepareBoxplotData(weekData.map(g => g.length >= 5 ? g : [null]));
+        return prepared.boxData[weekIdx];
       });
 
-      if (boxData.length === 0) return;
-      const prepared = echarts.dataTool.prepareBoxplotData(boxData);
-
       if (weekInstance) { weekInstance.dispose(); weekInstance = null; }
-      const el = document.getElementById('week-chart');
-      weekInstance = echarts.init(el);
-
+      weekInstance = echarts.init(document.getElementById('week-chart'));
       weekInstance.setOption({
         backgroundColor: 'transparent',
-        textStyle: { fontFamily: "'DM Sans', sans-serif", color: 'rgba(255,255,255,.55)' },
+        textStyle: { fontFamily: "'DM Sans',sans-serif", color: 'rgba(255,255,255,.55)' },
         tooltip: {
-          trigger: 'axis', confine: true,
-          backgroundColor: '#1c1c1c', borderColor: 'rgba(255,255,255,.12)',
+          trigger: 'axis', confine: true, backgroundColor: '#1c1c1c', borderColor: 'rgba(255,255,255,.12)',
           textStyle: { color: '#fff', fontSize: 11 },
           formatter: params => {
             const p = params[0]; if (!p || !p.data) return '';
-            const v = p.data;
-            const col = colors[p.dataIndex] || '#C4956A';
-            const name = names[p.dataIndex] || '';
+            const v = Array.isArray(p.data) ? p.data : p.data.value;
+            const col = colors[p.dataIndex] || '#C4956A', name = names[p.dataIndex] || '';
             return `<span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${col};margin-right:5px;vertical-align:middle"></span>
 <b style="color:${col}">${escLabel(name)}</b><br/>
-Max <b>${Number(v[5]).toFixed(1)}</b> &nbsp; Q3 <b>${Number(v[4]).toFixed(1)}</b><br/>
-Med <b>${Number(v[3]).toFixed(1)}</b> &nbsp; Q1 <b>${Number(v[2]).toFixed(1)}</b><br/>
-Min <b>${Number(v[1]).toFixed(1)}</b>`;
+Max <b>${Number(v[4]).toFixed(1)}</b> &nbsp; Q3 <b>${Number(v[3]).toFixed(1)}</b><br/>
+Med <b>${Number(v[2]).toFixed(1)}</b> &nbsp; Q1 <b>${Number(v[1]).toFixed(1)}</b><br/>
+Min <b>${Number(v[0]).toFixed(1)}</b>`;
           }
         },
         grid: { left: '6%', right: '3%', top: 24, bottom: 60, containLabel: true },
         xAxis: {
-          type: 'category',
-          data: names,
+          type: 'category', data: names,
           axisLabel: { fontSize: 11, color: 'rgba(255,255,255,.55)', interval: 0 },
-          axisLine: { lineStyle: { color: 'rgba(255,255,255,.1)' } },
-          splitLine: { show: false }, axisTick: { show: false }
+          axisLine: { lineStyle: { color: 'rgba(255,255,255,.1)' } }, splitLine: { show: false }, axisTick: { show: false }
         },
         yAxis: {
-          type: 'value', scale: true,
-          name: pollLabel + ' (µg/m³)',
+          type: 'value', scale: true, name: pollLabel + ' (µg/m³)',
           nameLocation: 'middle', nameGap: 56, nameRotate: 90,
           nameTextStyle: { color: 'rgba(255,255,255,.4)', fontSize: 11 },
           axisLabel: { color: 'rgba(255,255,255,.45)', fontSize: 11, margin: 8 },
@@ -724,13 +963,9 @@ Min <b>${Number(v[1]).toFixed(1)}</b>`;
         },
         series: [{
           type: 'boxplot',
-          data: prepared.boxData.map((d, i) => ({
+          data: boxDataPerLabel.map((d, i) => ({
             value: d,
-            itemStyle: {
-              color: hexToRgba(colors[i] || '#C4956A', 0.25),
-              borderColor: colors[i] || '#C4956A',
-              borderWidth: 2
-            }
+            itemStyle: { color: hexToRgba(colors[i] || '#C4956A', 0.25), borderColor: colors[i] || '#C4956A', borderWidth: 2 }
           })),
           emphasis: { itemStyle: { borderWidth: 2.5 } }
         }]
@@ -738,47 +973,33 @@ Min <b>${Number(v[1]).toFixed(1)}</b>`;
     }
 
     function getSortedWeeks(raw) {
-      return [...new Set(raw.map(d => d.pollutant_week))].sort((a, b) => {
-        const na = parseInt((a.match(/\d+/) || [0])[0]);
-        const nb = parseInt((b.match(/\d+/) || [0])[0]);
-        return na - nb;
-      });
+      const weekNumOf = {};
+      raw.forEach(d => { if (!(d.pollutant_week in weekNumOf)) weekNumOf[d.pollutant_week] = Number(d.week); });
+      return [...new Set(raw.map(d => d.pollutant_week))].sort((a, b) => weekNumOf[a] - weekNumOf[b]);
     }
 
     function buildSmallChart(el, label, rawLabel, raw, pollLabel) {
-      const c = labelColor(label);
-      const name = labelName(label);
+      const c = labelColor(label), name = labelName(label);
       const weekKeys = getSortedWeeks(raw);
       const weekLabels = weekKeys.map(w => { const m = w.match(/\d+/); return m ? 'W' + parseInt(m[0]) : w; });
-
-      const weekData = weekKeys.map(wk =>
-        raw.filter(d => d.label === rawLabel && d.pollutant_week === wk).map(d => d.pollution)
-      );
-      const validGroups = weekData.filter(g => g.length > 0);
-      if (validGroups.length === 0) return;
-
-      const prepared = echarts.dataTool.prepareBoxplotData(weekData.map(g => g.length > 0 ? g : [null]));
+      const weekData = weekKeys.map(wk => raw.filter(d => d.label === rawLabel && d.pollutant_week === wk).map(d => d.pollution));
+      if (!weekData.filter(g => g.length > 0).length) return;
+      const prepared = echarts.dataTool.prepareBoxplotData(weekData.map(g => g.length >= 5 ? g : [null]));
 
       if (chartInstances[label]) chartInstances[label].dispose();
       const instance = echarts.init(el);
       chartInstances[label] = instance;
-
       instance.setOption({
         backgroundColor: 'transparent',
         tooltip: {
-          trigger: 'axis', confine: true,
-          backgroundColor: '#1c1c1c', borderColor: 'rgba(255,255,255,.15)',
+          trigger: 'axis', confine: true, backgroundColor: '#1c1c1c', borderColor: 'rgba(255,255,255,.15)',
           textStyle: { color: '#fff', fontSize: 11 },
           formatter: params => {
-            const p = params[0];
-            if (!p || !p.data) return '';
-            const v = p.data;
-            const wLabel = weekLabels[p.dataIndex] || ('W' + (p.dataIndex + 1));
+            const p = params[0]; if (!p || !p.data) return '';
+            const v = p.data, wLabel = weekLabels[p.dataIndex] || ('W' + (p.dataIndex + 1));
             return `<span style="color:${c};font-weight:600">${escLabel(name)}</span> · <span style="color:rgba(255,255,255,.6)">${wLabel}</span><br/>
-Max <b>${Number(v[5]).toFixed(1)}</b><br/>
-Q3 &nbsp;<b>${Number(v[4]).toFixed(1)}</b><br/>
-Med <b>${Number(v[3]).toFixed(1)}</b><br/>
-Q1 &nbsp;<b>${Number(v[2]).toFixed(1)}</b><br/>
+Max <b>${Number(v[5]).toFixed(1)}</b><br/>Q3 &nbsp;<b>${Number(v[4]).toFixed(1)}</b><br/>
+Med <b>${Number(v[3]).toFixed(1)}</b><br/>Q1 &nbsp;<b>${Number(v[2]).toFixed(1)}</b><br/>
 Min <b>${Number(v[1]).toFixed(1)}</b>`;
           }
         },
@@ -786,18 +1007,13 @@ Min <b>${Number(v[1]).toFixed(1)}</b>`;
         xAxis: {
           type: 'category', data: weekLabels,
           axisLabel: { fontSize: 9, color: 'rgba(255,255,255,.35)', interval: 3, rotate: 0 },
-          axisLine: { lineStyle: { color: 'rgba(255,255,255,.08)' } },
-          splitLine: { show: false }, axisTick: { show: false }
+          axisLine: { lineStyle: { color: 'rgba(255,255,255,.08)' } }, splitLine: { show: false }, axisTick: { show: false }
         },
-        /* ── yAxis from Code 2 ── */
         yAxis: {
-          type: 'value', scale: true,
-          name: 'µg/m³', nameLocation: 'start',
-          nameTextStyle: { color: 'rgba(255,255,255,.35)', fontSize: 9, align: 'right' },
-          nameGap: 6,
+          type: 'value', scale: true, name: 'µg/m³', nameLocation: 'start',
+          nameTextStyle: { color: 'rgba(255,255,255,.35)', fontSize: 9, align: 'right' }, nameGap: 6,
           axisLabel: { fontSize: 9, color: 'rgba(255,255,255,.35)', margin: 4 },
-          splitLine: { lineStyle: { color: 'rgba(255,255,255,.05)' } },
-          axisLine: { show: false }, axisTick: { show: false }
+          splitLine: { lineStyle: { color: 'rgba(255,255,255,.05)' } }, axisLine: { show: false }, axisTick: { show: false }
         },
         series: [{
           name, type: 'boxplot', data: prepared.boxData,
@@ -808,15 +1024,9 @@ Min <b>${Number(v[1]).toFixed(1)}</b>`;
     }
 
     function draw(type) {
-      currentType = type;
-      updateButtons(type);
-      hideError();
-
-      const raw = allData[type];
-      if (!raw) { showError('Data not loaded: ' + type); return; }
-
+      currentType = type; updateButtons(type); hideError();
+      const raw = allData[type]; if (!raw) { showError('Data not loaded: ' + type); return; }
       const pollLabel = type === 'pm25' ? 'PM2.5' : 'PM10';
-      // Always update sorted weeks (used by week view)
       sortedWeekKeys = getSortedWeeks(raw);
       document.getElementById('week-total').textContent = '/ ' + sortedWeekKeys.length;
       const rawLabels = [...new Set(raw.map(d => d.label))];
@@ -826,29 +1036,23 @@ Min <b>${Number(v[1]).toFixed(1)}</b>`;
       const orderedLabels = LABEL_ORDER.filter(k => allLabels.includes(k));
       const remaining = allLabels.filter(k => !LABEL_ORDER.includes(k)).sort();
       const labels = [...orderedLabels, ...remaining];
-
       document.getElementById('statLabels').textContent = labels.length;
       document.getElementById('statWeeks').textContent = getSortedWeeks(raw).length;
 
       if (currentView === 'small') {
         document.getElementById('chartTitle').innerHTML = `Boxplot of <em>${pollLabel}</em> — By Type`;
         document.getElementById('chartSub').textContent = '22-week trend for each canyon type individually';
-
-        const grid = document.getElementById('sm-grid');
-        grid.innerHTML = '';
+        const grid = document.getElementById('sm-grid'); grid.innerHTML = '';
         labels.forEach(label => {
-          const c = labelColor(label);
-          const name = labelName(label);
+          const c = labelColor(label), name = labelName(label);
           const cell = document.createElement('div'); cell.className = 'sm-cell';
           const lbl = document.createElement('div'); lbl.className = 'sm-cell-label';
           lbl.innerHTML = `<span class="sm-cell-dot" style="background:${c}"></span><span style="color:${c}">${escLabel(name)}</span>`;
           cell.appendChild(lbl);
           const chartEl = document.createElement('div'); chartEl.className = 'sm-chart';
-          cell.appendChild(chartEl);
-          grid.appendChild(cell);
+          cell.appendChild(chartEl); grid.appendChild(cell);
           requestAnimationFrame(() => buildSmallChart(chartEl, label, rawKeyOf[label] || label, raw, pollLabel));
         });
-
       } else if (currentView === 'combined') {
         document.getElementById('chartTitle').innerHTML = `Boxplot of <em>${pollLabel}</em> — Overview`;
         document.getElementById('chartSub').textContent = 'All canyon types across all 22 weeks — full overview';
@@ -863,10 +1067,8 @@ Min <b>${Number(v[1]).toFixed(1)}</b>`;
     }
 
     function drawCombined(type) {
-      const raw = allData[type];
-      if (!raw) return;
+      const raw = allData[type]; if (!raw) return;
       const pollLabel = type === 'pm25' ? 'PM2.5' : 'PM10';
-
       const rawCombinedLabels = [...new Set(raw.map(d => d.label))];
       const rawKeyOfC = {};
       rawCombinedLabels.forEach(rk => { rawKeyOfC[normKey(rk)] = rk; });
@@ -874,28 +1076,21 @@ Min <b>${Number(v[1]).toFixed(1)}</b>`;
       const orderedLabels = LABEL_ORDER.filter(k => allCombinedLabels.includes(k));
       const remaining = allCombinedLabels.filter(k => !LABEL_ORDER.includes(k)).sort();
       const labels = [...orderedLabels, ...remaining];
-
       const weekKeys = getSortedWeeks(raw);
       const weekLabels = weekKeys.map(w => { const m = w.match(/\d+/); return m ? 'Week ' + parseInt(m[0]) : w; });
 
       const series = labels.map(label => {
-        const c = labelColor(label);
-        const name = labelName(label);
-        const rawLbl = rawKeyOfC[label] || label;
-        const weekData = weekKeys.map(wk =>
-          raw.filter(d => d.label === rawLbl && d.pollutant_week === wk).map(d => d.pollution)
-        );
-        const prepared = echarts.dataTool.prepareBoxplotData(weekData.map(g => g.length > 0 ? g : [null]));
+        const c = labelColor(label), name = labelName(label), rawLbl = rawKeyOfC[label] || label;
+        const weekData = weekKeys.map(wk => raw.filter(d => d.label === rawLbl && d.pollutant_week === wk).map(d => d.pollution));
+        const prepared = echarts.dataTool.prepareBoxplotData(weekData.map(g => g.length >= 5 ? g : [null]));
         return {
           name, type: 'boxplot', data: prepared.boxData, colorBy: 'series',
           itemStyle: { color: hexToRgba(c, 0.18), borderColor: c, borderWidth: 1.6, opacity: 1 },
           emphasis: { itemStyle: { color: hexToRgba(c, 0.42), borderColor: c, borderWidth: 2.2, shadowBlur: 5, shadowColor: hexToRgba(c, 0.35) } },
           tooltip: {
             formatter: params => {
-              const p = Array.isArray(params) ? params[0] : params;
-              if (!p || !p.data) return '';
-              const v = p.data;
-              const wLabel = weekLabels[p.dataIndex] || ('W' + (p.dataIndex + 1));
+              const p = Array.isArray(params) ? params[0] : params; if (!p || !p.data) return '';
+              const v = p.data, wLabel = weekLabels[p.dataIndex] || ('W' + (p.dataIndex + 1));
               return `<span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${c};margin-right:5px;vertical-align:middle"></span>
 <b style="color:${c}">${escLabel(name)}</b> · <span style="color:rgba(255,255,255,.55)">${wLabel}</span><br/>
 Max <b>${Number(v[5]).toFixed(1)}</b> &nbsp; Q3 <b>${Number(v[4]).toFixed(1)}</b><br/>
@@ -907,36 +1102,25 @@ Min <b>${Number(v[1]).toFixed(1)}</b>`;
       });
 
       if (combinedInstance) { combinedInstance.dispose(); combinedInstance = null; }
-      const el = document.getElementById('combined-chart');
-      combinedInstance = echarts.init(el);
+      combinedInstance = echarts.init(document.getElementById('combined-chart'));
       combinedInstance.setOption({
         backgroundColor: 'transparent',
-        textStyle: { fontFamily: "'DM Sans', sans-serif", color: 'rgba(255,255,255,.55)' },
+        textStyle: { fontFamily: "'DM Sans',sans-serif", color: 'rgba(255,255,255,.55)' },
         tooltip: { trigger: 'item', confine: true, backgroundColor: '#1c1c1c', borderColor: 'rgba(255,255,255,.12)', textStyle: { color: '#fff', fontSize: 11 } },
         legend: {
-          data: labels.map(labelName),
-          bottom: 14, orient: 'horizontal',
-          textStyle: { color: 'rgba(255,255,255,.55)', fontSize: 11 },
-          itemWidth: 12, itemHeight: 12, itemGap: 16
+          data: labels.map(labelName), bottom: 14, orient: 'horizontal',
+          textStyle: { color: 'rgba(255,255,255,.55)', fontSize: 11 }, itemWidth: 12, itemHeight: 12, itemGap: 16
         },
         grid: { left: '6%', right: '4%', top: '24', bottom: '110', containLabel: true },
         xAxis: {
-          type: 'category', data: weekLabels,
-          name: 'Week',
-          nameLocation: 'middle',
-          nameGap: 50,
+          type: 'category', data: weekLabels, name: 'Week', nameLocation: 'middle', nameGap: 50,
           nameTextStyle: { color: 'rgba(255,255,255,.4)', fontSize: 11 },
           axisLabel: { fontSize: 11, color: 'rgba(255,255,255,.45)', interval: 0, rotate: 45, align: 'right' },
-          axisLine: { lineStyle: { color: 'rgba(255,255,255,.1)' } },
-          splitLine: { show: false }
+          axisLine: { lineStyle: { color: 'rgba(255,255,255,.1)' } }, splitLine: { show: false }
         },
-        /* ── yAxis from Code 2 ── */
         yAxis: {
-          type: 'value', scale: true,
-          name: pollLabel + ' (µg/m³)',
-          nameLocation: 'middle',
-          nameGap: 56,
-          nameRotate: 90,
+          type: 'value', scale: true, name: pollLabel + ' (µg/m³)',
+          nameLocation: 'middle', nameGap: 56, nameRotate: 90,
           nameTextStyle: { color: 'rgba(255,255,255,.4)', fontSize: 11 },
           axisLabel: { color: 'rgba(255,255,255,.45)', fontSize: 11, margin: 8 },
           splitLine: { lineStyle: { color: 'rgba(255,255,255,.05)' } },
@@ -947,16 +1131,8 @@ Min <b>${Number(v[1]).toFixed(1)}</b>`;
     }
 
     Promise.all([fetch(FILES.pm25), fetch(FILES.pm10)])
-      .then(rs => {
-        rs.forEach((r, i) => { if (!r.ok) throw new Error('File not found: ' + Object.values(FILES)[i]); });
-        return Promise.all(rs.map(r => r.json()));
-      })
-      .then(([pm25, pm10]) => {
-        if (!Array.isArray(pm25) || !Array.isArray(pm10)) throw new Error('JSON must be array');
-        allData = { pm25, pm10 };
-        currentType = 'pm25';
-        draw('pm25');
-      })
+      .then(rs => { rs.forEach((r, i) => { if (!r.ok) throw new Error('File not found: ' + Object.values(FILES)[i]); }); return Promise.all(rs.map(r => r.json())); })
+      .then(([pm25, pm10]) => { if (!Array.isArray(pm25) || !Array.isArray(pm10)) throw new Error('JSON must be array'); allData = { pm25, pm10 }; currentType = 'pm25'; draw('pm25'); })
       .catch(err => showError(err.message));
 
     window.addEventListener('resize', () => {
@@ -970,6 +1146,10 @@ Min <b>${Number(v[1]).toFixed(1)}</b>`;
       if (e.key === 'ArrowLeft') stepWeek(-1);
       if (e.key === 'ArrowRight') stepWeek(1);
     });
+
+    function toggleGuide() {
+      document.getElementById('guidePanel').classList.toggle('open');
+    }
   </script>
 </body>
 
